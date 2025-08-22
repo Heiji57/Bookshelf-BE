@@ -16,7 +16,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User save(UserSignupRequestDto userSignupRequestDto) {
-        if (userRepository.existsByUsername(userSignupRequestDto.getUsername())) {
+        if (userRepository.existsByUserName(userSignupRequestDto.getUsername())) {
             throw new ExistUserException(userSignupRequestDto.getUsername());
         }
 

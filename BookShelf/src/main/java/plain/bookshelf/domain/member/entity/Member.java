@@ -2,7 +2,7 @@ package plain.bookshelf.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import plain.bookshelf.email.entity.Email;
+import plain.bookshelf.domain.email.entity.Email;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +26,14 @@ public class User {
     private String password;
 
     @Column(name = "user_role", nullable = false, length = 10)
-    private String userRole;
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Email> emails = new ArrayList<>();
+
+    public enum UserRole {
+        USER, ADMIN
+    }
 
     public void addEmail(Email email) {
         emails.add(email);

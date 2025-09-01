@@ -17,7 +17,7 @@ public class Email {
     @Column(name = "email_id", nullable = false)
     private Long emailId;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "verified")

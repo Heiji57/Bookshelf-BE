@@ -1,10 +1,9 @@
-package plain.bookshelf.email.presentation;
+package plain.bookshelf.domain.email.presentation;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import plain.bookshelf.email.entity.Email;
-import plain.bookshelf.email.service.EmailService;
+import plain.bookshelf.domain.email.entity.Email;
+import plain.bookshelf.domain.email.service.EmailService;
 
 @RestController
 @RequiredArgsConstructor

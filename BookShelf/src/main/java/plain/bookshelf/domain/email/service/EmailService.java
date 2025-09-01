@@ -1,9 +1,9 @@
-package plain.bookshelf.email.service;
+package plain.bookshelf.domain.email.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import plain.bookshelf.email.entity.Email;
-import plain.bookshelf.email.entity.repository.EmailRepository;
+import plain.bookshelf.domain.email.entity.Email;
+import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 
 import java.util.Optional;
 import java.util.UUID;

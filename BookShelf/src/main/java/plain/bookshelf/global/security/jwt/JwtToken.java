@@ -1,4 +1,4 @@
-package plain.bookshelf.global.security.presentation.dto;
+package plain.bookshelf.global.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ public class JwtToken {
 
     private String grantType;
     private String accessToken;
+    private Long expiresIn;
     private String refreshToken;
 
 }

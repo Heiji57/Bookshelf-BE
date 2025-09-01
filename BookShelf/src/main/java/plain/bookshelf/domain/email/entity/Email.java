@@ -1,12 +1,11 @@
-package plain.bookshelf.email.entity;
+package plain.bookshelf.domain.email.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import plain.bookshelf.domain.user.entity.User;
+import plain.bookshelf.domain.member.entity.Member;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "email")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,20 +20,21 @@ public class Email {
     private String address;
 
     @Column(name = "verified")
+    @Setter
     private boolean verified = false; // 인증 여부
 
     @Column(name = "delivered")
+    @Setter
     private boolean delivered = false; // 수신 상태
 
     @Column(name = "verification_code")
+    @Setter
     private String verificationCode;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member member;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
 

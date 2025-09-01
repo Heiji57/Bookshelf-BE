@@ -19,10 +19,7 @@ public class MemberSignupRequestDto {
     @NotBlank
     private String password;
 
-    @NotEmpty
-    private List<String> emails;
+    private List<String> emails; // 선택
 
-    private boolean emailVerified;
-
-    private boolean emailDelivered;
+    private boolean emailDelivered; // 수신 상태
 }

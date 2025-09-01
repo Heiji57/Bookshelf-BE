@@ -1,4 +1,4 @@
-package plain.bookshelf.global.config;
+package plain.bookshelf.domain.email.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

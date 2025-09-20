@@ -1,32 +1,28 @@
-package plain.bookshelf.global.security.entity;
+package plain.bookshelf.global.security.jwt;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 
-@Entity
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@RedisHash("refreshToken") // Redis에 저장될 객체임을 명시
 public class RefreshToken {
 
     @Id
-    @Column(name = "refresh_key")
-    private String key; // Member ID
+    private String key; // 사용자 ID (refresh_key)
 
-    @Column(name = "refresh_value")
-    private String value; // Refresh Token String
+    private String value; // refresh token 문자열 (refresh_value)
 
-    @Builder
-    public RefreshToken(String key, String value) {
-        this.key = key;
+    @TimeToLive
+    private Long expiration; // 만료 시간 (초 단위)
+
+    public RefreshToken updateValue(String value) {
         this.value = value;
-    }
-
-    public RefreshToken updateValue(String token) {
-        this.value = token;
         return this;
     }
 }

@@ -1,4 +1,4 @@
-package plain.bookshelf.global.exception;
+package plain.bookshelf.domain.email.exception;
 
 
 import java.util.List;

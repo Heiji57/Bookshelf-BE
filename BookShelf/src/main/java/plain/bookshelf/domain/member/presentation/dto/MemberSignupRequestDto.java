@@ -2,6 +2,8 @@ package plain.bookshelf.domain.member.presentation.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 
 import java.util.List;
 
@@ -10,10 +12,8 @@ import java.util.List;
 @Setter
 public class MemberSignupRequestDto {
 
-    @NotBlank
     private String userName;
 
-    @NotBlank
     private String nickName;
 
     @NotBlank
@@ -21,5 +21,7 @@ public class MemberSignupRequestDto {
 
     private List<String> emails; // 선택
 
-    private boolean emailDelivered; // 수신 상태
+    public UsernamePasswordAuthenticationToken toAutentication() {
+        return new UsernamePasswordAuthenticationToken(this.userName, this.password);
+    }
 }

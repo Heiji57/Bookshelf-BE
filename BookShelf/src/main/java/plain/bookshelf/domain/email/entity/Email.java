@@ -10,31 +10,36 @@ import plain.bookshelf.domain.member.entity.Member;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@SequenceGenerator(
+        name = "email_seq_generator",
+        sequenceName = "email_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Email {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "email_id", nullable = false)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_seq_generator")
+    @Column(nullable = false)
     private Long emailId;
 
-    @Column(name = "address")
+    @Column(nullable = false)
     private String address;
 
-    @Column(name = "verified")
+    @Column
     @Setter
-    private boolean verified = false; // 인증 여부
+    private boolean verified = false; // 인증 여부, 인증 성공 시 true
 
-    @Column(name = "delivered")
+    @Column
     @Setter
-    private boolean delivered = false; // 수신 상태
+    private boolean delivered = true; // 수신 상태, 기본이 수신 상태
 
-    @Column(name = "verification_code")
+    @Column
     @Setter
-    private String verificationCode;
+    private String verificationCode; // 이메일 인증 코드
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Member member;
-
 }
 

@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
-import plain.bookshelf.global.security.config.filter.JwtFilter;
+import plain.bookshelf.global.security.jwt.JwtAuthenticationFilter;
 import plain.bookshelf.global.security.jwt.JwtAuthenticationEntryPoint;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 import plain.bookshelf.global.security.jwt.handler.JwtAccessDeniedHandler;
@@ -49,7 +49,7 @@ public class SecurityConfig {
                 );
 
         // JwtFilter 직접 등록
-        http.addFilterBefore(new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

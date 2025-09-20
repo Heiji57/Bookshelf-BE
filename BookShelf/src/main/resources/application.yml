@@ -1,41 +1,45 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/plain
-    username: root
-    password: 'MySQLqp12@qp12wo'
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/BookShelf
+    username: ADMIN
+    password: heijiADMIN20090220!
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your-email@gmail.com
-    password: your-password
+    username: bookshelf0911@gmail.com
+    password: plain@bookshelf
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
-
   jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # Flyway 사용 시 반드시 none으로 설정
+    database: postgresql
     show-sql: true
-    logging:
-      level:
-        org.hibernate.SQL: DEBUG
-        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
+    properties:
+      hibernate.default_schema: userSchema
   jackson:
     property-naming-strategy: SNAKE_CASE
 
 jwt:
-  expiration_time: 86400000 #1일
-  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+  expiration_time: 1209600 # 14일
+  secret: apPgszdsBxafvb3BWqNbQhwQY2QJZXYoSZRNSZr40EZXO7XRUptu8Qy9urdl0adQPp3GYQsNZZPVyIPVCI6h1A==
 
 server:
   port: 8443
   ssl:
     enabled: true
     key-store: classpath:keystore.p12
-    key-store-password: 040804   # keytool에서 입력한 비밀번호
+    key-store-password: 040804
     key-store-type: PKCS12
     key-alias: local-ssl
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

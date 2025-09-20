@@ -25,8 +25,11 @@ public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
+
+    // static 키워드 제거
+    @Value("${jwt.expiration_time}")
+    private long REFRESH_TOKEN_EXPIRE_TIME;  // 14일
 
     private final Key key;
 
@@ -35,7 +38,8 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtToken generateTokenDto(Authentication authentication) {
+    // Access Token과 Refresh Token을 함께 생성하는 메서드
+    public JwtTokenDto generateToken(Authentication authentication) {
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -54,11 +58,12 @@ public class JwtTokenProvider {
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
+                // 수정: REFRESH_TOKEN_EXPIRE_TIME 변수가 정상적으로 주입되도록 static 키워드 제거
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return JwtToken.builder()
+        return JwtTokenDto.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .expiresIn(accessTokenExpiresIn.getTime())
@@ -66,6 +71,7 @@ public class JwtTokenProvider {
                 .build();
     }
 
+    // Access Token을 받아서 Authentication 객체를 반환하는 메서드
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
@@ -86,6 +92,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
+    // Access Token의 유효성 검증
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -102,10 +109,32 @@ public class JwtTokenProvider {
         return false;
     }
 
-    private Claims parseClaims(String accessToken) {
+    // Refresh Token의 유효성 검증
+    public boolean validateRefreshToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            // Refresh Token은 만료되어도 서명이 유효하면 true 반환
+            return true;
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다. 서명은 유효합니다.");
+            // 만료된 토큰의 클레임을 가져와서 사용할 수 있도록 별도 메서드를 호출
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return false;
+    }
+
+    // 토큰 복호화
+    public Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
+            // 만료된 토큰의 클레임도 반환 -> 누구의 만료된 access_token 인지 알기위해 필요
             return e.getClaims();
         }
     }

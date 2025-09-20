@@ -1,10 +1,10 @@
 package plain.bookshelf.global.security.entity.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import plain.bookshelf.global.security.entity.RefreshToken;
+import org.springframework.data.repository.CrudRepository;
+import plain.bookshelf.global.security.jwt.RefreshToken;
 
 import java.util.Optional;
 
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
-    Optional<RefreshToken> findByKey(String key);
+
+public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
 }

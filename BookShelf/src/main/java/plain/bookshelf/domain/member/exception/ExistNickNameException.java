@@ -1,4 +1,4 @@
-package plain.bookshelf.global.exception;
+package plain.bookshelf.domain.member.exception;
 
 public class ExistNickNameException extends RuntimeException {
     public ExistNickNameException(String username) {

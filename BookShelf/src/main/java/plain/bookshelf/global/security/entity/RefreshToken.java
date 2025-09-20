@@ -1,4 +1,4 @@
-package plain.bookshelf.global.security.jwt;
+package plain.bookshelf.global.security.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

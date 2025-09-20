@@ -15,6 +15,7 @@ import plain.bookshelf.domain.member.entity.repository.UserMemberRepository;
 import plain.bookshelf.domain.member.exception.ExistNickNameException;
 import plain.bookshelf.domain.member.exception.ExistUserNameException;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
+import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 import plain.bookshelf.global.security.exception.RefreshValueNotEqualException;
 import plain.bookshelf.global.security.exception.logoutUserException;
@@ -25,7 +26,6 @@ import plain.bookshelf.domain.member.presentation.dto.MemberSignupResponseDto;
 import plain.bookshelf.domain.member.presentation.dto.TokenRequestDto;
 import plain.bookshelf.global.security.jwt.JwtTokenDto;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
-import plain.bookshelf.global.security.jwt.RefreshToken;
 
 @Service
 @RequiredArgsConstructor

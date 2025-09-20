@@ -1,5 +1,8 @@
 package plain.bookshelf.global.exception;
 
+import lombok.Getter;
+
+@Getter
 public enum ErrorCode {
     // 401 Unauthorized
     INVALID_REFRESH_TOKEN(401, "A001", "Invalid refresh token."),

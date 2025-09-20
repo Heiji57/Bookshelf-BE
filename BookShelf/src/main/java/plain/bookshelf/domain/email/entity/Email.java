@@ -13,7 +13,6 @@ import plain.bookshelf.domain.member.entity.Member;
 @SequenceGenerator(
         name = "email_seq_generator",
         sequenceName = "email_seq",
-        initialValue = 1,
         allocationSize = 1
 )
 public class Email {

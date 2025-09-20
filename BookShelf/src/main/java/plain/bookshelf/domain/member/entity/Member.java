@@ -16,7 +16,6 @@ import java.util.List;
 @SequenceGenerator(
         name = "member_seq_generator",
         sequenceName = "member_seq",
-        initialValue = 1,
         allocationSize = 1
 )
 public class Member {

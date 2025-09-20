@@ -2,18 +2,12 @@ package plain.bookshelf.global.security.userdetails;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
-import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.UserMemberRepository;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor

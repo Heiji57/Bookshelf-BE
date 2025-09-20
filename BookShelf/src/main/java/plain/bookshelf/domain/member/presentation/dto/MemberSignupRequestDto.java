@@ -3,7 +3,6 @@ package plain.bookshelf.domain.member.presentation.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 
 import java.util.List;
 

@@ -1,0 +1,23 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with Secrets as Environment Variables
+        env:
+          # 📌 GitHub Secrets의 값을 환경 변수로 설정
+          DB_PASSWORD: ${{ secrets.BOOKSHELF_DB_PASSWORD }}
+          DB_URL: ${{BOOKSHELF_DB_URL}}
+          MAIL_PASSWORD: ${{ secrets.BOOKSHELF_EMAIL_PASSWORD }}
+          JWT_SECRET_KEY: ${{ secrets.BOOKSHELF_SECRETKEY }}
+          SSL_KEYSTORE_PASSWORD: ${{ secrets.BOOKSHELF_KEYSTORE_PASSWORD }}
+
+        run: |

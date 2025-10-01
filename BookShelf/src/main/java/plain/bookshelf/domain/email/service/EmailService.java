@@ -1,25 +1,42 @@
 package plain.bookshelf.domain.email.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.Email;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
+import plain.bookshelf.domain.email.exception.ExistEmailException;
+import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
     private final EmailRepository emailRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private static final long VERIFICATION_TTL_MINUTES = 5;
     private final MailService mailService;
 
-    public Email sendVerificationEmail(Email email) {
+    public void sendVerificationEmail(GetEmailRequestDto getEmailRequestDto) {
 
         // 인증 코드 생성
-        String verificationCode = UUID.randomUUID().toString();
-        email.setVerificationCode(verificationCode);
+        if (emailRepository.findEmailByAddress(getEmailRequestDto.getAddress()).isPresent()) {
+            throw new ExistEmailException(getEmailRequestDto.getAddress());
+        }
+        String verificationCode = RandomStringUtils.randomAlphanumeric(6);
+
+        Email email = Email.builder()
+                .address(getEmailRequestDto.getAddress())
+                .verificationCode(verificationCode)
+                .delivered(false)
+                .verified(false)
+                .member(null)
+                .build();
+        String key = "verification:email:" + email.getAddress();
+        redisTemplate.opsForValue().set(key, verificationCode, Duration.ofMinutes(VERIFICATION_TTL_MINUTES));
 
         // 이메일 전송
         boolean sent = mailService.sendEmail(
@@ -30,17 +47,20 @@ public class EmailService {
         );
 
         email.setDelivered(sent);
-        return emailRepository.save(email);
+        emailRepository.save(email);
     }
 
-    public boolean verifyEmail(String verificationCode) {
-        Optional<Email> OptionalEmail = emailRepository.findByVerificationCode(verificationCode);
-        if (OptionalEmail.isPresent()) {
-            Email email = OptionalEmail.get();
+    public boolean verifyEmail(String verificationCode, String address) {
+        String code = redisTemplate.opsForValue().get("verification:email:" + address);
+        if (code.equals(verificationCode) && emailRepository.findEmailByAddress(address).isPresent()) {
+            Email email = emailRepository.findEmailByAddress(address).get();
             email.setVerified(true);
+            email.setDelivered(false);
             emailRepository.save(email);
             return true;
         }
+        Email email = emailRepository.findEmailByAddress(address).get();
+        email.setDelivered(false);
         return false;
     }
 }

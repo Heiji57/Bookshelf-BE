@@ -21,7 +21,7 @@ public class CustomUsersDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.contains("@")) {
             //이메일 형식인지 확인
-            return emailRepository.findByAddress(username)
+            return emailRepository.findEmailByAddress(username)
                     .map(email -> new CustomUserDetails(email.getMember()))
                     .orElseThrow(() -> new UsernameNotFoundException(username + ": 아이디를 찾지 못 했습니다."));
         }

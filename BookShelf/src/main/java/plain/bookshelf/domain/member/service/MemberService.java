@@ -9,12 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
-import plain.bookshelf.domain.email.exception.ExistEmailException;
+import plain.bookshelf.domain.email.exception.NotVerificationEmailException;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.UserMemberRepository;
+import plain.bookshelf.domain.member.exception.AlreadyAssignedEmailException;
 import plain.bookshelf.domain.member.exception.ExistNickNameException;
 import plain.bookshelf.domain.member.exception.ExistUserNameException;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
+import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 import plain.bookshelf.global.security.exception.RefreshValueNotEqualException;
@@ -43,6 +45,11 @@ public class MemberService {
     @Transactional
     public MemberSignupResponseDto signup(MemberSignupRequestDto memberSignupRequestDto) {
 
+        // 잘못된 입력
+        // 수정: 이메일 인증을 위해 DB에 저장된 이메일이 없다면 예외 발생
+        Email email = emailRepository.findEmailByAddress(memberSignupRequestDto.getAddress())
+                .orElseThrow(() -> new NotVerificationEmailException(memberSignupRequestDto.getAddress()));
+
         // 1. 사용자명, 닉네임 중복 체크
         if (userMemberRepository.existsByUserName(memberSignupRequestDto.getUserName())) {
             throw new ExistUserNameException(memberSignupRequestDto.getUserName());
@@ -50,13 +57,11 @@ public class MemberService {
         if (userMemberRepository.existsByNickName(memberSignupRequestDto.getNickName())) {
             throw new ExistNickNameException(memberSignupRequestDto.getNickName());
         }
-
-        // 2. 이메일 중복 체크
-        if (memberSignupRequestDto.getEmails() != null && !memberSignupRequestDto.getEmails().isEmpty()) {
-            if (memberSignupRequestDto.getEmails().stream()
-                    .anyMatch(emailRepository::existsByAddress)) {
-                throw new ExistEmailException(memberSignupRequestDto.getEmails());
-            }
+        if (email.getMember() != null) {
+            throw new AlreadyAssignedEmailException(memberSignupRequestDto.getAddress());
+        }
+        if (!email.isVerified()) {
+            throw new NotVerificationEmailException(memberSignupRequestDto.getAddress());
         }
 
         // 3. Member 객체 생성
@@ -67,17 +72,10 @@ public class MemberService {
                 .authority(Member.Authority.ROLE_USER)
                 .build();
 
-        // 4. 이메일 객체 생성 및 연관관계 세팅
-        if (memberSignupRequestDto.getEmails() != null && !memberSignupRequestDto.getEmails().isEmpty()) {
-            memberSignupRequestDto.getEmails().forEach(addr -> {
-                Email email = Email.builder()
-                        .address(addr)
-                        .verified(false)
-                        .delivered(true)
-                        .build();
-                member.addEmail(email);
-            });
-        }
+
+            email.setMember(member);
+            member.getEmails().add(email);
+            emailRepository.save(email);
 
         // 5. DB 저장
         Member savedMember = userMemberRepository.save(member);

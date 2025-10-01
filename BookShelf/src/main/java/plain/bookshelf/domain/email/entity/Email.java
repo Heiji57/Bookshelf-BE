@@ -30,7 +30,7 @@ public class Email {
 
     @Column
     @Setter
-    private boolean delivered = true; // 수신 상태, 기본이 수신 상태
+    private boolean delivered = false; // 수신 상태, 수신 중에만 true
 
     @Column
     @Setter

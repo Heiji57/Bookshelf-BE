@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberDeleteRequestDto {
 

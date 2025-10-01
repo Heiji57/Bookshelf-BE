@@ -12,7 +12,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: bookshelf0911@gmail.com
-    password: plain@bookshelf
+    password: vhqv sbyd vrsi bsuv
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true

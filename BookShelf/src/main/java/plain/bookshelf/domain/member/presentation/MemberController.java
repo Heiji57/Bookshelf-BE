@@ -16,18 +16,19 @@ import plain.bookshelf.global.security.jwt.JwtTokenDto;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/auth")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/signup")
     public ResponseEntity<MemberSignupResponseDto> signup(@RequestBody @Valid MemberSignupRequestDto memberSignupRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
                 .body(memberService.signup(memberSignupRequestDto));
     }
 
-    @DeleteMapping("/auth/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> delete(@RequestBody @Valid MemberDeleteRequestDto memberDeleteRequestDto) {
         memberService.userDelete(memberDeleteRequestDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
@@ -35,14 +36,14 @@ public class MemberController {
                 .build();
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public ResponseEntity<JwtTokenDto> login(@RequestBody @Valid MemberSignupRequestDto memberSignupRequestDto) {
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(memberService.login(memberSignupRequestDto));
     }
 
-    @PostMapping("/auth/reissue")
+    @PostMapping("/reissue")
     public ResponseEntity<JwtTokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Authorization", "Bearer {refresh_token}")

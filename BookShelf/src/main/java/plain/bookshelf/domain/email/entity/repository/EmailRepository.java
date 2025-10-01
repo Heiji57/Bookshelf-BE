@@ -10,6 +10,5 @@ import java.util.Optional;
 public interface EmailRepository extends JpaRepository<Email, Long> {
     boolean existsByAddress(String address);
 
-    Optional<Email> findByAddress(String address);
-    Optional<Email> findByVerificationCode(String verificationCode);
+    Optional<Email> findEmailByAddress(String address);
 }

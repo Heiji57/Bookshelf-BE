@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
 import plain.bookshelf.domain.email.presentation.dto.VerifyEmailRequestDto;
 import plain.bookshelf.domain.email.service.EmailService;
@@ -30,6 +31,9 @@ public class EmailController {
     public ResponseEntity<Void> verifyEmail(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
         boolean result = emailService.verifyEmail(verifyEmailRequestDto.getVerificationCode(), verifyEmailRequestDto.getAddress());
         log.info("Email verified: " + result);
+        if (!result) {
+            throw new NotCorrectVerificationCodeException(verifyEmailRequestDto.getVerificationCode());
+        }
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .build();

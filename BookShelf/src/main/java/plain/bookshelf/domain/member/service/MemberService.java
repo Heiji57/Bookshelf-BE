@@ -16,7 +16,6 @@ import plain.bookshelf.domain.member.exception.AlreadyAssignedEmailException;
 import plain.bookshelf.domain.member.exception.ExistNickNameException;
 import plain.bookshelf.domain.member.exception.ExistUserNameException;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 import plain.bookshelf.global.security.exception.RefreshValueNotEqualException;

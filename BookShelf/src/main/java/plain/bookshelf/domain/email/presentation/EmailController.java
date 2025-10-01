@@ -10,8 +10,6 @@ import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
 import plain.bookshelf.domain.email.presentation.dto.VerifyEmailRequestDto;
 import plain.bookshelf.domain.email.service.EmailService;
 
-import java.util.UUID;
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j

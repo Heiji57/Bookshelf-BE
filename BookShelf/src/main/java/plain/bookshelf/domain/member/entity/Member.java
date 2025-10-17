@@ -2,6 +2,7 @@ package plain.bookshelf.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import plain.bookshelf.domain.book_information.entity.BookInformation;
 import plain.bookshelf.domain.email.entity.Email;
 
 import java.util.ArrayList;
@@ -37,16 +38,18 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    @Column(nullable = true, length = 100)
+    private String profilePicture;
+
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Email> emails = new ArrayList<>();
 
-    public enum Authority {
-        ROLE_USER,ROLE_MANAGER,ROLE_GUEST
-    }
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private List<BookInformation> books = new ArrayList<>();
 
-    public void addEmail(Email email) {
-        emails.add(email);
-        email.setMember(this);
+    public enum Authority {
+        ROLE_USER,ROLE_MANAGER,ROLE_GUEST, ROLE_ADMIN, ROLE_OVERDUE
     }
 }

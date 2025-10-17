@@ -1,7 +1,15 @@
 package plain.bookshelf.domain.member.exception;
 
+import lombok.Getter;
+import plain.bookshelf.global.exception.ErrorCode;
+
+@Getter
 public class ExistNickNameException extends RuntimeException {
-    public ExistNickNameException(String username) {
-        super("이미 존재하는 사용자 이름입니다: " + username);
+
+    private final ErrorCode errorCode;
+
+    public ExistNickNameException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 }

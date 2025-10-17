@@ -1,8 +1,15 @@
 package plain.bookshelf.domain.email.exception;
 
+import lombok.Getter;
+import plain.bookshelf.global.exception.ErrorCode;
 
+@Getter
 public class ExistEmailException extends RuntimeException {
-    public ExistEmailException(String email) {
-        super("이미 사용되는 이메일입니다:" + email);
+
+    private final ErrorCode errorCode;
+
+    public ExistEmailException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 }

@@ -5,16 +5,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
+import plain.bookshelf.global.security.service.TokenBlackListService;
 import plain.bookshelf.global.security.jwt.JwtAuthenticationFilter;
 import plain.bookshelf.global.security.jwt.JwtAuthenticationEntryPoint;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
-import plain.bookshelf.global.security.jwt.handler.JwtAccessDeniedHandler;
+import plain.bookshelf.global.security.jwt.JwtAccessDeniedHandler;
 
 @EnableWebSecurity
 @Configuration
@@ -22,20 +23,21 @@ import plain.bookshelf.global.security.jwt.handler.JwtAccessDeniedHandler;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CorsFilter corsFilter;
+    private final TokenBlackListService tokenBlackListService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -46,10 +48,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/email/send", "/email/verify").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .logout(AbstractHttpConfigurer::disable
+                )
 
         // JwtFilter 직접 등록
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtAuthenticationFilter.jwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -52,7 +52,7 @@ public class MemberSignupResponseDto {
     }
 
     public static MemberSignupResponseDto of(Member member) {
-        List<EmailDto> emailDtos = member.getEmails().stream()
+        List<EmailDto> emailDto = member.getEmails().stream()
                 .map(EmailDto::fromEntity)
                 .collect(Collectors.toList());
 
@@ -61,7 +61,7 @@ public class MemberSignupResponseDto {
                 .userName(member.getUserName())
                 .nickName(member.getNickName())
                 .authority(member.getAuthority().name())
-                .emails(emailDtos)
+                .emails(emailDto)
                 .build();
     }
 }

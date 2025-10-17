@@ -32,10 +32,6 @@ public class Email {
     @Setter
     private boolean delivered = false; // 수신 상태, 수신 중에만 true
 
-    @Column
-    @Setter
-    private String verificationCode; // 이메일 인증 코드
-
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

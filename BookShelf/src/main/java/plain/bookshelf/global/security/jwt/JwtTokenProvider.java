@@ -3,6 +3,7 @@ package plain.bookshelf.global.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +13,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import plain.bookshelf.domain.member.exception.NotExistUserException;
+import plain.bookshelf.global.exception.ErrorCode;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -25,16 +29,16 @@ public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
-
-    // static 키워드 제거
-    @Value("${jwt.expiration_time}")
-    private long REFRESH_TOKEN_EXPIRE_TIME;  // 14일
+    @Value("${jwt.access_token_expiration_time}")
+    private long ACCESS_TOKEN_EXPIRE_TIME;
+    @Value("${jwt.refresh_token_expiration_time}")
+    private long REFRESH_TOKEN_EXPIRE_TIME;
 
     private final Key key;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        log.warn(">>> JWT Secret Key 로드 값: {}", secretKey);
+            byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -69,6 +73,18 @@ public class JwtTokenProvider {
                 .expiresIn(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public String getUserIdFromToken(String token) {
+        Claims claims = parseClaims(token);
+
+        String subject = claims.getSubject();
+        if (subject == null || subject.isEmpty()) {
+            log.error("[+] JWT Token does not contain subject (USER ID)");
+
+            throw new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+        return subject;
     }
 
     // Access Token을 받아서 Authentication 객체를 반환하는 메서드
@@ -109,33 +125,40 @@ public class JwtTokenProvider {
         return false;
     }
 
-    // Refresh Token의 유효성 검증
-    public boolean validateRefreshToken(String token) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            // Refresh Token은 만료되어도 서명이 유효하면 true 반환
-            return true;
-        } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다. 서명은 유효합니다.");
-            // 만료된 토큰의 클레임을 가져와서 사용할 수 있도록 별도 메서드를 호출
-            return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.");
-        } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
-        }
-        return false;
-    }
-
     // 토큰 복호화
     public Claims parseClaims(String accessToken) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        } catch (ExpiredJwtException e) {
-            // 만료된 토큰의 클레임도 반환 -> 누구의 만료된 access_token 인지 알기위해 필요
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            // 만료된 토큰의 클레임도 반환 -> 누구의 만료된 access_token 인지 알기 위해 필요
             return e.getClaims();
         }
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+
+        return null;
+    }
+
+    public Date getExpirationTime(String token) {
+        Claims claims = parseClaims(token);
+
+        return claims.getExpiration();
+    }
+
+    public long getRemainingExpirationTime(String token) {
+        Date expiration = getExpirationTime(token);
+        long now = new Date().getTime();
+
+        return expiration.getTime() - now;
     }
 }

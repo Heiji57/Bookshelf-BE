@@ -1,7 +1,15 @@
 package plain.bookshelf.domain.email.exception;
 
+import lombok.Getter;
+import plain.bookshelf.global.exception.ErrorCode;
+
+@Getter
 public class NotVerificationEmailException extends RuntimeException {
-    public NotVerificationEmailException(String address) {
-        super("Not verified email: " + address);
+
+    private final ErrorCode errorCode;
+
+    public NotVerificationEmailException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 }

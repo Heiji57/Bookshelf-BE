@@ -8,6 +8,7 @@ import plain.bookshelf.domain.email.entity.Email;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
+import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.Duration;
 
@@ -24,13 +25,12 @@ public class EmailService {
 
         // 인증 코드 생성
         if (emailRepository.findEmailByAddress(getEmailRequestDto.getAddress()).isPresent()) {
-            throw new ExistEmailException(getEmailRequestDto.getAddress());
+            throw new ExistEmailException(ErrorCode.MEMBER_EMAIL_EXIST);
         }
         String verificationCode = RandomStringUtils.randomAlphanumeric(6);
 
         Email email = Email.builder()
                 .address(getEmailRequestDto.getAddress())
-                .verificationCode(verificationCode)
                 .delivered(false)
                 .verified(false)
                 .member(null)

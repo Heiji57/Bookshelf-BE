@@ -10,6 +10,8 @@ import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeExceptio
 import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
 import plain.bookshelf.domain.email.presentation.dto.VerifyEmailRequestDto;
 import plain.bookshelf.domain.email.service.EmailService;
+import plain.bookshelf.global.StatusResponseDto;
+import plain.bookshelf.global.exception.ErrorCode;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,22 +22,22 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendEmail(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
+    public ResponseEntity<?> sendEmail(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
         emailService.sendVerificationEmail(getEmailRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully send email.", ""));
     }
 
     @PutMapping("/verify")
-    public ResponseEntity<Void> verifyEmail(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
+    public ResponseEntity<?> verifyEmail(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
         boolean result = emailService.verifyEmail(verifyEmailRequestDto.getVerificationCode(), verifyEmailRequestDto.getAddress());
         log.info("Email verified: " + result);
         if (!result) {
-            throw new NotCorrectVerificationCodeException(verifyEmailRequestDto.getVerificationCode());
+            throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
         }
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", ""));
     }
 }

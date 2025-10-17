@@ -1,0 +1,51 @@
+package plain.bookshelf.domain.member.service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import plain.bookshelf.global.exception.ErrorCode;
+import plain.bookshelf.global.security.service.TokenBlackListService;
+import plain.bookshelf.global.security.exception.AccessTokenValueNotValidException;
+import plain.bookshelf.global.security.jwt.JwtTokenProvider;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class LogoutService {
+
+    private final RedisTemplate<String, String> redisTemplate;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenBlackListService tokenBlackListService;
+    private final static String REFRESH_TOKEN_PREFIX = "refreshToken:";
+
+    public void deleteRefreshToken(HttpServletRequest request) {
+        String accessToken = jwtTokenProvider.resolveToken(request);
+
+        if (accessToken == null) {
+            throw new AccessTokenValueNotValidException(ErrorCode.ACCESS_TOKEN_NOT_MATCH, null);
+        }
+
+        String userId;
+        try {
+            userId = jwtTokenProvider.getUserIdFromToken(accessToken);
+        } catch (Exception e) {
+            throw new AccessTokenValueNotValidException(ErrorCode.ACCESS_TOKEN_NOT_MATCH, accessToken);
+        }
+
+        String username = String.valueOf(userId);
+
+        Boolean deleted = redisTemplate.delete(REFRESH_TOKEN_PREFIX + username);
+        if (deleted != null && deleted) {
+            log.info("Refresh token has been deleted for user: {}", username);
+        }
+
+        // Access Token 블랙리스트 등록 (잔여 유효 기간 무효화)
+        long remainingTime = jwtTokenProvider.getRemainingExpirationTime(accessToken);
+        tokenBlackListService.blacklistToken(accessToken, remainingTime);
+
+        SecurityContextHolder.clearContext();
+    }
+}

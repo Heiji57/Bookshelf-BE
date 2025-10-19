@@ -1,9 +1,10 @@
 package plain.bookshelf.domain.member.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.email.entity.Email;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.email.exception.NotVerificationEmailException;
@@ -25,7 +26,7 @@ public class SigunupService {
     private final PasswordEncoder passwordEncoder;
     private final EmailRepository emailRepository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public MemberSignupResponseDto signup(MemberSignupRequestDto memberSignupRequestDto) {
 
         String address = memberSignupRequestDto.getAddress();
@@ -43,7 +44,7 @@ public class SigunupService {
         }
 
         // 1. 아이디 중복 체크
-        if (userMemberRepository.existsByUserName(memberSignupRequestDto.getUserName())) {
+        if (userMemberRepository.existsByUserName(memberSignupRequestDto.getUsername())) {
             throw new ExistUserNameException(ErrorCode.MEMBER_ID_EXIST);
         }
         // 2. 닉네임 중복 체크
@@ -53,7 +54,7 @@ public class SigunupService {
 
         // 3. Member 객체 생성
         Member member = Member.builder()
-                .userName(memberSignupRequestDto.getUserName())
+                .userName(memberSignupRequestDto.getUsername())
                 .nickName(memberSignupRequestDto.getNickName())
                 .password(passwordEncoder.encode(memberSignupRequestDto.getPassword()))
                 .authority(Member.Authority.ROLE_USER)

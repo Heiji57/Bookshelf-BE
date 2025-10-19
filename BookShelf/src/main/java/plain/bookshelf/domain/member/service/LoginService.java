@@ -1,7 +1,7 @@
 package plain.bookshelf.domain.member.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,14 +10,17 @@ import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.member.entity.repository.UserMemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.domain.member.presentation.dto.MemberSignupRequestDto;
+import plain.bookshelf.domain.member.presentation.dto.MemberLoginRequestDto;
 import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 import plain.bookshelf.global.security.jwt.JwtTokenDto;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class LoginService {
     private final UserMemberRepository userMemberRepository;
@@ -28,14 +31,15 @@ public class LoginService {
     @Value("${jwt.refresh_token_expiration_time}")
     private Long expirationTime;
 
-    @Transactional
-    public JwtTokenDto login(MemberSignupRequestDto memberSignupRequestDto) {
-        if (userMemberRepository.findByUserName(memberSignupRequestDto.getUserName()).isEmpty() && emailRepository.findEmailByAddress(memberSignupRequestDto.getUserName()).isEmpty()) {
+    public JwtTokenDto login(MemberLoginRequestDto memberLoginRequestDto) {
+        if (userMemberRepository.findByUserName(memberLoginRequestDto.getCredential()).isEmpty()
+                && emailRepository.findEmailByAddress(memberLoginRequestDto.getCredential()).isEmpty()) {
+
             throw new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
         // 1. Login ID,EMAIL/PW 를 기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken = memberSignupRequestDto.toAutentication();
+        UsernamePasswordAuthenticationToken authenticationToken = memberLoginRequestDto.toAuthentication();
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //      authentication 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUserName 메서드가 실행됨
@@ -52,6 +56,9 @@ public class LoginService {
                 .build();
 
         refreshTokenRepository.save(refreshToken);
+
+        Date now = new Date();
+        log.info("user login time: {}", now);
 
         // 5. 토큰 발급
         return jwtTokenDto;

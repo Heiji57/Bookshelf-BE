@@ -22,8 +22,9 @@ public enum ErrorCode {
      */
     EMAIL_VERIFICATION_CODE_NOT_CORRECT(HttpStatus.BAD_REQUEST, "C001", "이메일 verificationCode 가 일치하지 않습니다."),
     MEMBER_EMAIL_EXIST(HttpStatus.CONFLICT, "C002", "이미 존재하는 email 입니다."),
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C003", "부적절한 요청 데이터입니다."),
-    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C004", "허용되지 않은 HTTP 메서드입니다."),
+    EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "C003", "email 을 찾지 못 했습니다."),
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C004", "부적절한 요청 데이터입니다."),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C005", "허용되지 않은 HTTP 메서드입니다."),
 
     // --- 최후의 방어선 ---
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C999", "서버 내부에서 알 수 없는 오류가 발생했습니다."),

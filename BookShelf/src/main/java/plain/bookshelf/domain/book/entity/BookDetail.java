@@ -1,13 +1,12 @@
-package plain.bookshelf.domain.book_information.entity;
+package plain.bookshelf.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.member.entity.Member;
 
 @Getter
 @Entity
-@Table(name = "book_information")
+@Table(name = "book_detail")
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,9 +15,9 @@ import plain.bookshelf.domain.member.entity.Member;
         sequenceName = "book_information_seq",
         allocationSize = 1
 )
-public class BookInformation {
+public class BookDetail {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
@@ -34,9 +33,11 @@ public class BookInformation {
     @Column(name = "chat", nullable = false)
     private boolean chat;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REFRESH)
+    @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
     private Member member;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book")
     private Book book;
 }

@@ -19,7 +19,9 @@ public class ReissueService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Transactional
+    /*
+    Redis 사용해서 Transactional 필요 없음
+    */
     public JwtTokenDto reissue(TokenRequestDto tokenRequestDto) {
         // 1. RefreshToken 검증
         if (!jwtTokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {

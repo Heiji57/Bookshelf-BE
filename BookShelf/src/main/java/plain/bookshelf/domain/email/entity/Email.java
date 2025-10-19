@@ -18,19 +18,16 @@ import plain.bookshelf.domain.member.entity.Member;
 public class Email {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_seq_generator")
-    @Column(nullable = false)
-    private Long emailId;
+    @Column(nullable = false, unique = true)
+    private Long id;
 
     @Column(nullable = false)
     private String address;
 
     @Column
     @Setter
+    @Builder.Default
     private boolean verified = false; // 인증 여부, 인증 성공 시 true
-
-    @Column
-    @Setter
-    private boolean delivered = false; // 수신 상태, 수신 중에만 true
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)

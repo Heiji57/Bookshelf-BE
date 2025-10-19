@@ -2,7 +2,6 @@ package plain.bookshelf.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import plain.bookshelf.domain.book_information.entity.BookInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +42,5 @@ public class Book {
 
     @Builder.Default
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<BookInformation> books = new ArrayList<>();
+    private List<BookDetail> books = new ArrayList<>();
 }

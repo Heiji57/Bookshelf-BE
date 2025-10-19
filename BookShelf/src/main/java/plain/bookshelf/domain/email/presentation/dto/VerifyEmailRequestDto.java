@@ -1,14 +1,14 @@
 package plain.bookshelf.domain.email.presentation.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class VerifyEmailRequestDto {
-    @NotNull
+    @NotBlank
     private String address;
-    @NotNull
+    @NotBlank
     private String verificationCode;
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
+import plain.bookshelf.domain.email.exception.NotExistEmailException;
 import plain.bookshelf.domain.member.exception.AlreadyAssignedEmailException;
 import plain.bookshelf.domain.member.exception.ExistNickNameException;
 import plain.bookshelf.domain.member.exception.ExistUserNameException;
@@ -100,6 +101,17 @@ public class GlobalExceptionHandler {
         log.error("[ExceptionHandler] AccessTokenValueNotValidException - URI: {}. Code: {}, Message: {}, Details: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage(), e.getDetails());
 
         ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode(), e.getDetails());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(NotExistEmailException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(NotExistEmailException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] NotExistEmailException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
 
         return ResponseEntity
                 .status(e.getErrorCode().getHttpStatus())

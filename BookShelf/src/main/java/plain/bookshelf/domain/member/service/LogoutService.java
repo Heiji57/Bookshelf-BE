@@ -11,6 +11,8 @@ import plain.bookshelf.global.security.service.TokenBlackListService;
 import plain.bookshelf.global.security.exception.AccessTokenValueNotValidException;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 
+import java.util.Date;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class LogoutService {
     private final TokenBlackListService tokenBlackListService;
     private final static String REFRESH_TOKEN_PREFIX = "refreshToken:";
 
-    public void deleteRefreshToken(HttpServletRequest request) {
+    public void logoutService(HttpServletRequest request) {
         String accessToken = jwtTokenProvider.resolveToken(request);
 
         if (accessToken == null) {
@@ -47,5 +49,8 @@ public class LogoutService {
         tokenBlackListService.blacklistToken(accessToken, remainingTime);
 
         SecurityContextHolder.clearContext();
+
+        Date now = new Date();
+        log.info("user logout time: {}", now);
     }
 }

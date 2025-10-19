@@ -34,10 +34,9 @@ public class MemberSignupResponseDto {
 
         public static EmailDto fromEntity(Email email) {
             return EmailDto.builder()
-                    .emailId(email.getEmailId())
+                    .emailId(email.getId())
                     .address(email.getAddress())
                     .verified(email.isVerified())
-                    .delivered(email.isDelivered())
                     .build();
         }
     }
@@ -57,7 +56,7 @@ public class MemberSignupResponseDto {
                 .collect(Collectors.toList());
 
         return MemberSignupResponseDto.builder()
-                .userId(member.getUserId())
+                .userId(member.getId())
                 .userName(member.getUserName())
                 .nickName(member.getNickName())
                 .authority(member.getAuthority().name())

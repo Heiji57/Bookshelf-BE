@@ -8,7 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberSignupRequestDto {
 
-    private String userName;
+    private String username;
 
     private String nickName;
 
@@ -16,8 +16,4 @@ public class MemberSignupRequestDto {
     private String password;
 
     private String address; // 선택
-
-    public UsernamePasswordAuthenticationToken toAutentication() {
-        return new UsernamePasswordAuthenticationToken(this.userName, this.password);
-    }
 }

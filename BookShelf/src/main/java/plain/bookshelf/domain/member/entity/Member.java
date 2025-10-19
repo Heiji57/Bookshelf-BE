@@ -2,7 +2,7 @@ package plain.bookshelf.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import plain.bookshelf.domain.book_information.entity.BookInformation;
+import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.email.entity.Email;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq_generator")
     @Column(nullable = false, updatable = false, unique = true)
-    private Long userId; // DB id 값이 비어있지 않기위해 존재
+    private Long id; // DB id 값이 비어있지 않기위해 존재
 
     @Column(nullable = false, length = 20, unique = true)
     private String userName; // 실질적 아이디
@@ -32,6 +32,7 @@ public class Member {
     private String nickName; // 유저 이름
 
     @Column(nullable = false, length = 60)
+    @Setter
     private String password;
 
     @Column(name = "member_role", nullable = false, length = 10)
@@ -47,7 +48,7 @@ public class Member {
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<BookInformation> books = new ArrayList<>();
+    private List<BookDetail> books = new ArrayList<>();
 
     public enum Authority {
         ROLE_USER,ROLE_MANAGER,ROLE_GUEST, ROLE_ADMIN, ROLE_OVERDUE

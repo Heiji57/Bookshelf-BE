@@ -1,4 +1,4 @@
-package plain.bookshelf.global.security.config;
+package plain.bookshelf.global.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;

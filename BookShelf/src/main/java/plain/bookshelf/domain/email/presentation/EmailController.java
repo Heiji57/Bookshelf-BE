@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
 import plain.bookshelf.domain.email.presentation.dto.VerifyEmailRequestDto;
-import plain.bookshelf.domain.email.service.EmailService;
+import plain.bookshelf.domain.email.service.SendVerificationCodeService;
+import plain.bookshelf.domain.email.service.VerifyEmailService;
 import plain.bookshelf.global.StatusResponseDto;
 import plain.bookshelf.global.exception.ErrorCode;
 
@@ -19,11 +20,12 @@ import plain.bookshelf.global.exception.ErrorCode;
 @RequestMapping("/email")
 public class EmailController {
 
-    private final EmailService emailService;
+    private final VerifyEmailService verifyEmailService;
+    private final SendVerificationCodeService sendVerificationEmailService;
 
     @PostMapping("/send")
     public ResponseEntity<?> sendEmail(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
-        emailService.sendVerificationEmail(getEmailRequestDto);
+        sendVerificationEmailService.sendVerificationEmail(getEmailRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK,"successfully send email.", ""));
@@ -31,7 +33,7 @@ public class EmailController {
 
     @PutMapping("/verify")
     public ResponseEntity<?> verifyEmail(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
-        boolean result = emailService.verifyEmail(verifyEmailRequestDto.getVerificationCode(), verifyEmailRequestDto.getAddress());
+        boolean result = verifyEmailService.verifyEmail(verifyEmailRequestDto.getVerificationCode(), verifyEmailRequestDto.getAddress());
         log.info("Email verified: " + result);
         if (!result) {
             throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);

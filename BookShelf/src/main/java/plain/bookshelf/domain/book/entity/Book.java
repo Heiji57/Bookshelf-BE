@@ -19,8 +19,8 @@ import java.util.List;
 )
 public class Book {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq_generator")
-    @Column(name = "book_id", nullable = false, unique = true)
-    private Long bookId;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long id;
 
     @Column(name = "book_name", nullable = false, length = 20)
     private String bookName;
@@ -38,9 +38,9 @@ public class Book {
     private String bookType;
 
     @Column(name = "book_image", nullable = false, length = 200)
-    private String bookImage;
+    private String bookImageUrl;
 
     @Builder.Default
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<BookDetail> books = new ArrayList<>();
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<BookDetail> bookDetails = new ArrayList<>();
 }

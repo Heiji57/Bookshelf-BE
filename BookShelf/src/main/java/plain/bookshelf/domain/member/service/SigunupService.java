@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import plain.bookshelf.domain.affiliation.entity.Affiliation;
+import plain.bookshelf.domain.affiliation.entity.repository.AffiliationRepository;
 import plain.bookshelf.domain.email.entity.Email;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.email.exception.NotVerificationEmailException;
@@ -25,6 +27,7 @@ public class SigunupService {
     private final UserMemberRepository userMemberRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailRepository emailRepository;
+    private final AffiliationRepository affiliationRepository;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public MemberSignupResponseDto signup(MemberSignupRequestDto memberSignupRequestDto) {
@@ -52,14 +55,16 @@ public class SigunupService {
             throw new ExistNickNameException(ErrorCode.MEMBER_NICKNAME_EXIST);
         }
 
+        Affiliation affiliation = affiliationRepository.findByAffiliationName(memberSignupRequestDto.getAffiliationName());
+
         // 3. Member 객체 생성
         Member member = Member.builder()
                 .userName(memberSignupRequestDto.getUsername())
                 .nickName(memberSignupRequestDto.getNickName())
                 .password(passwordEncoder.encode(memberSignupRequestDto.getPassword()))
                 .authority(Member.Authority.ROLE_USER)
+                .affiliation(affiliation)
                 .build();
-
 
         if (address != null) {
             email = emailRepository.findEmailByAddress(memberSignupRequestDto.getAddress());

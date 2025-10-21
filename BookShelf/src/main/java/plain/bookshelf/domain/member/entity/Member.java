@@ -2,6 +2,7 @@ package plain.bookshelf.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.email.entity.Email;
 
@@ -47,10 +48,15 @@ public class Member {
     private List<Email> emails = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<BookDetail> books = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<BookDetail> bookDetails = new ArrayList<>();
+
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "affiliation", nullable = false)
+    private Affiliation affiliation;
 
     public enum Authority {
         ROLE_USER,ROLE_MANAGER,ROLE_GUEST, ROLE_ADMIN, ROLE_OVERDUE
     }
+
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.BookDetail;
+import plain.bookshelf.domain.book.entity.BookReaction;
+import plain.bookshelf.domain.book.entity.BookRentalRecord;
+import plain.bookshelf.domain.book.entity.BookReservation;
 import plain.bookshelf.domain.email.entity.Email;
 
 import java.util.ArrayList;
@@ -29,19 +32,28 @@ public class Member {
     @Column(nullable = false, length = 20, unique = true)
     private String userName; // 실질적 아이디
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = true, length = 20)
+    @Setter
     private String nickName; // 유저 이름
 
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false, length = 60) // 부호화해서 저장해서 60
     @Setter
     private String password;
 
     @Column(name = "member_role", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private MemberRole authority;
 
-    @Column(nullable = true, length = 100)
+    @Column(name = "profile_picture", nullable = true, length = 100)
     private String profilePicture;
+
+    @Column(name = "month_statistics", nullable = false)
+    @Builder.Default
+    private Integer monthStatistics = 0;
+
+    @Column(name = "overdue_period", nullable = false)
+    @Builder.Default
+    private Integer overduePeriod = 0;
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -55,8 +67,15 @@ public class Member {
     @JoinColumn(name = "affiliation", nullable = false)
     private Affiliation affiliation;
 
-    public enum Authority {
-        ROLE_USER,ROLE_MANAGER,ROLE_GUEST, ROLE_ADMIN, ROLE_OVERDUE
-    }
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @Builder.Default
+    private List<BookReaction> bookReactions = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookReservation> bookReservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @Builder.Default
+    private List<BookRentalRecord> bookRentalRecords = new ArrayList<>();
 }

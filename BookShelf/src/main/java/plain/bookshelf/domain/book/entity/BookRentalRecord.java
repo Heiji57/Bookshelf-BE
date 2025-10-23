@@ -2,6 +2,7 @@ package plain.bookshelf.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import plain.bookshelf.domain.member.entity.Member;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +28,10 @@ public class BookRentalRecord {
     private LocalDateTime rentalTime = LocalDateTime.now();
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_detail")
+    @JoinColumn(name = "bookDetail") // camel case만 됨.
     private BookDetail bookDetail;
+
+    @ManyToOne(optional = true, cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
+    private Member member;
 }

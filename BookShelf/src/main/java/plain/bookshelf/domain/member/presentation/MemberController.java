@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
-import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
-import plain.bookshelf.domain.email.presentation.dto.VerifyEmailRequestDto;
+import plain.bookshelf.domain.email.presentation.dto.request.GetEmailRequestDto;
+import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestDto;
 import plain.bookshelf.domain.email.service.FindUsernameSendService;
-import plain.bookshelf.domain.member.presentation.dto.*;
+import plain.bookshelf.domain.member.presentation.dto.request.*;
 import plain.bookshelf.domain.member.service.*;
 import plain.bookshelf.global.StatusResponseDto;
 import plain.bookshelf.domain.member.service.LogoutService;
@@ -23,7 +23,7 @@ import plain.bookshelf.global.exception.ErrorCode;
 @RequestMapping("/auth")
 public class MemberController {
 
-    private final SigunupService sigunupService;
+    private final SigunUpService sigunupService;
     private final DeleteUserService deleteUserService;
     private final LoginService loginService;
     private final ReissueService reissueService;
@@ -36,9 +36,11 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid MemberSignupRequestDto memberSignupRequestDto) {
 
+        sigunupService.signup(memberSignupRequestDto);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully signup user.",sigunupService.signup(memberSignupRequestDto)));
+                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully signup user.", ""));
     }
 
     @DeleteMapping("/delete")
@@ -74,7 +76,7 @@ public class MemberController {
 
     @PostMapping("/find-id/send")
     public ResponseEntity<?> sendFindId(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
-        findUsernameSendService.sendFindIdVerificationCode(getEmailRequestDto.getAddress());
+        findUsernameSendService.sendFindIdVerificationCode(getEmailRequestDto.address());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
@@ -90,7 +92,7 @@ public class MemberController {
 
     @PostMapping("/find-password/send")
     public ResponseEntity<?> sendFindPassword(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
-        findUsernameSendService.sendFindIdVerificationCode(getEmailRequestDto.getAddress());
+        findUsernameSendService.sendFindIdVerificationCode(getEmailRequestDto.address());
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
@@ -110,7 +112,7 @@ public class MemberController {
 
     @PostMapping("/find-password/retouch")
     public ResponseEntity<?> retouchPassword(@RequestBody @Valid MemberPasswordRequestDto memberPasswordRequestDto) {
-        retouchPasswordService.retouchPassword(memberPasswordRequestDto.getUsername(), memberPasswordRequestDto.getPassword());
+        retouchPasswordService.retouchPassword(memberPasswordRequestDto.username(), memberPasswordRequestDto.password());
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully retouch.", ""));

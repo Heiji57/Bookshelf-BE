@@ -28,8 +28,10 @@ public class Affiliation {
     private String affiliationName;
 
     @OneToMany(mappedBy = "affiliation", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @Builder.Default
     private List<Member> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "affiliation", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
     private List<BookDetail> bookDetails = new ArrayList<>();
 }

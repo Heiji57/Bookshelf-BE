@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import plain.bookshelf.domain.book.exception.BookNotFoundException;
+import plain.bookshelf.domain.book.exception.NonExistentRenterException;
+import plain.bookshelf.domain.book.exception.NonExistentReservationPeopleException;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.exception.NotExistEmailException;
@@ -110,6 +113,39 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotExistEmailException.class)
     protected ResponseEntity<ErrorResponseDto> handleCustomException(NotExistEmailException e, HttpServletRequest request) {
         log.error("[ExceptionHandler] NotExistEmailException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(BookNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(BookNotFoundException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] BookNotFoundException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(NonExistentRenterException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(NonExistentRenterException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] NonExistentRenterException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(NonExistentReservationPeopleException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(NonExistentReservationPeopleException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] NonExistentReservationPeopleException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
 
         ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
 

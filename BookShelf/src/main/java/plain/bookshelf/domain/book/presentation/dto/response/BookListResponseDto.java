@@ -1,4 +1,4 @@
-package plain.bookshelf.domain.book.presentation.dto;
+package plain.bookshelf.domain.book.presentation.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

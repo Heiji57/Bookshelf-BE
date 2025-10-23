@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
-import plain.bookshelf.domain.email.presentation.dto.GetEmailRequestDto;
-import plain.bookshelf.domain.email.presentation.dto.VerifyEmailRequestDto;
+import plain.bookshelf.domain.email.presentation.dto.request.GetEmailRequestDto;
+import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestDto;
 import plain.bookshelf.domain.email.service.SendVerificationCodeService;
 import plain.bookshelf.domain.email.service.VerifyEmailService;
 import plain.bookshelf.global.StatusResponseDto;
@@ -33,7 +33,7 @@ public class EmailController {
 
     @PutMapping("/verify")
     public ResponseEntity<?> verifyEmail(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
-        boolean result = verifyEmailService.verifyEmail(verifyEmailRequestDto.getVerificationCode(), verifyEmailRequestDto.getAddress());
+        boolean result = verifyEmailService.verifyEmail(verifyEmailRequestDto.verificationCode(), verifyEmailRequestDto.address());
         log.info("Email verified: " + result);
         if (!result) {
             throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);

@@ -15,16 +15,24 @@ public enum ErrorCode {
     MEMBER_ID_EXIST(HttpStatus.CONFLICT, "M003", "이미 등록된 아이디 입니다."),
     MEMBER_NICKNAME_EXIST(HttpStatus.CONFLICT, "M004", "이미 등록된 이름 입니다."),
     MEMBER_NOT_VALID_EMAIL(HttpStatus.BAD_REQUEST, "M005", "인증이 되지 않은 email 입니다."),
-
+    MEMBER_NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, "M006", "기존 비밀번호가 일치하지 않습니다."),
 
     /*
     Common Error
      */
+    // Email Error
     EMAIL_VERIFICATION_CODE_NOT_CORRECT(HttpStatus.BAD_REQUEST, "C001", "이메일 verificationCode 가 일치하지 않습니다."),
     MEMBER_EMAIL_EXIST(HttpStatus.CONFLICT, "C002", "이미 존재하는 email 입니다."),
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "C003", "email 을 찾지 못 했습니다."),
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C004", "부적절한 요청 데이터입니다."),
-    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C005", "허용되지 않은 HTTP 메서드입니다."),
+
+    // Book Error
+    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "C004", "책 정보가 없습니다."),
+    NON_EXISTENT_RENTER(HttpStatus.NOT_FOUND, "C005", "대여한 책이 없습니다."),
+    NON_EXISTENT_RESERVATION_PEOPLE(HttpStatus.NOT_FOUND, "C006", "예약한 책이 없습니다."),
+
+    // Server Error
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C401", "부적절한 요청 데이터입니다."),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C403", "허용되지 않은 HTTP 메서드입니다."),
 
     // --- 최후의 방어선 ---
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C999", "서버 내부에서 알 수 없는 오류가 발생했습니다."),

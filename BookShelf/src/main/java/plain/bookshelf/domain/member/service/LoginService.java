@@ -8,9 +8,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
-import plain.bookshelf.domain.member.entity.repository.UserMemberRepository;
+import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.domain.member.presentation.dto.MemberLoginRequestDto;
+import plain.bookshelf.domain.member.presentation.dto.request.MemberLoginRequestDto;
 import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
@@ -23,7 +23,7 @@ import java.util.Date;
 @Slf4j
 @Service
 public class LoginService {
-    private final UserMemberRepository userMemberRepository;
+    private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final EmailRepository emailRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -32,8 +32,8 @@ public class LoginService {
     private Long expirationTime;
 
     public JwtTokenDto login(MemberLoginRequestDto memberLoginRequestDto) {
-        if (userMemberRepository.findByUserName(memberLoginRequestDto.getCredential()).isEmpty()
-                && emailRepository.findEmailByAddress(memberLoginRequestDto.getCredential()).isEmpty()) {
+        if (memberRepository.findByUserName(memberLoginRequestDto.credential()).isEmpty()
+                && emailRepository.findEmailByAddress(memberLoginRequestDto.credential()).isEmpty()) {
 
             throw new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND);
         }
@@ -42,7 +42,8 @@ public class LoginService {
         UsernamePasswordAuthenticationToken authenticationToken = memberLoginRequestDto.toAuthentication();
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
-        //      authentication 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUserName 메서드가 실행됨
+        // authentication 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUserName 메서드가 실행됨
+        // 2차 검증
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성

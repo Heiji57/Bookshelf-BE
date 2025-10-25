@@ -2,6 +2,7 @@ package plain.bookshelf.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 import plain.bookshelf.domain.member.entity.Member;
 
 import java.time.LocalDateTime;
@@ -19,9 +20,8 @@ import java.time.LocalDateTime;
 )
 public class BookRentalRecord {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false, unique = true)
-    private Long id;
+    @EmbeddedId
+    private MemberBookDetailId memberBookDetailId;
 
     @Column(name = "rental_time", nullable = false)
     @Builder.Default

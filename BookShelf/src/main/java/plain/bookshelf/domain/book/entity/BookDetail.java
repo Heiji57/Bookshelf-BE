@@ -5,6 +5,7 @@ import lombok.*;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.member.entity.Member;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,4 +73,12 @@ public class BookDetail {
     @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<BookRentalRecord> bookRentalRecord = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookReservation> bookReservation = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookReaction> bookReactions = new ArrayList<>();
 }

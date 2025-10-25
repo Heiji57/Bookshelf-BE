@@ -40,11 +40,11 @@ public class GetMyPageService {
         Integer oneMonthStatistics = member.getMonthStatistics();
         
         List<RentalBookResponseDto> rentalDtos = rentals.stream()
-                .map(this::toRental)
+                .map(RentalBookResponseDto::of)
                 .toList();
 
         List<ReservationBookResponseDto> reservationDtos = bookReservations.stream()
-                .map(this::toReservation)
+                .map(ReservationBookResponseDto::of)
                 .toList();
 
         return GetMyPageResponseDto.of(
@@ -55,25 +55,6 @@ public class GetMyPageService {
                 oneMonthStatistics,
                 rentalDtos,
                 reservationDtos
-        );
-    }
-
-    private RentalBookResponseDto toRental(BookDetail bookDetailEntity) { // 무조건 하나의 인수만 들어가야함.
-
-        return RentalBookResponseDto.of(
-                bookDetailEntity.getId(),
-                bookDetailEntity.getBook().getBookName(),
-                bookDetailEntity.getBook().getBookAuthor(),
-                bookDetailEntity.isOverDueStatus(),
-                bookDetailEntity.getReturnDate().toString()
-        );
-    }
-
-    private ReservationBookResponseDto toReservation(BookReservation bookReservationEntity) {
-        return ReservationBookResponseDto.of(
-                bookReservationEntity.getId(),
-                bookReservationEntity.getReservationPeople(),
-                bookReservationEntity.getReservationRank()
         );
     }
 }

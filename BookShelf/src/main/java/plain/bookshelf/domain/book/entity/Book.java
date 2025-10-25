@@ -3,6 +3,7 @@ package plain.bookshelf.domain.book.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Book {
     private String bookAuthor;
 
     @Column(name = "book_date", nullable = false, length = 20)
-    private String bookDate;
+    private LocalDate bookDate;
 
     @Column(name = "book_introduction", nullable = false, length = 1000)
     private String bookIntroduction;

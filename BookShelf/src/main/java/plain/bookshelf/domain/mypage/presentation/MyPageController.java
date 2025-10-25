@@ -23,7 +23,6 @@ public class MyPageController {
     public ResponseEntity<?> getMyPageResponse(@PathVariable Long user_id) {
 
         return ResponseEntity.ok()
-                .header("URI", "user_id")
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageService.getMyPage(user_id)));
     }
 

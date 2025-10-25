@@ -2,6 +2,7 @@ package plain.bookshelf.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 import plain.bookshelf.domain.member.entity.Member;
 
 @Entity
@@ -16,9 +17,8 @@ import plain.bookshelf.domain.member.entity.Member;
         allocationSize = 1
 )
 public class BookReservation {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false, unique = true)
-    private Long id;
+    @EmbeddedId
+    private MemberBookDetailId memberBookDetailId;
 
     @Column(name = "reservation_people", nullable = true)
     private String reservationPeople;
@@ -31,6 +31,6 @@ public class BookReservation {
     private Member member;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_detail")
+    @JoinColumn(name = "bookDetail")
     private BookDetail bookDetail;
 }

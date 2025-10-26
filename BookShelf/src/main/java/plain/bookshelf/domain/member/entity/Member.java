@@ -3,10 +3,7 @@ package plain.bookshelf.domain.member.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
-import plain.bookshelf.domain.book.entity.BookDetail;
-import plain.bookshelf.domain.book.entity.BookComment;
-import plain.bookshelf.domain.book.entity.BookRentalRecord;
-import plain.bookshelf.domain.book.entity.BookReservation;
+import plain.bookshelf.domain.book.entity.*;
 import plain.bookshelf.domain.email.entity.Email;
 
 import java.util.ArrayList;
@@ -67,7 +64,7 @@ public class Member {
     @JoinColumn(name = "affiliation", nullable = false)
     private Affiliation affiliation;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
     @Builder.Default
     private List<BookComment> bookComments = new ArrayList<>();
 
@@ -78,4 +75,12 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
     @Builder.Default
     private List<BookRentalRecord> bookRentalRecords = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookLike> bookLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookCommentLike> bookCommentLikes = new ArrayList<>();
 }

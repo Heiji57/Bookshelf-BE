@@ -6,4 +6,5 @@ import plain.bookshelf.domain.book.entity.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+    Book findByBookId(Long bookId);
 }

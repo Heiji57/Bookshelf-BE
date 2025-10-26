@@ -15,7 +15,7 @@ public class BookReservation {
     @EmbeddedId
     private MemberBookDetailId memberBookDetailId;
 
-    @Column(name = "reservation_people", nullable = true)
+    @Column(name = "reservation_people", nullable = false)
     private String reservationPeople;
 
     @Column(name = "reservation_rank", nullable = false, unique = true)
@@ -25,7 +25,7 @@ public class BookReservation {
     @JoinColumn(name = "member")
     private Member member;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "bookDetail")
     private BookDetail bookDetail;
 }

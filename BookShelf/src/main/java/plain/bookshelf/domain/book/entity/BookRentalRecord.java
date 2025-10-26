@@ -26,7 +26,7 @@ public class BookRentalRecord {
     @JoinColumn(name = "bookDetail") // camel case만 됨.
     private BookDetail bookDetail;
 
-    @ManyToOne(optional = true, cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
 }

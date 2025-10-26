@@ -29,8 +29,11 @@ public class Book {
     @Column(name = "book_author", nullable = false, length = 10)
     private String bookAuthor;
 
-    @Column(name = "publication_date", nullable = false, length = 20)
+    @Column(name = "publication_date", nullable = false)
     private LocalDate publicationDate;
+
+    @Column(name = "publisher", nullable = false, length = 20)
+    private String publisher;
 
     @Column(name = "book_introduction", nullable = false, length = 1000)
     private String bookIntroduction;
@@ -45,7 +48,18 @@ public class Book {
     @Builder.Default
     private Long rentalCount = 0L;
 
-    @Builder.Default
+    @Column(name = "like_count", nullable = false)
+    private Long likeCount;
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
     private List<BookDetail> bookDetails = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookLike> bookLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    private List<BookComment> bookComments = new ArrayList<>();
 }

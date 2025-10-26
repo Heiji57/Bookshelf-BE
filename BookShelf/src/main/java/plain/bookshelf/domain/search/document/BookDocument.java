@@ -18,6 +18,9 @@ public record BookDocument(
         @Field(type = FieldType.Keyword)
         String author,
 
+        @Field(type = FieldType.Keyword)
+        String publisher,
+
         @Field(type = FieldType.Date)
         LocalDate publicationDate,
 

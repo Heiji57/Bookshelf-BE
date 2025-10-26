@@ -13,7 +13,6 @@ import plain.bookshelf.domain.search.document.repository.BookSearchRepository;
 import plain.bookshelf.domain.search.presentation.dto.response.BookSearchResultResponseDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,9 @@ public class BookSearchService {
 
                 Query.of(q -> q.match(m -> m.field("bookIntroduction").query(keyword).boost(1.0f))),
 
-                Query.of(q -> q.match(m -> m.field("bookType").query(keyword).boost(3.0f)))
+                Query.of(q -> q.match(m -> m.field("bookType").query(keyword).boost(3.0f))),
+
+                Query.of(q -> q.term(m -> m.field("publisher").value(keyword).boost(8.0f)))
         );
 
         NativeQuery nativeQueryBuilder = NativeQuery.builder()

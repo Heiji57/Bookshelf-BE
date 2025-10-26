@@ -12,4 +12,6 @@ import java.util.List;
 public interface BookDetailRepository extends JpaRepository<BookDetail, Long> {
     @EntityGraph(attributePaths = {"Book"})
     List<BookDetail> findBookDetailByMember(Member member);
+
+    List<BookDetail> findBookDetailByBookId(Long bookId);
 }

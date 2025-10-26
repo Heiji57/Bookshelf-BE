@@ -7,8 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.book.entity.Book;
-import plain.bookshelf.domain.book.entity.BookDetail;
-import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.BookPopularityListResponseDto;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.BookRecentListResponseDto;

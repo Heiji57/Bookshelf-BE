@@ -41,9 +41,6 @@ public class BookDetail {
     @Column(name = "return_date", nullable = true)
     private LocalDateTime returnDate;
 
-    @Column(name = "like_count", nullable = false)
-    private Long likeCount;
-
     @Column(name = "renter", nullable = true)
     private String renter;
 
@@ -55,9 +52,9 @@ public class BookDetail {
 
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
-    private Member member;
+    private Member member; // 대여자
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "book")
     private Book book;
 
@@ -65,15 +62,11 @@ public class BookDetail {
     @JoinColumn(name = "affiliation")
     private Affiliation affiliation;
 
-    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
     @Builder.Default
     private List<BookRentalRecord> bookRentalRecord = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<BookReservation> bookReservation = new ArrayList<>();
-
-    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @Builder.Default
-    private List<BookComment> bookComments = new ArrayList<>();
 }

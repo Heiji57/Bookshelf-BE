@@ -11,11 +11,6 @@ import plain.bookshelf.domain.member.entity.Member;
 @Table(name = "book_reservation", uniqueConstraints = { @UniqueConstraint(columnNames = {"book_detail", "member"})}) // UniqueConstraint = 저 둘의 조합이 같은 값이 존재하면 안됨.
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(
-        name = "book_reservation_seq_generator",
-        sequenceName = "book_reservation_seq",
-        allocationSize = 1
-)
 public class BookReservation {
     @EmbeddedId
     private MemberBookDetailId memberBookDetailId;

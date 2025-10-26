@@ -1,6 +1,6 @@
 package plain.bookshelf.domain.mainpage.presentation.dto.response;
 
-import plain.bookshelf.domain.book.entity.BookDetail;
+import plain.bookshelf.domain.book.entity.Book;
 
 import java.time.LocalDate;
 
@@ -12,14 +12,14 @@ public record BookRecentListResponseDto(
         String bookImageUrl,
         LocalDate bookDate
 ) {
-    public static BookRecentListResponseDto of(BookDetail bookDetail) {
+    public static BookRecentListResponseDto of(Book book) {
         return new BookRecentListResponseDto(
-                bookDetail.getId(),
-                bookDetail.getBook().getBookName(),
-                bookDetail.getBook().getBookAuthor(),
-                bookDetail.getBook().getBookType(),
-                bookDetail.getBook().getBookImageUrl(),
-                bookDetail.getBook().getBookDate()
+                book.getId(),
+                book.getBookName(),
+                book.getBookAuthor(),
+                book.getBookType(),
+                book.getBookImageUrl(),
+                book.getPublicationDate()
         );
     }
 }

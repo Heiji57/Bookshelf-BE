@@ -16,11 +16,12 @@ import plain.bookshelf.domain.member.service.*;
 import plain.bookshelf.global.StatusResponseDto;
 import plain.bookshelf.domain.member.service.LogoutService;
 import plain.bookshelf.global.exception.ErrorCode;
+import plain.bookshelf.global.security.jwt.JwtTokenDto;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class MemberController {
 
     private final SigunUpService sigunupService;
@@ -35,7 +36,6 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid MemberSignupRequestDto memberSignupRequestDto) {
-
         sigunupService.signup(memberSignupRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -46,6 +46,7 @@ public class MemberController {
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestBody @Valid MemberDeleteRequestDto memberDeleteRequestDto) {
         deleteUserService.userDelete(memberDeleteRequestDto);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .header("Content-Type", "application/json")
                 .build();
@@ -53,9 +54,11 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid MemberLoginRequestDto memberLoginRequestDto) {
+        JwtTokenDto jwtTokenDto = loginService.login(memberLoginRequestDto);
+
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully delete user.", loginService.login(memberLoginRequestDto)));
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully delete user.", jwtTokenDto));
     }
 
     @PostMapping("/logout")
@@ -69,9 +72,11 @@ public class MemberController {
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+        JwtTokenDto jwtTokenDto = reissueService.reissue(tokenRequestDto);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully check refresh token valid.", reissueService.reissue(tokenRequestDto)));
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully check refresh token valid.", jwtTokenDto));
     }
 
     @PostMapping("/find-id/send")
@@ -85,9 +90,11 @@ public class MemberController {
 
     @PostMapping("/find-id/verify")
     public ResponseEntity<?> verifyFindId(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
+        String username = findUsernameService.findUsername(verifyEmailRequestDto);
+
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", findUsernameService.findUsername(verifyEmailRequestDto)));
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", username));
     }
 
     @PostMapping("/find-password/send")
@@ -102,9 +109,11 @@ public class MemberController {
     @PostMapping("/find-password/verify")
     public ResponseEntity<?> verifyFindPassword(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
         boolean result = verifyUsernameService.verifyUsername(verifyEmailRequestDto);
+
         if (!result) {
             throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
         }
+
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully send.", result));
@@ -113,6 +122,7 @@ public class MemberController {
     @PostMapping("/find-password/retouch")
     public ResponseEntity<?> retouchPassword(@RequestBody @Valid MemberPasswordRequestDto memberPasswordRequestDto) {
         retouchPasswordService.retouchPassword(memberPasswordRequestDto.username(), memberPasswordRequestDto.password());
+
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully retouch.", ""));

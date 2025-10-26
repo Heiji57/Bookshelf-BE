@@ -5,22 +5,23 @@ import lombok.*;
 import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 import plain.bookshelf.domain.member.entity.Member;
 
+import java.time.LocalDateTime;
+
 @Entity
+@Table(name = "book_comment")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-@SequenceGenerator(
-        name = "book_reaction_seq_generator",
-        sequenceName = "book_reaction_seq",
-        allocationSize = 1
-)
-public class BookReaction {
+public class BookComment {
     @EmbeddedId
     private MemberBookDetailId memberBookDetailId;
 
     @Column(name = "chat", nullable = true)
     private String chat;
+
+    @Column(name = "chat_time", nullable = true)
+    private LocalDateTime chatTime;
 
     @ManyToOne(optional = true, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")

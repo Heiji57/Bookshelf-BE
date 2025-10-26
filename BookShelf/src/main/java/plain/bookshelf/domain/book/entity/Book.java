@@ -29,8 +29,8 @@ public class Book {
     @Column(name = "book_author", nullable = false, length = 10)
     private String bookAuthor;
 
-    @Column(name = "book_date", nullable = false, length = 20)
-    private LocalDate bookDate;
+    @Column(name = "publication_date", nullable = false, length = 20)
+    private LocalDate publicationDate;
 
     @Column(name = "book_introduction", nullable = false, length = 1000)
     private String bookIntroduction;
@@ -40,6 +40,10 @@ public class Book {
 
     @Column(name = "book_image", nullable = false, length = 200)
     private String bookImageUrl;
+
+    @Column(name = "rental_count", nullable = false)
+    @Builder.Default
+    private Long rentalCount = 0L;
 
     @Builder.Default
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

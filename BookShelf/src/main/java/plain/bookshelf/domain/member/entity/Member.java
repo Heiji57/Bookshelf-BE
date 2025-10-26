@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.BookDetail;
-import plain.bookshelf.domain.book.entity.BookReaction;
+import plain.bookshelf.domain.book.entity.BookComment;
 import plain.bookshelf.domain.book.entity.BookRentalRecord;
 import plain.bookshelf.domain.book.entity.BookReservation;
 import plain.bookshelf.domain.email.entity.Email;
@@ -69,7 +69,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
     @Builder.Default
-    private List<BookReaction> bookReactions = new ArrayList<>();
+    private List<BookComment> bookComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default

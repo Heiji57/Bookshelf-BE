@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.mypage.presentation.dto.request.RetouchMemberInfoRequestDto;
+import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageResponseDto;
+import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageUserInfoResponseDto;
 import plain.bookshelf.domain.mypage.service.GetMyPageService;
 import plain.bookshelf.domain.mypage.service.GetMyPageUserInfoService;
 import plain.bookshelf.domain.mypage.service.RetouchMemberInfoService;
@@ -21,9 +23,9 @@ public class MyPageController {
 
     @GetMapping
     public ResponseEntity<?> getMyPageResponse(@PathVariable Long user_id) {
-
+        GetMyPageResponseDto getMyPageResponseDto = getMyPageService.getMyPage(user_id);
         return ResponseEntity.ok()
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageService.getMyPage(user_id)));
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageResponseDto));
     }
 
     @PostMapping("/retouch")
@@ -36,8 +38,9 @@ public class MyPageController {
 
     @GetMapping("/get-info")
     public ResponseEntity<?> getMyPage(@PathVariable Long user_id) {
+        GetMyPageUserInfoResponseDto getMyPageUserInfoResponseDto = getMyPageUserInfoService.getMyPageUserInfo(user_id);
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageUserInfoService.getMyPageUserInfo(user_id)));
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageUserInfoResponseDto));
     }
 }

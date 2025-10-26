@@ -13,11 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "book_rental_record")
-@SequenceGenerator(
-        name = "book_rental_record_seq_generator",
-        sequenceName = "book_rental_record_seq",
-        allocationSize = 1
-)
 public class BookRentalRecord {
 
     @EmbeddedId

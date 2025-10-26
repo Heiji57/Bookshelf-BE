@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
+import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.BookPopularityListResponseDto;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.BookRecentListResponseDto;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.MainListResponseDto;
@@ -19,14 +21,14 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MainPageListService {
 
-    private final BookDetailRepository bookDetailRepository;
+    private final BookRepository bookRepository;
 
     public MainListResponseDto responseRecentList() {
         Sort sortPopularity = Sort.by(Sort.Direction.DESC, "rentalCount");
 
         Pageable pageablePopularity = PageRequest.of(0, 100, sortPopularity);
 
-        List<BookDetail> popularityEntities = bookDetailRepository.findAll(pageablePopularity).getContent();
+        List<Book> popularityEntities = bookRepository.findAll(pageablePopularity).getContent();
 
         List<BookPopularityListResponseDto> popularList = popularityEntities.stream()
                 .map(BookPopularityListResponseDto::of)
@@ -36,7 +38,7 @@ public class MainPageListService {
 
         Pageable pageableRecent = PageRequest.of(0, 100, sortRecent);
 
-        List<BookDetail> recentEntities = bookDetailRepository.findAll(pageableRecent).getContent();
+        List<Book> recentEntities = bookRepository.findAll(pageableRecent).getContent();
 
         List<BookRecentListResponseDto> recentList = recentEntities.stream()
                 .map(BookRecentListResponseDto::of)

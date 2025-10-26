@@ -17,7 +17,7 @@ import plain.bookshelf.global.exception.ErrorCode;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/email")
+@RequestMapping("/api/email")
 public class EmailController {
 
     private final VerifyEmailService verifyEmailService;
@@ -26,6 +26,7 @@ public class EmailController {
     @PostMapping("/send")
     public ResponseEntity<?> sendEmail(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
         sendVerificationEmailService.sendVerificationEmail(getEmailRequestDto);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK,"successfully send email.", ""));
@@ -34,12 +35,15 @@ public class EmailController {
     @PutMapping("/verify")
     public ResponseEntity<?> verifyEmail(@RequestBody @Valid VerifyEmailRequestDto verifyEmailRequestDto) {
         boolean result = verifyEmailService.verifyEmail(verifyEmailRequestDto.verificationCode(), verifyEmailRequestDto.address());
+
         log.info("Email verified: " + result);
+
         if (!result) {
             throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
         }
+
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", ""));
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", result));
     }
 }

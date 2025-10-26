@@ -8,7 +8,7 @@ public record RentalBookResponseDto(
         Long bookId,
         String bookName,
         String bookAuthor,
-        boolean isOverDue,
+        Boolean isOverDue,
         LocalDateTime OverDueTime
 ) {
     public static RentalBookResponseDto of(BookDetail bookDetail) {

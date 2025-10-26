@@ -1,6 +1,6 @@
 package plain.bookshelf.domain.mainpage.presentation.dto.response;
 
-import plain.bookshelf.domain.book.entity.BookDetail;
+import plain.bookshelf.domain.book.entity.Book;
 
 public record BookPopularityListResponseDto(
         Long id,
@@ -10,14 +10,14 @@ public record BookPopularityListResponseDto(
         String bookImageUrl,
         Long rentalCount
 ) {
-    public static BookPopularityListResponseDto of(BookDetail bookDetail) {
+    public static BookPopularityListResponseDto of(Book book) {
         return new BookPopularityListResponseDto(
-                bookDetail.getId(),
-                bookDetail.getBook().getBookName(),
-                bookDetail.getBook().getBookAuthor(),
-                bookDetail.getBook().getBookType(),
-                bookDetail.getBook().getBookImageUrl(),
-                bookDetail.getRentalCount()
+                book.getId(),
+                book.getBookName(),
+                book.getBookAuthor(),
+                book.getBookType(),
+                book.getBookImageUrl(),
+                book.getRentalCount()
         );
     }
 }

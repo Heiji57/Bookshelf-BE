@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import plain.bookshelf.domain.mainpage.presentation.dto.response.MainListResponseDto;
 import plain.bookshelf.domain.mainpage.service.MainPageListService;
 
 @RestController
@@ -16,7 +17,9 @@ public class MainPageController {
 
     @GetMapping
     public ResponseEntity<?> mainPageList() {
+        MainListResponseDto mainListResponseDto = mainPageListService.responseRecentList();
+
         return ResponseEntity.ok()
-                .body(mainPageListService.responseRecentList());
+                .body(mainListResponseDto);
     }
 }

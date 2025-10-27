@@ -22,7 +22,7 @@ import java.util.List;
 public class Affiliation {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false, unique = true)
-    private String id;
+    private Long id;
 
     @Column(name = "affiliation_name")
     private String affiliationName;

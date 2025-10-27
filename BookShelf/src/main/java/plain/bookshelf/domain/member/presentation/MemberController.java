@@ -119,7 +119,7 @@ public class MemberController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully send.", result));
     }
 
-    @PostMapping("/find-password/retouch")
+    @PatchMapping("/find-password/retouch")
     public ResponseEntity<?> retouchPassword(@RequestBody @Valid MemberPasswordRequestDto memberPasswordRequestDto) {
         retouchPasswordService.retouchPassword(memberPasswordRequestDto.username(), memberPasswordRequestDto.password());
 

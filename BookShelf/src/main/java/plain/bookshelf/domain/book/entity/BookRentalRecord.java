@@ -3,6 +3,7 @@ package plain.bookshelf.domain.book.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
+import plain.bookshelf.domain.book.entity.embeddid.MemberBookId;
 import plain.bookshelf.domain.member.entity.Member;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "book_rental_record")
+@IdClass(MemberBookDetailId.class)
 public class BookRentalRecord {
 
     @EmbeddedId
@@ -22,11 +24,14 @@ public class BookRentalRecord {
     @Builder.Default
     private LocalDateTime rentalTime = LocalDateTime.now();
 
+    @Column(name = "return_time", nullable = true)
+    private LocalDateTime returnTime;
+
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "bookDetail") // camel case만 됨.
+    @JoinColumn(name = "book_detail")
     private BookDetail bookDetail;
 
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     private Member member;
 }

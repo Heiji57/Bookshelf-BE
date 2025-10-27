@@ -1,7 +1,5 @@
 package plain.bookshelf.domain.book.presentation.dto.response;
 
-import plain.bookshelf.domain.book.entity.Book;
-
 import java.time.LocalDate;
 import java.util.List;
 

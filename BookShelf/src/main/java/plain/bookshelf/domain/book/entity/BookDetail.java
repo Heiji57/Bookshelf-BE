@@ -27,10 +27,12 @@ public class BookDetail {
     private Long id;
 
     @Column(name = "reservation_status", nullable = false)
+    @Setter
     @Builder.Default
     private boolean reservationStatus = false;
 
     @Column(name = "rental_status", nullable = false)
+    @Setter
     @Builder.Default
     private boolean rentalStatus = false;
 
@@ -42,7 +44,8 @@ public class BookDetail {
     private LocalDateTime returnDate;
 
     @Column(name = "renter", nullable = true)
-    private String renter;
+    @Setter
+    private Long renter;
 
     @Column(name = "registration_number", nullable = false, unique = true)
     private String registrationNumber;
@@ -50,16 +53,20 @@ public class BookDetail {
     @Column(name = "call_number", nullable = false)
     private String callNumber;
 
+    @Column(name = "reservation_count", nullable = false)
+    @Setter
+    private Integer reservationCount;
+
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     private Member member; // 대여자
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "affiliation")
+    @JoinColumn(name = "affiliation_id")
     private Affiliation affiliation;
 
     @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)

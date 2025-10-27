@@ -3,6 +3,7 @@ package plain.bookshelf.domain.book.entity.repository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.member.entity.Member;
 
@@ -12,6 +13,8 @@ import java.util.List;
 public interface BookDetailRepository extends JpaRepository<BookDetail, Long> {
     @EntityGraph(attributePaths = {"Book"})
     List<BookDetail> findBookDetailByMember(Member member);
+    List<BookDetail> findByBookIdAndAffiliation(Long bookId, Affiliation affiliation);
 
-    List<BookDetail> findBookDetailByBookId(Long bookId);
+    @EntityGraph(attributePaths = {"Book"})
+    BookDetail findBookDetailByRegistrationNumber(String registrationNumber);
 }

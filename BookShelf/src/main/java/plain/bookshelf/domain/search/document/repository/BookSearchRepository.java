@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface BookSearchRepository extends ElasticsearchRepository<BookDocument, String> {
-    List<BookDocument> findByAuthor(String author);
+
 }

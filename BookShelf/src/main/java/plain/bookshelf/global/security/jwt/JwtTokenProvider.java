@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import plain.bookshelf.domain.affiliation.entity.Affiliation;
+import plain.bookshelf.domain.member.entity.Member;
+import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
 import plain.bookshelf.global.exception.ErrorCode;
 
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
+    private final MemberRepository memberRepository;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
     @Value("${jwt.access_token_expiration_time}")
@@ -36,14 +40,23 @@ public class JwtTokenProvider {
 
     private final Key key;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
-        log.warn(">>> JWT Secret Key 로드 값: {}", secretKey);
+    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+
+        log.info(">>> JWT Secret Key 로드 값: {}", secretKey);
             byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     // Access Token과 Refresh Token을 함께 생성하는 메서드
     public JwtTokenDto generateToken(Authentication authentication) {
+        String username = authentication.getName();
+
+        Member member = memberRepository.findByUserName(username)
+                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Affiliation affiliation = member.getAffiliation();
+
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -54,10 +67,11 @@ public class JwtTokenProvider {
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())       // payload "sub": "name"
-                .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
-                .setExpiration(accessTokenExpiresIn)        // payload "exp": 151621022 (ex)
-                .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
+                .setSubject(authentication.getName())           // payload "sub": "name"
+                .claim(AUTHORITIES_KEY, authorities)            // payload "auth": "ROLE_USER"
+                .claim("affiliationId", affiliation)    // payload "affiliation": "id"
+                .setExpiration(accessTokenExpiresIn)            // payload "exp": 151621022 (ex)
+                .signWith(key, SignatureAlgorithm.HS512)        // header "alg": "HS512"
                 .compact();
 
         // Refresh Token 생성
@@ -85,6 +99,12 @@ public class JwtTokenProvider {
             throw new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND);
         }
         return subject;
+    }
+
+    public Affiliation getAffiliationFromToken(String token) {
+        Claims claims = parseClaims(token);
+
+        return claims.get("affiliation", Affiliation.class);
     }
 
     // Access Token을 받아서 Authentication 객체를 반환하는 메서드

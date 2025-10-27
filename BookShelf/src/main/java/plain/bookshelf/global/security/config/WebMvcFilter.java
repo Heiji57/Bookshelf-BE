@@ -11,7 +11,7 @@ public class WebMvcFilter implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // 모든 api 요청에 cors 규칙을 적용하겠다는 뜻 그냥 /** 쓰면 될 듯
                 .allowedOrigins("https://localhost:8443")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true) // JWT 인증 시 필수 Authorization 헤더가 (JWT)를 포함하거나 쿠키를 주고받을 수 있도록 허용
 

@@ -35,14 +35,24 @@ public class BookComment {
     private Long likeCount = 0L;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @OneToMany(mappedBy = "bookComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<BookCommentLike> bookCommentLikes = new ArrayList<>();
+
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decrementLikeCount() {
+        if(this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
 }

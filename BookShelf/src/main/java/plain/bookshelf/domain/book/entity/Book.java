@@ -45,10 +45,12 @@ public class Book {
     private String bookImageUrl;
 
     @Column(name = "rental_count", nullable = false)
+    @Setter
     @Builder.Default
     private Long rentalCount = 0L;
 
     @Column(name = "like_count", nullable = false)
+    @Setter
     private Long likeCount;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -62,4 +64,14 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<BookComment> bookComments = new ArrayList<>();
+
+    public void incrementLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decrementLikeCount() {
+        if(this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
 }

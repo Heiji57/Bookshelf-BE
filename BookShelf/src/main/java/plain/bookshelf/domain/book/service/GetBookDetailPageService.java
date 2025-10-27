@@ -2,10 +2,7 @@ package plain.bookshelf.domain.book.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookComment;

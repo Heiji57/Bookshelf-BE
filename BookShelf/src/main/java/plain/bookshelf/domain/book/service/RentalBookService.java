@@ -1,8 +1,6 @@
 package plain.bookshelf.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
@@ -10,7 +8,6 @@ import plain.bookshelf.domain.book.entity.BookRentalRecord;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;
 import plain.bookshelf.domain.member.entity.Member;
-import plain.bookshelf.global.security.userdetails.CustomUserDetails;
 
 import java.time.LocalDateTime;
 

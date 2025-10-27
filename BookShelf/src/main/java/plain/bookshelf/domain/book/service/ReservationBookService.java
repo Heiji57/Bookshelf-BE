@@ -8,7 +8,6 @@ import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookReservationRepository;
 import plain.bookshelf.domain.member.entity.Member;
 
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor

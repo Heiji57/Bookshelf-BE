@@ -25,7 +25,16 @@ public class BookController {
                 .build();
     }
 
-    @PatchMapping("/comment/like")
+    @PatchMapping("/rental")
+    public ResponseEntity<?> reservationBook(@RequestParam String registrationName) {
+        rentalBookService.rentalBook(registrationName);
+
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    @PostMapping("/comment/like")
     public ResponseEntity<?> commentLike(@RequestParam Long commentId) {
         boolean result = bookCommentLikeService.toggleLike(commentId);
 

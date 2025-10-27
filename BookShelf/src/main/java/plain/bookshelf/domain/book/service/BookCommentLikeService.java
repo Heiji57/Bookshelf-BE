@@ -1,6 +1,5 @@
 package plain.bookshelf.domain.book.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
 import plain.bookshelf.global.exception.ErrorCode;
-import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 
 import java.util.Optional;
 
@@ -28,7 +26,6 @@ public class BookCommentLikeService {
     private final BookCommentRepository bookCommentRepository;
     private final BookCommentLikeRepository bookCommentLikeRepository;
     private final MemberRepository memberRepository;
-    private final JwtTokenProvider jwtTokenProvider;
 
     private Member getCurrentMember() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

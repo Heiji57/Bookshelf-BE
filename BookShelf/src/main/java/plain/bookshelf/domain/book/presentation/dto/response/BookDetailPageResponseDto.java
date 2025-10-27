@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record BookDetailPageResponseDto(
+        Long bookId,
         String bookName,
         String publisher,
         String bookImageUrl,
@@ -15,7 +16,8 @@ public record BookDetailPageResponseDto(
         List<ReviewResponseDto> reviewResponseDtos
 ) {
 
-    public static BookDetailPageResponseDto of(String bookName,
+    public static BookDetailPageResponseDto of(Long bookId,
+                                               String bookName,
                                                String publisher,
                                                String bookImageUrl,
                                                String bookIntroduction,
@@ -25,6 +27,7 @@ public record BookDetailPageResponseDto(
                                                List<CollectionInformationResponseDto> collectionInformationResponseDto,
                                                List<ReviewResponseDto> reviewResponseDtos) {
         return new BookDetailPageResponseDto(
+                bookId,
                 bookName,
                 publisher,
                 bookImageUrl,

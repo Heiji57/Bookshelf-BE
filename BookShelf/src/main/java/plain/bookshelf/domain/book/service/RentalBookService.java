@@ -23,13 +23,13 @@ public class RentalBookService {
         BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumber(registrationNumber);
         Book book = bookDetail.getBook();
 
-        Member member = getCurrentMemberService.getCurrentMemberByBookDetail();
+        Member member = getCurrentMemberService.getCurrentMember();
 
         LocalDateTime now = LocalDateTime.now();
 
         bookDetail.setRentalStatus(true);
+        bookDetail.setMember(member);
         book.setRentalCount(bookDetail.getBook().getRentalCount() + 1);
-        bookDetail.setRenter(member.getId());
         BookRentalRecord bookRentalRecord = BookRentalRecord.builder()
                 .bookDetail(bookDetail)
                 .member(member)

@@ -43,6 +43,7 @@ public class GetBookDetailPageService {
                 .toList();
 
         return BookDetailPageResponseDto.of(
+                book_id,
                 book.getBookName(),
                 book.getPublisher(),
                 book.getBookImageUrl(),

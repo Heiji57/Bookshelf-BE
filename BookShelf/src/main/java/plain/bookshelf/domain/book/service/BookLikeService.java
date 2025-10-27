@@ -1,7 +1,6 @@
 package plain.bookshelf.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookLike;
@@ -9,9 +8,6 @@ import plain.bookshelf.domain.book.entity.embeddid.MemberBookId;
 import plain.bookshelf.domain.book.entity.repository.BookLikeRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.member.entity.Member;
-import plain.bookshelf.domain.member.entity.repository.MemberRepository;
-import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.util.Optional;
 
@@ -21,17 +17,11 @@ public class BookLikeService {
 
     private final BookRepository bookRepository;
     private final BookLikeRepository bookLikeRepository;
-    private final MemberRepository memberRepository;
-
-    public Member getCurrentMember() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return memberRepository.findByUserNameOrEmail(username, username)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
-    }
+    private final GetCurrentMemberService getCurrentMemberService;
 
     public boolean toggleLike(Long bookId) {
         Book book = bookRepository.findByBookId(bookId);
-        Member currentMember = getCurrentMember();
+        Member currentMember = getCurrentMemberService.getCurrentMember();
 
         MemberBookId id = new MemberBookId(bookId, currentMember.getId());
 

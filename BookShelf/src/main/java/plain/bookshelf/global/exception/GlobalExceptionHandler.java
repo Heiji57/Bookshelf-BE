@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import plain.bookshelf.domain.book.exception.BookNotFoundException;
-import plain.bookshelf.domain.book.exception.NonExistentRenterException;
-import plain.bookshelf.domain.book.exception.NonExistentReservationPeopleException;
-import plain.bookshelf.domain.book.exception.NotExistBookCommentException;
+import plain.bookshelf.domain.book.exception.*;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.exception.NotExistEmailException;
@@ -158,6 +155,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotExistBookCommentException.class)
     protected ResponseEntity<ErrorResponseDto> handleCustomException(NotExistBookCommentException e, HttpServletRequest request) {
         log.error("[ExceptionHandler] NotExistBookCommentException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(RetouchBookCommentException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(RetouchBookCommentException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] RetouchBookCommentException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
 
         ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
 

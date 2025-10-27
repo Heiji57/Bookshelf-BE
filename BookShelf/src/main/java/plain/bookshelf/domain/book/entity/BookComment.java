@@ -25,6 +25,7 @@ public class BookComment {
     private Long id;
 
     @Column(name = "chat", nullable = false)
+    @Setter
     private String chat;
 
     @Column(name = "chat_time", nullable = false)

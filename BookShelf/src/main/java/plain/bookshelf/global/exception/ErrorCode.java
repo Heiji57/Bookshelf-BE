@@ -29,7 +29,7 @@ public enum ErrorCode {
     BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "C101", "책 정보가 없습니다."),
     NON_EXISTENT_RENTER(HttpStatus.NOT_FOUND, "C102", "대여한 책이 없습니다."),
     NON_EXISTENT_RESERVATION_PEOPLE(HttpStatus.NOT_FOUND, "C103", "예약한 책이 없습니다."),
-    BOOK_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C104", "예약한 책이 없습니다."),
+    BOOK_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C104", "댓글이 존재하지 않습니다."),
 
     // Server Error 400
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C401", "부적절한 요청 데이터입니다."),
@@ -44,7 +44,8 @@ public enum ErrorCode {
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A001", "만료된 access token 입니다."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A002", "만료된 refresh token 입니다."),
     ACCESS_TOKEN_NOT_MATCH(HttpStatus.FORBIDDEN, "A003","유효하지 않은 access token 입니다."),
-    REFRESH_TOKEN_NOT_MATCH(HttpStatus.FORBIDDEN, "A004", "유효하지 않은 refresh token 입니다. 다시 로그인 하세요.");
+    REFRESH_TOKEN_NOT_MATCH(HttpStatus.FORBIDDEN, "A004", "유효하지 않은 refresh token 입니다. 다시 로그인 하세요."),
+    NOT_VALID_MEMBER_INFO(HttpStatus.BAD_REQUEST, "A005", "회원정보가 일치하지 않습니다.");
 
     /*
     C: Common(공통 에러)

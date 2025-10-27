@@ -1,7 +1,6 @@
 package plain.bookshelf.domain.book.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +11,6 @@ import plain.bookshelf.domain.book.entity.repository.BookCommentLikeRepository;
 import plain.bookshelf.domain.book.entity.repository.BookCommentRepository;
 import plain.bookshelf.domain.book.exception.NotExistBookCommentException;
 import plain.bookshelf.domain.member.entity.Member;
-import plain.bookshelf.domain.member.entity.repository.MemberRepository;
-import plain.bookshelf.domain.member.exception.NotExistUserException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 import java.util.Optional;
@@ -25,16 +22,10 @@ public class BookCommentLikeService {
 
     private final BookCommentRepository bookCommentRepository;
     private final BookCommentLikeRepository bookCommentLikeRepository;
-    private final MemberRepository memberRepository;
-
-    private Member getCurrentMember() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return memberRepository.findByUserNameOrEmail(username, username)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
-    }
+    private final GetCurrentMemberService getCurrentMemberService;
 
     public boolean toggleLike(Long commentId) {
-        Member currentMember = getCurrentMember();
+        Member currentMember = getCurrentMemberService.getCurrentMember();
         BookComment bookComment = bookCommentRepository.findBookCommentsByCommentId(commentId)
                 .orElseThrow(() -> new NotExistBookCommentException(ErrorCode.BOOK_COMMENT_NOT_FOUND));
 

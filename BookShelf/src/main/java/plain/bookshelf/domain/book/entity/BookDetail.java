@@ -43,10 +43,6 @@ public class BookDetail {
     @Column(name = "return_date", nullable = true)
     private LocalDateTime returnDate;
 
-    @Column(name = "renter", nullable = true)
-    @Setter
-    private Long renter;
-
     @Column(name = "registration_number", nullable = false, unique = true)
     private String registrationNumber;
 
@@ -59,6 +55,7 @@ public class BookDetail {
 
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @Setter
     private Member member; // 대여자
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)

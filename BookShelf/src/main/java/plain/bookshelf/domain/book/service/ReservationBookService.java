@@ -20,10 +20,9 @@ public class ReservationBookService {
     public void reservationBook(String registrationNumber) {
         BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumber(registrationNumber);
 
-        Member member = getCurrentMemberService.getCurrentMemberByBookDetail();
+        Member member = getCurrentMemberService.getCurrentMember();
         
         bookDetail.setRentalStatus(true);
-        bookDetail.setRenter(member.getId());
         bookDetail.setReservationCount(bookDetail.getReservationCount() + 1);
         BookReservation bookReservation = BookReservation.builder()
                 .bookDetail(bookDetail)

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17.0
+    container_name: "bookshelf_db"
+    restart: always
+    environment:
+      POSTGRES_DB: BookShelf
+      POSTGRES_USER: ADMIN
+      POSTGRES_PASSWORD: heijiADMIN20090220!
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - bookshelf-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: "bookshelf_es"
+    restart: always
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+    command: >
+      bash -c '
+        /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch analysis-nori;
+        /usr/local/bin/docker-entrypoint.sh;
+      '
+      
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - bookshelf-network
+    depends_on:
+      - db
+
+networks:
+  bookshelf-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  esdata:

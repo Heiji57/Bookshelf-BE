@@ -7,6 +7,7 @@ import plain.bookshelf.domain.book.entity.BookReservation;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookReservationRepository;
 import plain.bookshelf.domain.member.entity.Member;
+import plain.bookshelf.domain.member.service.GetCurrentMemberService;
 
 
 @Service

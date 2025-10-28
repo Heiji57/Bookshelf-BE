@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface BookLikeRepository extends JpaRepository<BookLike, MemberBookDetailId> {
     BookLike findByBookId(Long id);
 
-    Optional<BookLike> findById(MemberBookId id);
+    Optional<BookLike> findByMemberBookId(MemberBookId id);
 }

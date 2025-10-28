@@ -6,6 +6,7 @@ import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookComment;
 import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.member.entity.Member;
+import plain.bookshelf.domain.member.service.GetCurrentMemberService;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ public class BookCommentWriteService {
 
     public void bookCommentWrite(String chat, Long bookId) {
         Member member = getCurrentMemberService.getCurrentMember();
-        Book book = bookRepository.findByBookId(bookId);
+        Book book = bookRepository.findBookById(bookId);
 
         LocalDateTime now = LocalDateTime.now();
 

@@ -36,11 +36,11 @@ public class BookComment {
     private Long likeCount = 0L;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member")
     private Member member;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book")
     private Book book;
 
     @OneToMany(mappedBy = "bookComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

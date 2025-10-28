@@ -8,6 +8,7 @@ import plain.bookshelf.domain.book.entity.embeddid.MemberBookId;
 import plain.bookshelf.domain.book.entity.repository.BookLikeRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.member.entity.Member;
+import plain.bookshelf.domain.member.service.GetCurrentMemberService;
 
 import java.util.Optional;
 
@@ -20,12 +21,12 @@ public class BookLikeService {
     private final GetCurrentMemberService getCurrentMemberService;
 
     public boolean toggleLike(Long bookId) {
-        Book book = bookRepository.findByBookId(bookId);
+        Book book = bookRepository.findBookById(bookId);
         Member currentMember = getCurrentMemberService.getCurrentMember();
 
         MemberBookId id = new MemberBookId(bookId, currentMember.getId());
 
-        Optional<BookLike> existingLike = bookLikeRepository.findById(id);
+        Optional<BookLike> existingLike = bookLikeRepository.findByMemberBookId(id);
 
         if (existingLike.isPresent()) {
             bookLikeRepository.delete(existingLike.get());

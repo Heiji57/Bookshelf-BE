@@ -5,6 +5,7 @@ import lombok.*;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.member.entity.Member;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
         sequenceName = "book_detail_seq",
         allocationSize = 1
 )
-public class BookDetail {
+public class    BookDetail {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false, unique = true)
@@ -41,6 +42,7 @@ public class BookDetail {
     private boolean overDueStatus = false;
 
     @Column(name = "return_date", nullable = true)
+    @Setter
     private LocalDateTime returnDate;
 
     @Column(name = "registration_number", nullable = false, unique = true)
@@ -54,16 +56,16 @@ public class BookDetail {
     private Integer reservationCount;
 
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member")
     @Setter
     private Member member; // 대여자
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book")
     private Book book;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "affiliation_id")
+    @JoinColumn(name = "affiliation")
     private Affiliation affiliation;
 
     @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
@@ -73,4 +75,14 @@ public class BookDetail {
     @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<BookReservation> bookReservation = new ArrayList<>();
+
+    public void markAsOverDue() {
+        if (this.rentalStatus) {
+            this.overDueStatus = true;
+        }
+    }
+
+    public void returnBookDate(LocalDateTime returnDate) {
+        this.returnDate = returnDate;
+    }
 }

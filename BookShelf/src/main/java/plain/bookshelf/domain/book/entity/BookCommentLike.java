@@ -11,16 +11,17 @@ import plain.bookshelf.domain.member.entity.Member;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Table(name = "book_comment_like")
-@IdClass(MemberBookCommentId.class)
 public class BookCommentLike {
 
     @EmbeddedId
     private MemberBookCommentId memberBookCommentId;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_comment", nullable = false)
     private BookComment bookComment;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member", nullable = false)
     private Member member;
 
     @Column(name = "status", nullable = false)

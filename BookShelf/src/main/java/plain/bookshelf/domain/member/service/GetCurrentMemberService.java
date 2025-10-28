@@ -1,4 +1,4 @@
-package plain.bookshelf.domain.book.service;
+package plain.bookshelf.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +16,7 @@ public class GetCurrentMemberService {
 
     public Member getCurrentMember() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return memberRepository.findByUserNameOrEmail(username, username)
+        return memberRepository.findByEmailsAddress(username)
                 .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

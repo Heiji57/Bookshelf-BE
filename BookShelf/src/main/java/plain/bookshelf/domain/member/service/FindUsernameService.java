@@ -25,7 +25,7 @@ public class FindUsernameService {
         Email email = emailRepository.findEmailByAddress(verifyEmailRequestDto.address())
                 .orElseThrow(() -> new NotExistEmailException(ErrorCode.EMAIL_NOT_FOUND));
 
-        Member member = memberRepository.findAllByEmails(email)
+        Member member = memberRepository.findByEmails(email)
                         .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
 
         String address =  verifyEmailRequestDto.address();

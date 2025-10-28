@@ -17,6 +17,7 @@ public class BookController {
     private final BookCommentWriteService bookCommentWriteService;
     private final BookCommentRetouchService bookCommentRetouchService;
     private final DeleteBookCommentService deleteBookCommentService;
+    private final ReservationBookService reservationBookService;
 
     @PatchMapping("/rental")
     public ResponseEntity<?> rentalBook(@RequestParam String registrationName) {
@@ -27,9 +28,9 @@ public class BookController {
                 .build();
     }
 
-    @PatchMapping("/rental")
+    @PatchMapping("/reservation")
     public ResponseEntity<?> reservationBook(@RequestParam String registrationName) {
-        rentalBookService.rentalBook(registrationName);
+        reservationBookService.reservationBook(registrationName);
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")

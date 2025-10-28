@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "book_rental_record")
-@IdClass(MemberBookDetailId.class)
 public class BookRentalRecord {
 
     @EmbeddedId
@@ -31,6 +30,6 @@ public class BookRentalRecord {
     private BookDetail bookDetail;
 
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member")
     private Member member;
 }

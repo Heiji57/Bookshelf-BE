@@ -30,7 +30,7 @@ public class GetBookDetailPageService {
         String accessToken = jwtTokenProvider.resolveToken(request);
         Affiliation affiliation = jwtTokenProvider.getAffiliationFromToken(accessToken);
 
-        Book book = bookRepository.findByBookId(book_id);
+        Book book = bookRepository.findBookById(book_id);
         List<BookDetail> bookDetails = bookDetailRepository.findByBookIdAndAffiliation(book_id, affiliation);
         List<BookComment> bookComments = bookCommentRepository.findBookCommentByBookId(book_id);
 

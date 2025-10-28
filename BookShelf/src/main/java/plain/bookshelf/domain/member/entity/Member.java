@@ -61,7 +61,7 @@ public class Member {
     private List<BookDetail> bookDetails = new ArrayList<>();
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "affiliation_id", nullable = false)
+    @JoinColumn(name = "affiliation", nullable = false)
     private Affiliation affiliation;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)

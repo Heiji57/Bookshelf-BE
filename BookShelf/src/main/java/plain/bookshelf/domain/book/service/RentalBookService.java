@@ -8,6 +8,7 @@ import plain.bookshelf.domain.book.entity.BookRentalRecord;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;
 import plain.bookshelf.domain.member.entity.Member;
+import plain.bookshelf.domain.member.service.GetCurrentMemberService;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,8 @@ public class RentalBookService {
 
     private final GetCurrentMemberService getCurrentMemberService;
 
+    private static final LocalDateTime RETURN_DATE = LocalDateTime.now().plusDays(14);
+
     public void rentalBook(String registrationNumber) {
         BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumber(registrationNumber);
         Book book = bookDetail.getBook();
@@ -29,6 +32,7 @@ public class RentalBookService {
 
         bookDetail.setRentalStatus(true);
         bookDetail.setMember(member);
+        bookDetail.returnBookDate(RETURN_DATE);
         book.setRentalCount(bookDetail.getBook().getRentalCount() + 1);
         BookRentalRecord bookRentalRecord = BookRentalRecord.builder()
                 .bookDetail(bookDetail)

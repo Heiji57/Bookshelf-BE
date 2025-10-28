@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface BookCommentLikeRepository extends JpaRepository<BookCommentLike, Long> {
-    Optional<BookCommentLike> findById(MemberBookCommentId id);
+    Optional<BookCommentLike> findByMemberBookCommentId(MemberBookCommentId id);
 }

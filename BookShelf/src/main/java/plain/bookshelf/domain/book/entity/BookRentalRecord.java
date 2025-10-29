@@ -23,7 +23,8 @@ public class BookRentalRecord {
     private LocalDateTime rentalTime = LocalDateTime.now();
 
     @Column(name = "return_time", nullable = true)
-    private LocalDateTime returnTime;
+    @Builder.Default
+    private LocalDateTime returnTime = null;
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_detail")
@@ -32,4 +33,8 @@ public class BookRentalRecord {
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
+
+    public void returnTime(LocalDateTime returnTime) {
+        this.returnTime = returnTime;
+    }
 }

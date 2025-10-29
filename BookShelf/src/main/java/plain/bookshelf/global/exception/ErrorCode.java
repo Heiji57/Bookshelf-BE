@@ -16,6 +16,7 @@ public enum ErrorCode {
     MEMBER_NICKNAME_EXIST(HttpStatus.CONFLICT, "M004", "이미 등록된 이름 입니다."),
     MEMBER_NOT_VALID_EMAIL(HttpStatus.BAD_REQUEST, "M005", "인증이 되지 않은 email 입니다."),
     MEMBER_NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, "M006", "기존 비밀번호가 일치하지 않습니다."),
+    MEMBER_OVERDUE_STATUS(HttpStatus.BAD_REQUEST, "M005" , "연체 상태라 대여 및 예약을 하지 못합니다."),
 
     /*
     Common Error
@@ -30,6 +31,8 @@ public enum ErrorCode {
     NON_EXISTENT_RENTER(HttpStatus.NOT_FOUND, "C102", "대여한 책이 없습니다."),
     NON_EXISTENT_RESERVATION_PEOPLE(HttpStatus.NOT_FOUND, "C103", "예약한 책이 없습니다."),
     BOOK_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C104", "댓글이 존재하지 않습니다."),
+    ALREADY_RENTAL_BOOK(HttpStatus.CONFLICT, "C105", "이미 대여된 책입니다."),
+    ANY_MORE_RENTAL(HttpStatus.BAD_REQUEST, "C106", "더 이상 책을 대여할 수 없습니다."),
 
     // Server Error 400
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C401", "부적절한 요청 데이터입니다."),

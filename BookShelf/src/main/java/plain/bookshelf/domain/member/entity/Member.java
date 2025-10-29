@@ -34,7 +34,6 @@ public class Member {
     private String nickName; // 유저 이름
 
     @Column(nullable = false, length = 60) // 부호화해서 저장해서 60
-    @Setter
     private String password;
 
     @Column(name = "member_role", nullable = false, length = 10)
@@ -83,4 +82,12 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<BookCommentLike> bookCommentLikes = new ArrayList<>();
+
+    public void retouchPassword(String password) {
+        this.password = password;
+    }
+
+    public void overduePeriod(Integer overduePeriod) {
+        this.overduePeriod = overduePeriod;
+    }
 }

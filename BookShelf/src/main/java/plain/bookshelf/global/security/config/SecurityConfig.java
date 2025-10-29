@@ -47,6 +47,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/email/send", "/email/verify").permitAll()
+                        .requestMatchers("/api/manager/**", "/manager/**").hasRole("ROLE_MANAGER")
+                        .requestMatchers("/mypage/**").hasAnyRole("ROLE_USER", "ROLE_MANAGER",  "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .logout(AbstractHttpConfigurer::disable

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -20,7 +20,7 @@ public class BookRentalDateScheduler {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void checkRentalStatus() {
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
 
         List<BookDetail> bookDetails = bookDetailRepository.findByRentalStatusTrueAndReturnDateBefore(today);
 

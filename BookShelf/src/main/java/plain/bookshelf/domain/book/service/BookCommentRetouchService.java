@@ -28,8 +28,6 @@ public class BookCommentRetouchService {
             throw new RetouchBookCommentException(ErrorCode.NOT_VALID_MEMBER_INFO);
         }
 
-        bookComment.setChat(chat);
-
-        bookCommentRepository.save(bookComment);
+        bookComment.retouchComment(chat);
     }
 }

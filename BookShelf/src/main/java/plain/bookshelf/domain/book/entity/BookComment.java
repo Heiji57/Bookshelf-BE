@@ -20,16 +20,18 @@ import java.util.List;
         allocationSize = 1
 )
 public class BookComment {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_comment_seq_generator")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "chat", nullable = false)
-    @Setter
     private String chat;
 
     @Column(name = "chat_time", nullable = false)
     private LocalDateTime chatTime;
+
+    @Column(name = "write_member_name", nullable = false)
+    private String writeMemberName;
 
     @Column(name = "like_count", nullable = false)
     @Builder.Default
@@ -55,5 +57,9 @@ public class BookComment {
         if(this.likeCount > 0) {
             this.likeCount--;
         }
+    }
+
+    public void retouchComment(String comment) {
+        this.chat = comment;
     }
 }

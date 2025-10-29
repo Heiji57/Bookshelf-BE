@@ -16,7 +16,7 @@ public record BookPopularityListResponseDto(
                 book.getBookName(),
                 book.getBookAuthor(),
                 book.getBookType(),
-                book.getBookImageUrl(),
+                book.getBookImage(),
                 book.getRentalCount()
         );
     }

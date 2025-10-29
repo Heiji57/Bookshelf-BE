@@ -18,7 +18,7 @@ public record BookRecentListResponseDto(
                 book.getBookName(),
                 book.getBookAuthor(),
                 book.getBookType(),
-                book.getBookImageUrl(),
+                book.getBookImage(),
                 book.getPublicationDate()
         );
     }

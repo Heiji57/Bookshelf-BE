@@ -21,7 +21,6 @@ public class RetouchPasswordService {
         Member member = memberRepository.findByUserName(username)
                 .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
 
-        member.setPassword(passwordEncoder.encode(password));
-        memberRepository.save(member);
+        member.retouchPassword(passwordEncoder.encode(password));
     }
 }

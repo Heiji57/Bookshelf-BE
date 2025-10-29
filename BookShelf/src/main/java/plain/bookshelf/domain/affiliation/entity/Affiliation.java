@@ -20,11 +20,11 @@ import java.util.List;
         allocationSize = 1
 )
 public class Affiliation {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "affiliation_seq_generator")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "affiliation_name")
+    @Column(name = "affiliation_name", unique = true)
     private String affiliationName;
 
     @OneToMany(mappedBy = "affiliation", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)

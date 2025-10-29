@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MainPageListService {
+public class  MainPageListService {
 
     private final BookRepository bookRepository;
 

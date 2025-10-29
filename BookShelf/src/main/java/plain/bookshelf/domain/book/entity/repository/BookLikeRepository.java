@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface BookLikeRepository extends JpaRepository<BookLike, MemberBookDetailId> {
-    BookLike findByBookId(Long id);
 
     Optional<BookLike> findByMemberBookId(MemberBookId id);
 }

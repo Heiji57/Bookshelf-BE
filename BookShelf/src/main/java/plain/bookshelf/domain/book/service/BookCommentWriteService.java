@@ -26,6 +26,7 @@ public class BookCommentWriteService {
         BookComment.builder()
                 .book(book)
                 .member(member)
+                .writeMemberName(member.getNickName())
                 .chat(chat)
                 .chatTime(now)
                 .build();

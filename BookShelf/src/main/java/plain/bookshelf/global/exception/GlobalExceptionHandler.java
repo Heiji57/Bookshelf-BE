@@ -9,10 +9,7 @@ import plain.bookshelf.domain.book.exception.*;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.exception.NotExistEmailException;
-import plain.bookshelf.domain.member.exception.AlreadyAssignedEmailException;
-import plain.bookshelf.domain.member.exception.ExistNickNameException;
-import plain.bookshelf.domain.member.exception.ExistUserNameException;
-import plain.bookshelf.domain.member.exception.NotExistUserException;
+import plain.bookshelf.domain.member.exception.*;
 import plain.bookshelf.global.security.exception.AccessTokenValueNotValidException;
 import plain.bookshelf.global.security.exception.RefreshTokenValueNotValidException;
 
@@ -166,6 +163,39 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RetouchBookCommentException.class)
     protected ResponseEntity<ErrorResponseDto> handleCustomException(RetouchBookCommentException e, HttpServletRequest request) {
         log.error("[ExceptionHandler] RetouchBookCommentException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(AlreadyRentalBookException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(AlreadyRentalBookException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] AlreadyRentalBookException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(AnyMoreRentalException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(AnyMoreRentalException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] AnyMoreRentalException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(MemberOverdueException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(MemberOverdueException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] MemberOverdueException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
 
         ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
 

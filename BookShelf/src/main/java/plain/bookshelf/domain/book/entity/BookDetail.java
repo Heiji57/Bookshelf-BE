@@ -21,28 +21,28 @@ import java.util.List;
         sequenceName = "book_detail_seq",
         allocationSize = 1
 )
-public class    BookDetail {
+public class BookDetail {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_detail_seq_generator")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "reservation_status", nullable = false)
-    @Setter
-    @Builder.Default
-    private boolean reservationStatus = false;
-
     @Column(name = "rental_status", nullable = false)
-    @Setter
     @Builder.Default
     private boolean rentalStatus = false;
+
+    @Column(name = "rental_request_date", nullable = true)
+    private LocalDateTime rentalRequestDate;
+
+    @Column(name = "rental_request_status", nullable = false)
+    @Builder.Default
+    private boolean rentalRequestStatus = false;
 
     @Column(name = "over_due_status", nullable = false)
     @Builder.Default
     private boolean overDueStatus = false;
 
     @Column(name = "return_date", nullable = true)
-    @Setter
     private LocalDateTime returnDate;
 
     @Column(name = "registration_number", nullable = false, unique = true)
@@ -52,12 +52,13 @@ public class    BookDetail {
     private String callNumber;
 
     @Column(name = "reservation_count", nullable = false)
-    @Setter
     private Integer reservationCount;
+
+    @Column(name = "rental_request_member", nullable = true)
+    private String rentalRequestMember;
 
     @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
-    @Setter
     private Member member; // 대여자
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -84,5 +85,29 @@ public class    BookDetail {
 
     public void returnBookDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public void rentalRequestStatus(boolean rentalRequestStatus) {
+        this.rentalRequestStatus = rentalRequestStatus;
+    }
+
+    public void renter(Member member) {
+        this.member = member;
+    }
+
+    public void addReservationCount() {
+        this.reservationCount++;
+    }
+
+    public void rentalRequestMember(String rentalRequestMember) {
+        this.rentalRequestMember = rentalRequestMember;
+    }
+
+    public void requestDate(LocalDateTime requestDate) {
+        this.rentalRequestDate = requestDate;
+    }
+
+    public void rentalStatus(boolean rentalStatus) {
+        this.rentalStatus = rentalStatus;
     }
 }

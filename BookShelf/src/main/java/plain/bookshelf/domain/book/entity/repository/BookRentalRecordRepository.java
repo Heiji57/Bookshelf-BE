@@ -8,5 +8,5 @@ import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 
 @Repository
 public interface BookRentalRecordRepository extends JpaRepository<BookRentalRecord, MemberBookDetailId> {
-    BookRentalRecord findBookRentalRecordsByBookDetail(BookDetail bookDetail);
+    BookRentalRecord findByBookDetail(BookDetail bookDetail);
 }

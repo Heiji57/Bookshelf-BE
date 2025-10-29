@@ -14,5 +14,4 @@ import java.util.Optional;
 public interface BookCommentRepository extends JpaRepository<BookComment, MemberBookDetailId> {
     List<BookComment> findBookCommentByBookId(Long bookId);
     Optional<BookComment> findBookCommentsById(Long commentId);
-    Optional<BookComment> findBookCommentsByMemberAndBook(Member member, Book book);
 }

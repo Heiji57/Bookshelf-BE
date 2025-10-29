@@ -30,6 +30,6 @@ public class RetouchMemberInfoService {
             member.setNickName(retouchMemberInfoRequestDto.nickname());
         }
 
-        member.setPassword(newPassword);
+        member.retouchPassword(newPassword);
     }
 }

@@ -27,6 +27,7 @@ public class RentalRequestPassService {
 
         bookDetail.renter(member);
         bookDetail.rentalStatus(true);
+        member.addOneMonthStatistics();
         BookRentalRecord.builder()
                 .bookDetail(bookDetail)
                 .member(member)

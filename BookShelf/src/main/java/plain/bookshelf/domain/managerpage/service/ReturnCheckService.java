@@ -41,6 +41,7 @@ public class ReturnCheckService {
             Optional<BookReservation> nextReservation = bookReservationRepository.findTopByBookDetailOrderByReservationRankAsc(bookDetail);
             bookDetail.renter(nextReservation.map(BookReservation::getMember).orElse(null));
             bookReservationRepository.delete(nextReservation.get());
+            bookDetail.getMember().addOneMonthStatistics();
 
             for (BookReservation book : bookReservations) {
                 book.minusReservationRank();

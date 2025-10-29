@@ -16,6 +16,7 @@ import java.util.List;
 @Slf4j
 @Transactional
 public class BookRentalDateScheduler {
+
     private final BookDetailRepository bookDetailRepository;
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -31,5 +32,6 @@ public class BookRentalDateScheduler {
         for (BookDetail bookDetail : bookDetails) {
             bookDetail.markAsOverDue();
         }
+        bookDetailRepository.saveAll(bookDetails);
     }
 }

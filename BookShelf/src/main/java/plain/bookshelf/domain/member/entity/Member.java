@@ -90,4 +90,12 @@ public class Member {
     public void overduePeriod(Integer overduePeriod) {
         this.overduePeriod = overduePeriod;
     }
+
+    public void resetOneMonthStatistics(Integer monthStatistics) {
+        this.monthStatistics = monthStatistics;
+    }
+
+    public void addOneMonthStatistics() {
+        this.monthStatistics++;
+    }
 }

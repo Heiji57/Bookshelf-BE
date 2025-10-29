@@ -70,9 +70,9 @@ public class ManagerPageController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully pass rental-pass", result));
     }
 
-    @PostMapping("/api/manager/rental-pass")
+    @PostMapping("/api/manager/return-check")
     public ResponseEntity<?> returnCheck(@RequestParam String registrationNumber) {
-        boolean result = requestPassService.rentalRequestPass(registrationNumber);
+        boolean result = returnCheckService.returnCheck(registrationNumber);
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")

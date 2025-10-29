@@ -5,7 +5,6 @@ import lombok.*;
 import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.member.entity.Member;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

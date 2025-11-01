@@ -47,10 +47,10 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/email/send", "/email/verify").permitAll()
+                        .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/email/send", "/api/email/verify", "/api/auth/find-id/**", "/api/auth/find-password/**").permitAll()
                         .requestMatchers("/api/manager/**", "/manager/**").hasRole("MANAGER")
                         .requestMatchers("/mypage/**").hasAnyRole("USER", "MANAGER",  "ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest().hasAnyRole("USER", "MANAGER", "ADMIN")
                 )
                 .logout(AbstractHttpConfigurer::disable
                 )

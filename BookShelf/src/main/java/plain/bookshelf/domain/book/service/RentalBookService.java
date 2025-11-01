@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
+import plain.bookshelf.domain.book.exception.AlreadyRentalBookException;
 import plain.bookshelf.domain.book.exception.AnyMoreRentalException;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.exception.MemberOverdueException;
@@ -27,13 +28,16 @@ public class RentalBookService {
 
     public void rentalBook(String registrationNumber) {
         Member currentMember = getCurrentMemberService.getCurrentMember();
-        BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumber(registrationNumber);
-        Book book = bookDetail.getBook();
+        BookDetail bookDetail = bookDetailRepository.findByRegistrationNumber(registrationNumber);
 
         LocalDateTime now = LocalDateTime.now();
 
-        if (currentMember.getOverduePeriod() != null) {
+        if (currentMember.getOverduePeriod() != 0) {
             throw new MemberOverdueException(ErrorCode.MEMBER_OVERDUE_STATUS);
+        }
+
+        if (bookDetail.isRentalRequestStatus()) {
+            throw new AlreadyRentalBookException(ErrorCode.ALREADY_RENTAL_BOOK);
         }
 
         if (bookDetailRepository.findBookDetailByMember(currentMember).size() >= 5) {
@@ -44,6 +48,5 @@ public class RentalBookService {
         bookDetail.rentalRequestStatus(true);
         bookDetail.rentalRequestMember(currentMember.getNickName());
         bookDetail.requestDate(now);
-        book.addBookRentalCount();
     }
 }

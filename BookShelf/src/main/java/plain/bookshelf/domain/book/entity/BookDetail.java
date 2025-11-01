@@ -109,4 +109,5 @@ public class BookDetail {
     public void rentalStatus(boolean rentalStatus) {
         this.rentalStatus = rentalStatus;
     }
+
 }

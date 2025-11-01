@@ -3,7 +3,6 @@ package plain.bookshelf.domain.book.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookComment;
 import plain.bookshelf.domain.book.entity.BookDetail;
@@ -28,10 +27,10 @@ public class GetBookDetailPageService {
 
     public BookDetailPageResponseDto getBookDetailPage(Long book_id, HttpServletRequest request) {
         String accessToken = jwtTokenProvider.resolveToken(request);
-        Affiliation affiliation = jwtTokenProvider.getAffiliationFromToken(accessToken);
+        Long affiliationId = jwtTokenProvider.getAffiliationFromToken(accessToken).getId();
 
         Book book = bookRepository.findBookById(book_id);
-        List<BookDetail> bookDetails = bookDetailRepository.findByBookIdAndAffiliation(book_id, affiliation);
+        List<BookDetail> bookDetails = bookDetailRepository.findByBookIdAndAffiliationId(book_id, affiliationId);
         List<BookComment> bookComments = bookCommentRepository.findBookCommentByBookId(book_id);
 
         List<CollectionInformationResponseDto> collectionInformationResponseDtos = bookDetails.stream()

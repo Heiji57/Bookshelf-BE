@@ -44,7 +44,7 @@ public class ManagerPageController {
     }
 
     @GetMapping("/manager/rental-status")
-    public ResponseEntity<?> getRentalStatusPage(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<?> getRentalStatusPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return ResponseEntity.ok()
@@ -53,7 +53,7 @@ public class ManagerPageController {
     }
 
     @GetMapping("/manager/rental-status/overdue")
-    public ResponseEntity<?> getRentalOverduePage(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<?> getRentalOverduePage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return ResponseEntity.ok()
@@ -61,7 +61,7 @@ public class ManagerPageController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get overdue rental-status", rentalStatusPageService.getRentalOverDueStatusPage(pageable)));
     }
 
-    @PostMapping("/api/manager/rental-pass")
+    @PatchMapping("/api/manager/rental-pass")
     public ResponseEntity<?> passRental(@RequestParam String registrationNumber) {
         boolean result = requestPassService.rentalRequestPass(registrationNumber);
 
@@ -70,7 +70,7 @@ public class ManagerPageController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully pass rental-pass", result));
     }
 
-    @PostMapping("/api/manager/return-check")
+    @PatchMapping("/api/manager/return-check")
     public ResponseEntity<?> returnCheck(@RequestParam String registrationNumber) {
         boolean result = returnCheckService.returnCheck(registrationNumber);
 

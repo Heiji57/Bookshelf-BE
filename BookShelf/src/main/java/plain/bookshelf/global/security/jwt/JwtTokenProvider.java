@@ -55,7 +55,7 @@ public class JwtTokenProvider {
         Member member = memberRepository.findByUserName(username)
                 .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
 
-        Affiliation affiliation = member.getAffiliation();
+        Long affiliationId = member.getAffiliation().getId();
 
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
@@ -69,7 +69,7 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())           // payload "sub": "name"
                 .claim(AUTHORITIES_KEY, authorities)            // payload "auth": "ROLE_USER"
-                .claim("affiliationId", affiliation)    // payload "affiliation": "id"
+                .claim("affiliationId", affiliationId)    // payload "affiliation": "id"
                 .setExpiration(accessTokenExpiresIn)            // payload "exp": 151621022 (ex)
                 .signWith(key, SignatureAlgorithm.HS512)        // header "alg": "HS512"
                 .compact();
@@ -104,7 +104,7 @@ public class JwtTokenProvider {
     public Affiliation getAffiliationFromToken(String token) {
         Claims claims = parseClaims(token);
 
-        return claims.get("affiliation", Affiliation.class);
+        return claims.get("affiliationId", Affiliation.class);
     }
 
     // Access Token을 받아서 Authentication 객체를 반환하는 메서드
@@ -134,13 +134,13 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.");
+            log.warn("Not correct jwtToken: {}", token);
         } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다.");
+            log.warn("Expired token: {}", token);
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.");
+            log.warn("Not supported token: {}", token);
         } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
+            log.warn("Bad claims string: {}", token);
         }
         return false;
     }

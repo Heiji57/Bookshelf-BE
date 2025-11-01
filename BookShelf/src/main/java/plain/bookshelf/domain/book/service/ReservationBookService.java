@@ -24,7 +24,7 @@ public class ReservationBookService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void reservationBook(String registrationNumber) {
-        BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumber(registrationNumber);
+        BookDetail bookDetail = bookDetailRepository.findByRegistrationNumber(registrationNumber);
         Integer maxRank = bookReservationRepository.findBookReservationMaxRankByBookDetail(bookDetail);
         Member member = getCurrentMemberService.getCurrentMember();
 

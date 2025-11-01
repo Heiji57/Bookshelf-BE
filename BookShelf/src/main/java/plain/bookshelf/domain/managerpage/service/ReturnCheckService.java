@@ -24,7 +24,7 @@ public class ReturnCheckService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean returnCheck(String registrationNumber) {
-        BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumber(registrationNumber);
+        BookDetail bookDetail = bookDetailRepository.findByRegistrationNumberAndRentalStatusTrue(registrationNumber);
         BookRentalRecord bookRentalRecord = bookRentalRecordRepository.findByBookDetail(bookDetail);
 
         Optional<BookReservation> bookReservation = bookReservationRepository.findBookDetailByBookReservationRankAndBookDetail(bookDetail);
@@ -48,6 +48,7 @@ public class ReturnCheckService {
             }
         } else {
             bookDetail.renter(null);
+            bookDetail.rentalRequestStatus(false);
             bookDetail.rentalStatus(false);
         }
 

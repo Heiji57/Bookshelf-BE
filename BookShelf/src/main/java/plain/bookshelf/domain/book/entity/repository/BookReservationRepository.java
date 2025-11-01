@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 public interface BookReservationRepository extends JpaRepository<BookReservation, MemberBookDetailId> {
-    @EntityGraph(attributePaths = {"BookDetail", "BookDetail.Book"})
+    @EntityGraph(attributePaths = {"bookDetail", "bookDetail.book"})
     List<BookReservation> findBookReservationByMember(Member member);
 
     List<BookReservation> findBookReservationByBookDetail(BookDetail bookDetail);
@@ -27,8 +27,6 @@ public interface BookReservationRepository extends JpaRepository<BookReservation
 
     @Query("SELECT br FROM BookReservation br " +
             "WHERE br.reservationRank = 1 AND br.bookDetail = :bookDetail")
-    @EntityGraph(attributePaths = "Member")
+    @EntityGraph(attributePaths = "member") // @EntityGraph attributePaths는 Member member <- 이부분임
     Optional<BookReservation> findBookDetailByBookReservationRankAndBookDetail(@Param("bookDetail") BookDetail bookDetail);
-
-    BookReservation findBookDetailByMemberAndBookDetail(Member member, BookDetail bookDetail);
 }

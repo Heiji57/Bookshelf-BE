@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.member.entity.Member;
 
@@ -15,19 +14,20 @@ import java.util.List;
 
 @Repository
 public interface BookDetailRepository extends JpaRepository<BookDetail, Long> {
-    @EntityGraph(attributePaths = {"Book"})
     List<BookDetail> findBookDetailByMember(Member member);
 
-    @EntityGraph(attributePaths = {"Book, Member"})
+    @EntityGraph(attributePaths = {"book, member"})
     List<BookDetail> findByRentalRequestStatusTrue(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"Book, Member"})
+    @EntityGraph(attributePaths = {"book, member"})
     List<BookDetail> findByRentalStatusTrue(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"Book"})
-    BookDetail findBookDetailByRegistrationNumber(String registrationNumber);
+    BookDetail findByRegistrationNumber(String registrationNumber);
+    BookDetail findByRegistrationNumberAndRentalStatusTrue(String registrationNumber);
+    BookDetail findBookDetailByRegistrationNumberAndRentalRequestStatusTrue(String registrationNumber);
 
-    List<BookDetail> findByBookIdAndAffiliation(Long bookId, Affiliation affiliation);
+    @Query(value = "SELECT bd FROM BookDetail bd " + "WHERE bd.book.id =:bookId AND bd.affiliation.id =:affiliationId")
+    List<BookDetail> findByBookIdAndAffiliationId(@Param("bookId") Long bookId, @Param("affiliationId") Long affiliationId);   // 쿼리 작성 필요
     List<BookDetail> findByRentalStatusTrueAndReturnDateBefore(LocalDateTime returnDate);
     List<BookDetail> findByOverDueStatusTrue(Pageable pageable);
 

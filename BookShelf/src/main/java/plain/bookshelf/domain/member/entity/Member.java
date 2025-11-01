@@ -36,7 +36,7 @@ public class Member {
     @Column(nullable = false, length = 60) // 부호화해서 저장해서 60
     private String password;
 
-    @Column(name = "member_role", nullable = false, length = 10)
+    @Column(name = "member_role", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private MemberRole authority;
 
@@ -97,5 +97,9 @@ public class Member {
 
     public void addOneMonthStatistics() {
         this.monthStatistics++;
+    }
+
+    public void setOverduePeriod() {
+        this.overduePeriod--;
     }
 }

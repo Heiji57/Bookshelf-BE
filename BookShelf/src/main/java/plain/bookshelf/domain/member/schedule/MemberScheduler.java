@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberMonthStatisticsScheduler {
+public class MemberScheduler {
 
     private final MemberRepository memberRepository;
 
@@ -22,6 +22,16 @@ public class MemberMonthStatisticsScheduler {
 
         for (Member member : members) {
             member.resetOneMonthStatistics(0);
+            memberRepository.save(member);
+        }
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void oneDayOverDuePeriod() {
+        List<Member> members = memberRepository.findByOverduePeriod(0);
+        for (Member member : members) {
+            member.setOverduePeriod();
+            memberRepository.save(member);
         }
     }
 }

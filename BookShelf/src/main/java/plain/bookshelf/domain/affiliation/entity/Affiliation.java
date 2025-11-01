@@ -1,5 +1,6 @@
 package plain.bookshelf.domain.affiliation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import plain.bookshelf.domain.book.entity.BookDetail;
@@ -29,6 +30,7 @@ public class Affiliation {
 
     @OneToMany(mappedBy = "affiliation", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
     @Builder.Default
+    @JsonIgnore
     private List<Member> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "affiliation", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

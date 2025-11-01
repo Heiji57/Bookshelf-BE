@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @EqualsAndHashCode
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class MemberBookDetailId implements Serializable {

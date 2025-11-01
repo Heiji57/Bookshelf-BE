@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.time.LocalDate;
 
 @Document(indexName = "books_index")
-public record BookDocument(
+public record   BookDocument(
         @Id
         String id,
 

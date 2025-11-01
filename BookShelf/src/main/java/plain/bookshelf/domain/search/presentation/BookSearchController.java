@@ -10,7 +10,7 @@ import plain.bookshelf.domain.search.service.BookSearchService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/books/search")
+@RequestMapping("/api/book/search")
 public class BookSearchController {
 
     private final BookSearchService bookSearchService;

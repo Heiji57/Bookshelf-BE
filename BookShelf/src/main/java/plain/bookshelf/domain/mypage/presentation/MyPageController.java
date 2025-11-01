@@ -36,7 +36,7 @@ public class MyPageController {
                 .build();
     }
 
-    @GetMapping("/get-info")
+    @GetMapping("/info")
     public ResponseEntity<?> getMyPage(@PathVariable Long user_id) {
         GetMyPageUserInfoResponseDto getMyPageUserInfoResponseDto = getMyPageUserInfoService.getMyPageUserInfo(user_id);
         return ResponseEntity.ok()

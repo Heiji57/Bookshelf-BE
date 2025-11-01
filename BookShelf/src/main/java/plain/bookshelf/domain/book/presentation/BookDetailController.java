@@ -26,7 +26,7 @@ public class BookDetailController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get bookDetailPage.", bookDetailPageResponseDto));
     }
 
-    @PatchMapping("/like")
+    @PostMapping("/like")
     public ResponseEntity<?> likeBook(@PathVariable Long book_id) {
         boolean result = bookLikeService.toggleLike(book_id);
 

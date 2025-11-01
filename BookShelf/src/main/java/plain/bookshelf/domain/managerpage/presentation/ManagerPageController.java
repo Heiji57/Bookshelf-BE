@@ -14,10 +14,7 @@ import plain.bookshelf.global.StatusResponseDto;
 public class ManagerPageController {
 
     private final RentalApprovalPageService approvalPageService;
-    private final RentalRequestPassService requestPassService;
     private final RentalStatusPageService rentalStatusPageService;
-    private final ReturnCheckService returnCheckService;
-    private final SearchUserNameService searchUserNameService;
 
     @GetMapping("/manager/approval-page")
     public ResponseEntity<?> approveApprovalPage(@RequestParam int page, @RequestParam int size) {
@@ -28,14 +25,7 @@ public class ManagerPageController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get approval page", approvalPageService.getRentalApprovalResponseDto(pageable)));
     }
 
-    @PostMapping("/api/manager/search")
-    public ResponseEntity<?> searchByNickName(@RequestParam String search) {
-        String nickName = searchUserNameService.getMemberByNickName(search).getNickName();
 
-        return ResponseEntity.ok()
-                .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully search by nickname", nickName));
-    }
 
     @GetMapping("/manager/search/rental-status/{nick_name}")
     public ResponseEntity<?> searchByNickNameResult(@PathVariable String nick_name) {
@@ -59,23 +49,5 @@ public class ManagerPageController {
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get overdue rental-status", rentalStatusPageService.getRentalOverDueStatusPage(pageable)));
-    }
-
-    @PatchMapping("/api/manager/rental-pass")
-    public ResponseEntity<?> passRental(@RequestParam String registrationNumber) {
-        boolean result = requestPassService.rentalRequestPass(registrationNumber);
-
-        return ResponseEntity.ok()
-                .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully pass rental-pass", result));
-    }
-
-    @PatchMapping("/api/manager/return-check")
-    public ResponseEntity<?> returnCheck(@RequestParam String registrationNumber) {
-        boolean result = returnCheckService.returnCheck(registrationNumber);
-
-        return ResponseEntity.ok()
-                .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully check return-check", result));
     }
 }

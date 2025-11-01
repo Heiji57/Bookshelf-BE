@@ -3,10 +3,7 @@ package plain.bookshelf.domain.managerpage.presentation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.managerpage.service.RentalRequestPassService;
 import plain.bookshelf.domain.managerpage.service.ReturnCheckService;
 import plain.bookshelf.domain.managerpage.service.SearchUserNameService;
@@ -14,13 +11,14 @@ import plain.bookshelf.global.StatusResponseDto;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/manage")
 public class ManagerApiController {
 
     private final RentalRequestPassService requestPassService;
     private final ReturnCheckService returnCheckService;
     private final SearchUserNameService searchUserNameService;
 
-    @PostMapping("/api/manager/search")
+    @PostMapping("/search-nickname")
     public ResponseEntity<?> searchByNickName(@RequestParam String search) {
         String nickName = searchUserNameService.getMemberByNickName(search).getNickName();
 
@@ -29,7 +27,7 @@ public class ManagerApiController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully search by nickname", nickName));
     }
 
-    @PatchMapping("/api/manager/rental-pass")
+    @PatchMapping("/rental-pass")
     public ResponseEntity<?> passRental(@RequestParam String registrationNumber) {
         boolean result = requestPassService.rentalRequestPass(registrationNumber);
 
@@ -38,7 +36,7 @@ public class ManagerApiController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully pass rental-pass", result));
     }
 
-    @PatchMapping("/api/manager/return-check")
+    @PatchMapping("/return-check")
     public ResponseEntity<?> returnCheck(@RequestParam String registrationNumber) {
         boolean result = returnCheckService.returnCheck(registrationNumber);
 

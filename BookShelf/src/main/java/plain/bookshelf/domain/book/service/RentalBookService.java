@@ -36,7 +36,7 @@ public class RentalBookService {
             throw new MemberOverdueException(ErrorCode.MEMBER_OVERDUE_STATUS);
         }
 
-        if (bookDetail.isRentalRequestStatus()) {
+        if (bookDetail.isRentalRequestStatus() || bookDetail.getMember() != null) {
             throw new AlreadyRentalBookException(ErrorCode.ALREADY_RENTAL_BOOK);
         }
 

@@ -25,7 +25,7 @@ public class RentalRequestPassService {
 
     public boolean rentalRequestPass(String registrationNumber){
         BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumberAndRentalRequestStatusTrue(registrationNumber);
-        Member member = memberRepository.findByBookDetailRenter(bookDetail);
+        Member member = memberRepository.findByBookDetailRenter(bookDetail.getRentalRequestMember());
         Book book = bookDetail.getBook();
 
         MemberBookDetailId id = new MemberBookDetailId(member.getId(), bookDetail.getId());
@@ -35,6 +35,7 @@ public class RentalRequestPassService {
         bookDetail.renter(member);
         bookDetail.rentalStatus(true);
         bookDetail.rentalRequestStatus(false);
+        bookDetail.rentalRequestMember(null);
         member.addOneMonthStatistics();
         book.addBookRentalCount();
         BookRentalRecord bookRentalRecord = BookRentalRecord.builder()

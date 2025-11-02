@@ -16,8 +16,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByUserName(String username);
     boolean existsByNickName(String nickName);
 
-    @Query("SELECT bd.member FROM BookDetail bd")
-    Member findByBookDetailRenter(@Param("bookDetail") BookDetail bookDetail);
+    @Query(value = "SELECT m FROM Member m " +
+            "JOIN BookDetail bd ON m.nickName = bd.rentalRequestMember " +
+            "WHERE bd.rentalRequestMember =:nickName")
+    Member findByBookDetailRenter(@Param("nickName") String nickName);
 
     @Query("SELECT m FROM Member m " + "WHERE m.overduePeriod >:overduePeriod")
     List<Member> findByOverduePeriod(@Param("overduePeriod") Integer overduePeriod);

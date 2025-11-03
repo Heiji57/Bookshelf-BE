@@ -8,14 +8,16 @@ public record RentalStatusPageResponseDto(
         String nickName,
         String bookName,
         String registrationNumber,
-        LocalDateTime rentalDate
+        LocalDateTime rentalDate,
+        boolean overdueStatus
 ) {
     public static RentalStatusPageResponseDto of(BookDetail bookDetail) {
         return new RentalStatusPageResponseDto(
                 bookDetail.getMember().getNickName(),
                 bookDetail.getBook().getBookName(),
                 bookDetail.getRegistrationNumber(),
-                bookDetail.getReturnDate()
+                bookDetail.getReturnDate(),
+                bookDetail.isOverDueStatus()
         );
     }
 }

@@ -102,4 +102,8 @@ public class Member {
     public void setOverduePeriod() {
         this.overduePeriod--;
     }
+
+    public void setProfile(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 }

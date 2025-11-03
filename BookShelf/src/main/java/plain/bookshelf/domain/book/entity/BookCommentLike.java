@@ -16,10 +16,12 @@ public class BookCommentLike {
     @EmbeddedId
     private MemberBookCommentId memberBookCommentId;
 
+    @MapsId("bookCommentId")
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_comment", nullable = false)
     private BookComment bookComment;
 
+    @MapsId("memberId")
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member", nullable = false)
     private Member member;

@@ -28,14 +28,6 @@ public class MyPageController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageResponseDto));
     }
 
-    @PostMapping("/retouch")
-    public ResponseEntity<?> retouchMemberInfo(@PathVariable Long user_id, @RequestBody RetouchMemberInfoRequestDto retouchMemberInfoRequestDto) {
-        retouchMemberInfoService.retouchMemberInfo(user_id, retouchMemberInfoRequestDto);
-        return ResponseEntity.ok()
-                .header("Content-Type", "application/json")
-                .build();
-    }
-
     @GetMapping("/info")
     public ResponseEntity<?> getMyPage(@PathVariable Long user_id) {
         GetMyPageUserInfoResponseDto getMyPageUserInfoResponseDto = getMyPageUserInfoService.getMyPageUserInfo(user_id);

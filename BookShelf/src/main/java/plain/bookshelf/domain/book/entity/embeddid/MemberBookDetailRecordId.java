@@ -3,17 +3,16 @@ package plain.bookshelf.domain.book.entity.embeddid;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Embeddable
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
+@Getter
 @Builder
-public class MemberBookCommentId implements Serializable {
-
+@EqualsAndHashCode
+public class MemberBookDetailRecordId {
     private Long memberId;
-
-    private Long bookCommentId;
+    private Long bookDetailId;
+    private LocalDateTime rentalTime;
 }

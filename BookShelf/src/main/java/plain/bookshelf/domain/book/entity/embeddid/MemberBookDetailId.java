@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Embeddable
 @Getter
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @Builder
 public class MemberBookDetailId implements Serializable {
 
-    private Long userId;
+    private Long memberId;
 
     private Long bookDetailId;
 }

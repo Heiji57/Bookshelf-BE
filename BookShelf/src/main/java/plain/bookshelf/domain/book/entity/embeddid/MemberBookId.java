@@ -13,5 +13,5 @@ import java.io.Serializable;
 @Getter
 public class MemberBookId implements Serializable {
     private Long bookId;
-    private Long userId;
+    private Long memberId;
 }

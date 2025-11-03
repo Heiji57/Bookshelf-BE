@@ -8,10 +8,13 @@ import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.BookRentalRecord;
 import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
+import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailRecordId;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;
+import plain.bookshelf.domain.managerpage.exception.NotFoundRentalRequestBookException;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
+import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 
@@ -24,13 +27,15 @@ public class RentalRequestPassService {
     private final BookRentalRecordRepository bookRentalRecordRepository;
 
     public boolean rentalRequestPass(String registrationNumber){
-        BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumberAndRentalRequestStatusTrue(registrationNumber);
+        BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumberAndRentalRequestStatusTrue(registrationNumber)
+                .orElseThrow(() -> new NotFoundRentalRequestBookException(ErrorCode.NOT_FOUND_RENTAL_REQUEST_BOOK));
+
         Member member = memberRepository.findByBookDetailRenter(bookDetail.getRentalRequestMember());
         Book book = bookDetail.getBook();
 
-        MemberBookDetailId id = new MemberBookDetailId(member.getId(), bookDetail.getId());
-
         LocalDateTime now = LocalDateTime.now();
+        MemberBookDetailRecordId id = new MemberBookDetailRecordId(member.getId(), bookDetail.getId(), now);
+
 
         bookDetail.renter(member);
         bookDetail.rentalStatus(true);
@@ -38,11 +43,11 @@ public class RentalRequestPassService {
         bookDetail.rentalRequestMember(null);
         member.addOneMonthStatistics();
         book.addBookRentalCount();
+
         BookRentalRecord bookRentalRecord = BookRentalRecord.builder()
-                .memberBookDetailId(id)
+                .memberBookDetailRecordId(id)
                 .bookDetail(bookDetail)
                 .member(member)
-                .rentalTime(now)
                 .build();
 
         bookRentalRecordRepository.save(bookRentalRecord);

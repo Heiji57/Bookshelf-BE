@@ -2,6 +2,7 @@ package plain.bookshelf.domain.book.entity.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,15 +19,15 @@ public interface BookReservationRepository extends JpaRepository<BookReservation
     @EntityGraph(attributePaths = {"bookDetail", "bookDetail.book"})
     List<BookReservation> findBookReservationByMember(Member member);
 
-    List<BookReservation> findBookReservationByBookDetail(BookDetail bookDetail);
+    List<BookReservation> findByBookDetailOrderByReservationRankAsc(BookDetail bookDetail);
+
+    BookReservation findByBookDetailAndMember(BookDetail bookDetail, Member member);
 
     @Query("SELECT MAX(r.reservationRank) FROM BookReservation r WHERE r.bookDetail = :bookDetail")
     Integer findBookReservationMaxRankByBookDetail(@Param("bookDetail") BookDetail bookDetail);
 
-    Optional<BookReservation> findTopByBookDetailOrderByReservationRankAsc(BookDetail bookDetail);
-
-    @Query("SELECT br FROM BookReservation br " +
-            "WHERE br.reservationRank = 1 AND br.bookDetail = :bookDetail")
-    @EntityGraph(attributePaths = "member") // @EntityGraph attributePaths는 Member member <- 이부분임
-    Optional<BookReservation> findBookDetailByBookReservationRankAndBookDetail(@Param("bookDetail") BookDetail bookDetail);
+    @Modifying
+    @Query("UPDATE BookReservation br SET br.reservationRank = br.reservationRank - 1 " + //벌크 업서트 사용하는 법
+            "WHERE br.bookDetail = :bookDetail AND br.reservationRank > 1")
+    void decreaseBookReservationRanks(@Param("bookDetail") BookDetail bookDetail);
 }

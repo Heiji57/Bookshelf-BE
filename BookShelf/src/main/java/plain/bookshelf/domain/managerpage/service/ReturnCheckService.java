@@ -10,6 +10,9 @@ import plain.bookshelf.domain.book.entity.BookReservation;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;
 import plain.bookshelf.domain.book.entity.repository.BookReservationRepository;
+import plain.bookshelf.domain.managerpage.exception.NotFoundBookRentalRecordException;
+import plain.bookshelf.domain.managerpage.exception.NotFoundRentalRequestBookException;
+import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,41 +25,50 @@ public class ReturnCheckService {
     private final BookReservationRepository bookReservationRepository;
     private final BookRentalRecordRepository bookRentalRecordRepository;
 
+    private static final LocalDateTime RETURN_DATE = LocalDateTime.now().plusDays(14);
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean returnCheck(String registrationNumber) {
-        BookDetail bookDetail = bookDetailRepository.findByRegistrationNumberAndRentalStatusTrue(registrationNumber);
-        BookRentalRecord bookRentalRecord = bookRentalRecordRepository.findByBookDetail(bookDetail);
+        BookDetail bookDetail = bookDetailRepository.findByRegistrationNumberAndRentalStatusTrue(registrationNumber)
+                .orElseThrow(() -> new NotFoundRentalRequestBookException(ErrorCode.NOT_FOUND_RENTAL_REQUEST_BOOK));
 
-        Optional<BookReservation> bookReservation = bookReservationRepository.findBookDetailByBookReservationRankAndBookDetail(bookDetail);
-        List<BookReservation> bookReservations = bookReservationRepository.findBookReservationByBookDetail(bookDetail);
+        BookRentalRecord bookRentalRecord = bookRentalRecordRepository.findByBookDetailAndReturnTimeIsNull(bookDetail)
+                .orElseThrow(() -> new NotFoundBookRentalRecordException(ErrorCode.NOT_FOUND_BOOK_RENTAL_RECORD));
+
+        List<BookReservation> bookReservations = bookReservationRepository.findByBookDetailOrderByReservationRankAsc(bookDetail);
 
         LocalDateTime now = LocalDateTime.now();
 
         if (bookDetail.isOverDueStatus()) {
-            LocalDateTime overDueDate = now.minusDays(bookDetail.getReturnDate().getDayOfMonth());
-            bookDetail.getMember().overduePeriod(overDueDate.getDayOfYear());
+            long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(bookDetail.getReturnDate().toLocalDate(), now.toLocalDate()); // 이렇게 하면 정확한 시간 비교가능
+            if (overdueDays > 0) {
+                bookDetail.getMember().overduePeriod((int) overdueDays);
+            }
         }
 
-        if (bookReservation.isPresent()) {
-            Optional<BookReservation> nextReservation = bookReservationRepository.findTopByBookDetailOrderByReservationRankAsc(bookDetail);
-            bookDetail.renter(nextReservation.map(BookReservation::getMember).orElse(null));
-            bookReservationRepository.delete(nextReservation.get());
-            bookDetail.getMember().addOneMonthStatistics();
+        if (!bookReservations.isEmpty()) {
+            BookReservation nextRenter = bookReservations.get(0);
 
-            for (BookReservation book : bookReservations) {
-                book.minusReservationRank();
-            }
+            bookDetail.returnBookDate(RETURN_DATE);
+            bookDetail.renter(null);
+            bookDetail.rentalRequestStatus(true);
+            bookDetail.rentalRequestMember(nextRenter.getMember().getNickName());
+            bookDetail.requestDate(now);
+
+            bookReservationRepository.delete(nextRenter);
+
+            bookReservationRepository.decreaseBookReservationRanks(bookDetail);
         } else {
             bookDetail.renter(null);
             bookDetail.rentalRequestStatus(false);
             bookDetail.rentalStatus(false);
+            bookDetail.resetReservationCount();
         }
 
         bookRentalRecord.returnTime(now);
 
         bookRentalRecordRepository.save(bookRentalRecord);
         bookDetailRepository.save(bookDetail);
-        bookReservationRepository.saveAll(bookReservations);
 
         return true;
     }

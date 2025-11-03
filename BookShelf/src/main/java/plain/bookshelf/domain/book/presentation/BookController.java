@@ -20,8 +20,8 @@ public class BookController {
     private final ReservationBookService reservationBookService;
 
     @PatchMapping("/rental")
-    public ResponseEntity<?> rentalBook(@RequestParam String registrationName) {
-        rentalBookService.rentalBook(registrationName);
+    public ResponseEntity<?> rentalBook(@RequestParam String registrationNumber) {
+        rentalBookService.rentalBook(registrationNumber);
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
@@ -29,8 +29,8 @@ public class BookController {
     }
 
     @PatchMapping("/reservation")
-    public ResponseEntity<?> reservationBook(@RequestParam String registrationName) {
-        reservationBookService.reservationBook(registrationName);
+    public ResponseEntity<?> reservationBook(@RequestParam String registrationNumber) {
+        reservationBookService.reservationBook(registrationNumber);
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")

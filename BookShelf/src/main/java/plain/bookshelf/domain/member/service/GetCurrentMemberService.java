@@ -16,7 +16,7 @@ public class GetCurrentMemberService {
 
     public Member getCurrentMember() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return memberRepository.findByEmailsAddress(username)
+        return memberRepository.findByCredential(username)
                 .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

@@ -51,7 +51,8 @@ public class BookDetail {
     private String callNumber;
 
     @Column(name = "reservation_count", nullable = false)
-    private Integer reservationCount;
+    @Builder.Default
+    private Integer reservationCount = 0;
 
     @Column(name = "rental_request_member", nullable = true)
     private String rentalRequestMember;
@@ -110,4 +111,7 @@ public class BookDetail {
         this.rentalStatus = rentalStatus;
     }
 
+    public void resetReservationCount() {
+        this.reservationCount = 0;
+    }
 }

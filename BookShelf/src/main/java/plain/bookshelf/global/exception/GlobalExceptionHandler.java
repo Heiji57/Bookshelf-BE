@@ -9,6 +9,8 @@ import plain.bookshelf.domain.book.exception.*;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.exception.NotExistEmailException;
+import plain.bookshelf.domain.managerpage.exception.NotFoundBookRentalRecordException;
+import plain.bookshelf.domain.managerpage.exception.NotFoundRentalRequestBookException;
 import plain.bookshelf.domain.member.exception.*;
 import plain.bookshelf.global.security.exception.AccessTokenValueNotValidException;
 import plain.bookshelf.global.security.exception.RefreshTokenValueNotValidException;
@@ -196,6 +198,50 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MemberOverdueException.class)
     protected ResponseEntity<ErrorResponseDto> handleCustomException(MemberOverdueException e, HttpServletRequest request) {
         log.error("[ExceptionHandler] MemberOverdueException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(AlreadyReservationException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(AlreadyReservationException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] AlreadyReservationException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(AlreadyReservationOrRentalException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(AlreadyReservationOrRentalException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] AlreadyReservationOrRentalException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(NotFoundRentalRequestBookException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(NotFoundRentalRequestBookException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] NotFoundRentalBookException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
+
+        ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(responseDto);
+    }
+
+    @ExceptionHandler(NotFoundBookRentalRecordException.class)
+    protected ResponseEntity<ErrorResponseDto> handleCustomException(NotFoundBookRentalRecordException e, HttpServletRequest request) {
+        log.error("[ExceptionHandler] NotFoundBookRentalRecordException - URI: {}. Code: {}, Message: {}", request.getRequestURI(), e.getErrorCode(), e.getMessage());
 
         ErrorResponseDto responseDto = ErrorResponseDto.of(e.getErrorCode());
 

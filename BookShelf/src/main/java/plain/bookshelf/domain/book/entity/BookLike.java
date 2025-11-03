@@ -20,7 +20,7 @@ public class BookLike {
     @JoinColumn(name = "book")
     private Book book;
 
-    @MapsId("userId")
+    @MapsId("memberId")
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;

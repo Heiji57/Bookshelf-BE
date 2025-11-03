@@ -12,7 +12,6 @@ import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 import plain.bookshelf.domain.member.entity.Member;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface BookReservationRepository extends JpaRepository<BookReservation, MemberBookDetailId> {

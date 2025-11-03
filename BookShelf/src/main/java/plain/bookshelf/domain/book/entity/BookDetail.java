@@ -114,4 +114,8 @@ public class BookDetail {
     public void resetReservationCount() {
         this.reservationCount = 0;
     }
+
+    public void overDueStatus(boolean overDueStatus) {
+        this.overDueStatus = overDueStatus;
+    }
 }

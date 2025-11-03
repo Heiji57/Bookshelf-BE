@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plain.bookshelf.domain.mypage.presentation.dto.request.RetouchMemberInfoRequestDto;
 import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageResponseDto;
 import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageUserInfoResponseDto;
 import plain.bookshelf.domain.mypage.service.GetMyPageService;

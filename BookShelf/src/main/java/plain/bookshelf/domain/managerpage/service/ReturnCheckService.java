@@ -16,7 +16,6 @@ import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +50,7 @@ public class ReturnCheckService {
 
             bookDetail.returnBookDate(RETURN_DATE);
             bookDetail.renter(null);
+            bookDetail.overDueStatus(false);
             bookDetail.rentalRequestStatus(true);
             bookDetail.rentalRequestMember(nextRenter.getMember().getNickName());
             bookDetail.requestDate(now);
@@ -62,6 +62,7 @@ public class ReturnCheckService {
             bookDetail.renter(null);
             bookDetail.rentalRequestStatus(false);
             bookDetail.rentalStatus(false);
+            bookDetail.overDueStatus(false);
             bookDetail.resetReservationCount();
         }
 

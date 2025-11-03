@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/email/send", "/api/email/verify", "/api/auth/find-id/**", "/api/auth/find-password/**").permitAll()
                         .requestMatchers("/api/book/search/index").hasRole("ADMIN")
-                        .requestMatchers("/api/manager/**", "/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/api/manage/**", "/manage/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/mypage/**").hasAnyRole("USER", "MANAGER",  "ADMIN")
                         .anyRequest().hasAnyRole("USER", "MANAGER", "ADMIN")
                 )

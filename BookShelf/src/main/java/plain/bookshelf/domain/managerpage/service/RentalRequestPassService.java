@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.BookRentalRecord;
-import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailRecordId;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;

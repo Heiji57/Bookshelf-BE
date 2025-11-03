@@ -20,18 +20,9 @@ public class BookRentalDateScheduler {
     private final BookDetailRepository bookDetailRepository;
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void checkRentalStatus() {
-        LocalDateTime today = LocalDateTime.now();
+    public void updateOverDueStatus() {
+        LocalDateTime now = LocalDateTime.now();
 
-        List<BookDetail> bookDetails = bookDetailRepository.findByRentalStatusTrueAndReturnDateBefore(today);
-
-        if (bookDetails.isEmpty()) {
-            return;
-        }
-
-        for (BookDetail bookDetail : bookDetails) {
-            bookDetail.markAsOverDue();
-        }
-        bookDetailRepository.saveAll(bookDetails);
+        bookDetailRepository.overDueStatus(now);
     }
 }

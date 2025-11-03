@@ -4,7 +4,6 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Embeddable
 @Getter

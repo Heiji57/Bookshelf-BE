@@ -91,16 +91,8 @@ public class Member {
         this.overduePeriod = overduePeriod;
     }
 
-    public void resetOneMonthStatistics(Integer monthStatistics) {
-        this.monthStatistics = monthStatistics;
-    }
-
     public void addOneMonthStatistics() {
         this.monthStatistics++;
-    }
-
-    public void setOverduePeriod() {
-        this.overduePeriod--;
     }
 
     public void setProfile(String profilePicture) {

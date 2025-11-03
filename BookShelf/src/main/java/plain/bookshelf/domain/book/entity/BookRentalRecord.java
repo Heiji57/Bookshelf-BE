@@ -2,7 +2,6 @@ package plain.bookshelf.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailId;
 import plain.bookshelf.domain.book.entity.embeddid.MemberBookDetailRecordId;
 import plain.bookshelf.domain.member.entity.Member;
 

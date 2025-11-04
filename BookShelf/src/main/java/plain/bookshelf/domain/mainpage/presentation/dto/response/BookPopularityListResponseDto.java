@@ -4,11 +4,10 @@ import plain.bookshelf.domain.book.entity.Book;
 
 public record BookPopularityListResponseDto(
         Long id,
-        String title,
+        String bookName,
         String author,
         String bookType,
-        String bookImageUrl,
-        Long rentalCount
+        String bookImageUrl
 ) {
     public static BookPopularityListResponseDto of(Book book) {
         return new BookPopularityListResponseDto(
@@ -16,8 +15,7 @@ public record BookPopularityListResponseDto(
                 book.getBookName(),
                 book.getBookAuthor(),
                 book.getBookType(),
-                book.getBookImage(),
-                book.getRentalCount()
+                book.getBookImage()
         );
     }
 }

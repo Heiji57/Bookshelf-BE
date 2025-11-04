@@ -29,5 +29,6 @@ public class BookCommentRetouchService {
         }
 
         bookComment.retouchComment(chat);
+        bookCommentRepository.save(bookComment);
     }
 }

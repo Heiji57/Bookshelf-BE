@@ -1,4 +1,4 @@
-package plain.bookshelf.domain.search.service;
+package plain.bookshelf.domain.book.service;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +8,9 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
-import plain.bookshelf.domain.search.document.BookDocument;
-import plain.bookshelf.domain.search.document.repository.BookSearchRepository;
-import plain.bookshelf.domain.search.presentation.dto.response.BookSearchResultResponseDto;
+import plain.bookshelf.domain.book.presentation.dto.request.BookDocument;
+import plain.bookshelf.domain.book.entity.repository.BookSearchRepository;
+import plain.bookshelf.domain.book.presentation.dto.response.BookSearchResultResponseDto;
 
 import java.util.List;
 

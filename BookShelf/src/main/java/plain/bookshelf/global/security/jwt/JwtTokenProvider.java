@@ -101,10 +101,15 @@ public class JwtTokenProvider {
         return subject;
     }
 
-    public Affiliation getAffiliationFromToken(String token) {
+    public Long getAffiliationIdFromToken(String token) throws IllegalAccessException {
         Claims claims = parseClaims(token);
 
-        return claims.get("affiliationId", Affiliation.class);
+        Object affiliationId = claims.get("affiliationId");
+        if (affiliationId instanceof Number) {
+            return ((Number) affiliationId).longValue();
+        }
+
+        throw new IllegalAccessException(ErrorCode.INVALID_TOKEN_VALUE.toString());
     }
 
     // Access Token을 받아서 Authentication 객체를 반환하는 메서드

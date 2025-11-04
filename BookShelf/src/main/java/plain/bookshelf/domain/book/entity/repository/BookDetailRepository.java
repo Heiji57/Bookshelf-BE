@@ -44,10 +44,6 @@ public interface BookDetailRepository extends JpaRepository<BookDetail, Long> {
             "WHERE m.nickName = :nickname")
     List<BookDetail> findByMemberNickName(@Param("nickname")String nickName);
 
-    @Query("SELECT b AS totalCount FROM Book b LEFT JOIN BookDetail bd ON b.id = bd.book.id " +
-            "GROUP BY b ORDER BY (b.rentalCount + COALESCE(SUM(bd.reservationCount), 0)) DESC, b.rentalCount DESC ")
-    List<Book> findAllOrderByCombinedCounts(Pageable pageable);
-
     @Modifying
     @Query("UPDATE BookDetail bd SET bd.overDueStatus = true WHERE bd.rentalStatus = true AND bd.returnDate < :now")
     void overDueStatus(@Param("now") LocalDateTime now);

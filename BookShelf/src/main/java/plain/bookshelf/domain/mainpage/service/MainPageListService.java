@@ -2,12 +2,9 @@ package plain.bookshelf.domain.mainpage.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.book.entity.Book;
-import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.BookPopularityListResponseDto;
 import plain.bookshelf.domain.mainpage.presentation.dto.response.BookRecentListResponseDto;
@@ -23,24 +20,19 @@ import java.util.List;
 public class  MainPageListService {
 
     private final BookRepository bookRepository;
-    private final BookDetailRepository bookDetailRepository;
     private final GetCurrentMemberService getCurrentMemberService;
 
     public MainListResponseDto responseRecentList() {
         Member currentMember = getCurrentMemberService.getCurrentMember();
-        List<Book> popularEntities = bookDetailRepository.findAllOrderByCombinedCounts(PageRequest.of(0, 100));
+        List<Book> popularEntities = bookRepository.findAllOrderByCombinedCountsDesc(PageRequest.of(0, 100));
 
         List<BookPopularityListResponseDto> popularList = popularEntities.stream()
                 .map(BookPopularityListResponseDto::of)
                 .toList();
 
-        Sort sortRecent = Sort.by(Sort.Direction.DESC, "bookDate");
+        List<Book> sortRecent = bookRepository.findAllOrderByPublicationDateDesc(PageRequest.of(0, 100)); // 출판일에 null 값이 존재해서 대처
 
-        Pageable pageableRecent = PageRequest.of(0, 100, sortRecent);
-
-        List<Book> recentEntities = bookRepository.findAll(pageableRecent).getContent();
-
-        List<BookRecentListResponseDto> recentList = recentEntities.stream()
+        List<BookRecentListResponseDto> recentList = sortRecent.stream()
                 .map(BookRecentListResponseDto::of)
                 .toList();
 

@@ -25,13 +25,13 @@ public class GetBookDetailPageService {
     private final BookCommentRepository bookCommentRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public BookDetailPageResponseDto getBookDetailPage(Long book_id, HttpServletRequest request) {
+    public BookDetailPageResponseDto getBookDetailPage(Long bookId, HttpServletRequest request) throws IllegalAccessException {
         String accessToken = jwtTokenProvider.resolveToken(request);
-        Long affiliationId = jwtTokenProvider.getAffiliationFromToken(accessToken).getId();
+        Long affiliationId = jwtTokenProvider.getAffiliationIdFromToken(accessToken);
 
-        Book book = bookRepository.findBookById(book_id);
-        List<BookDetail> bookDetails = bookDetailRepository.findByBookIdAndAffiliationId(book_id, affiliationId);
-        List<BookComment> bookComments = bookCommentRepository.findBookCommentByBookId(book_id);
+        Book book = bookRepository.findBookById(bookId);
+        List<BookDetail> bookDetails = bookDetailRepository.findByBookIdAndAffiliationId(bookId, affiliationId);
+        List<BookComment> bookComments = bookCommentRepository.findBookCommentByBookId(bookId);
 
         List<CollectionInformationResponseDto> collectionInformationResponseDtos = bookDetails.stream()
                 .map(CollectionInformationResponseDto::of)
@@ -42,11 +42,11 @@ public class GetBookDetailPageService {
                 .toList();
 
         return BookDetailPageResponseDto.of(
-                book_id,
+                bookId,
                 book.getBookName(),
                 book.getPublisher(),
                 book.getBookImage(),
-                book.getBookImage(),
+                book.getBookIntroduction(),
                 book.getBookType(),
                 book.getPublicationDate(),
                 book.getLikeCount(),

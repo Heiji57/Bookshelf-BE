@@ -6,11 +6,10 @@ import java.time.LocalDate;
 
 public record BookRecentListResponseDto(
         Long id,
-        String title,
+        String bookName,
         String author,
         String bookType,
-        String bookImageUrl,
-        LocalDate bookDate
+        String bookImageUrl
 ) {
     public static BookRecentListResponseDto of(Book book) {
         return new BookRecentListResponseDto(
@@ -18,8 +17,7 @@ public record BookRecentListResponseDto(
                 book.getBookName(),
                 book.getBookAuthor(),
                 book.getBookType(),
-                book.getBookImage(),
-                book.getPublicationDate()
+                book.getBookImage()
         );
     }
 }

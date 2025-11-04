@@ -13,13 +13,13 @@ import plain.bookshelf.global.dto.StatusResponseDto;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book/{book_id}")
-public class BookDetailController {
+public class    BookDetailController {
 
     private final GetBookDetailPageService getBookDetailPageService;
     private final BookLikeService bookLikeService;
 
     @GetMapping
-    public ResponseEntity<?> getBookDetail(@PathVariable Long book_id, HttpServletRequest request) { // HttpServletRequest 토큰 정보 들고 오려고 사용
+    public ResponseEntity<?> getBookDetail(@PathVariable Long book_id, HttpServletRequest request) throws IllegalAccessException { // HttpServletRequest 토큰 정보 들고 오려고 사용
         BookDetailPageResponseDto bookDetailPageResponseDto = getBookDetailPageService.getBookDetailPage(book_id, request);
 
         return ResponseEntity.ok()

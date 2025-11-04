@@ -40,6 +40,7 @@ public enum ErrorCode {
 
     // Server Error 400
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C401", "부적절한 요청 데이터입니다."),
+    INVALID_TOKEN_VALUE(HttpStatus.FORBIDDEN, "C402", "토큰에서 값을 추출할 수 없습니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C403", "허용되지 않은 HTTP 메서드입니다."),
 
     // --- 최후의 방어선 --- 999

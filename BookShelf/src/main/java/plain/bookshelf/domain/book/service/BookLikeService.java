@@ -31,6 +31,7 @@ public class BookLikeService {
         if (existingLike.isPresent()) {
             bookLikeRepository.delete(existingLike.get());
             book.decrementLikeCount();
+            bookRepository.save(book);
             return false;
         } else {
             BookLike newLike = BookLike.builder()
@@ -42,6 +43,7 @@ public class BookLikeService {
 
             bookLikeRepository.save(newLike);
             book.incrementLikeCount();
+            bookRepository.save(book);
             return true;
         }
     }

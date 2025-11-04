@@ -13,6 +13,6 @@ public class StatusResponseDto<T> {
     private T data;
 
     public static <T> StatusResponseDto<T> of(HttpStatus status, String message, T data) {
-        return new StatusResponseDto<T>(status, message, data);
+        return new StatusResponseDto<>(status, message, data);
     }
 }

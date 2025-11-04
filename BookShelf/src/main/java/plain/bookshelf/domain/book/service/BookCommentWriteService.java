@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookComment;
+import plain.bookshelf.domain.book.entity.repository.BookCommentRepository;
 import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.service.GetCurrentMemberService;
@@ -16,6 +17,7 @@ public class BookCommentWriteService {
 
     private final BookRepository bookRepository;
     private final GetCurrentMemberService getCurrentMemberService;
+    private final BookCommentRepository bookCommentRepository;
 
     public void bookCommentWrite(String chat, Long bookId) {
         Member member = getCurrentMemberService.getCurrentMember();
@@ -23,12 +25,14 @@ public class BookCommentWriteService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        BookComment.builder()
+        BookComment bookComment = BookComment.builder()
                 .book(book)
                 .member(member)
                 .writeMemberName(member.getNickName())
                 .chat(chat)
                 .chatTime(now)
                 .build();
+
+        bookCommentRepository.save(bookComment);
     }
 }

@@ -1,4 +1,4 @@
-package plain.bookshelf.domain.search.document;
+package plain.bookshelf.domain.book.presentation.dto.request;
 
 import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.time.LocalDate;
 
 @Document(indexName = "books_index")
-public record   BookDocument(
+public record BookDocument(
         @Id
         String id,
 

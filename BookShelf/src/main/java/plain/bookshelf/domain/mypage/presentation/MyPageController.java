@@ -8,8 +8,7 @@ import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageResponse
 import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageUserInfoResponseDto;
 import plain.bookshelf.domain.mypage.service.GetMyPageService;
 import plain.bookshelf.domain.mypage.service.GetMyPageUserInfoService;
-import plain.bookshelf.domain.mypage.service.RetouchMemberInfoService;
-import plain.bookshelf.global.StatusResponseDto;
+import plain.bookshelf.global.dto.StatusResponseDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +16,6 @@ import plain.bookshelf.global.StatusResponseDto;
 public class MyPageController {
 
     private final GetMyPageService getMyPageService;
-    private final RetouchMemberInfoService retouchMemberInfoService;
     private final GetMyPageUserInfoService getMyPageUserInfoService;
 
     @GetMapping

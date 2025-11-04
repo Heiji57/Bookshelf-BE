@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.book.presentation.dto.response.BookDetailPageResponseDto;
 import plain.bookshelf.domain.book.service.BookLikeService;
 import plain.bookshelf.domain.book.service.GetBookDetailPageService;
-import plain.bookshelf.global.StatusResponseDto;
+import plain.bookshelf.global.dto.StatusResponseDto;
 
 @RestController
 @RequiredArgsConstructor

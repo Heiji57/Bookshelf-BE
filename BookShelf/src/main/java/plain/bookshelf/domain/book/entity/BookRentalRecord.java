@@ -18,7 +18,7 @@ public class BookRentalRecord {
     @EmbeddedId
     private MemberBookDetailRecordId memberBookDetailRecordId;
 
-    @Column(name = "return_time", nullable = true)
+    @Column(name = "return_time")
     @Builder.Default
     private LocalDateTime returnTime = null;
 
@@ -28,7 +28,7 @@ public class BookRentalRecord {
     private BookDetail bookDetail;
 
     @MapsId("memberId")
-    @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
 

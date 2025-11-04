@@ -1,11 +1,13 @@
 package plain.bookshelf.domain.managerpage.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.managerpage.presentation.dto.response.RentalStatusPageResponseDto;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
+import plain.bookshelf.global.dto.TotalPageResponseDto;
 
 import java.util.List;
 
@@ -14,12 +16,18 @@ import java.util.List;
 public class RentalStatusPageService {
     private final BookDetailRepository bookDetailRepository;
 
-    public List<RentalStatusPageResponseDto> getRentalAllStatusPage(Pageable pageable) {
-        List<BookDetail> bookDetails = bookDetailRepository.findByRentalStatusTrue(pageable);
+    public TotalPageResponseDto getRentalAllStatusPage(Pageable pageable) {
+        Page<BookDetail> bookDetails = bookDetailRepository.findByRentalStatusTrue(pageable);
 
-        return bookDetails.stream()
+        List<RentalStatusPageResponseDto> rentalStatusPageResponseDtos = bookDetails.stream()
                 .map(RentalStatusPageResponseDto::of)
                 .toList();
+
+        return TotalPageResponseDto.of(
+                bookDetails.getTotalPages(),
+                bookDetails.getTotalElements(),
+                rentalStatusPageResponseDtos
+        );
     }
 
     public List<RentalStatusPageResponseDto> getRentalNickNameStatusPage(String nickName) {
@@ -30,11 +38,17 @@ public class RentalStatusPageService {
                 .toList();
     }
 
-    public List<RentalStatusPageResponseDto> getRentalOverDueStatusPage(Pageable pageable) {
-        List<BookDetail> bookDetails = bookDetailRepository.findByOverDueStatusTrue(pageable);
+    public TotalPageResponseDto getRentalOverDueStatusPage(Pageable pageable) {
+        Page<BookDetail> bookDetails = bookDetailRepository.findByOverDueStatusTrue(pageable);
 
-        return bookDetails.stream()
+        List<RentalStatusPageResponseDto> rentalStatusPageResponseDtos = bookDetails.stream()
                 .map(RentalStatusPageResponseDto::of)
                 .toList();
+
+        return TotalPageResponseDto.of(
+                bookDetails.getTotalPages(),
+                bookDetails.getTotalElements(),
+                rentalStatusPageResponseDtos
+        );
     }
 }

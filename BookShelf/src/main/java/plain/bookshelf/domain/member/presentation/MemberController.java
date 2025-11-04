@@ -13,7 +13,7 @@ import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestD
 import plain.bookshelf.domain.email.service.FindUsernameSendService;
 import plain.bookshelf.domain.member.presentation.dto.request.*;
 import plain.bookshelf.domain.member.service.*;
-import plain.bookshelf.global.StatusResponseDto;
+import plain.bookshelf.global.dto.StatusResponseDto;
 import plain.bookshelf.domain.member.service.LogoutService;
 import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.jwt.JwtTokenDto;

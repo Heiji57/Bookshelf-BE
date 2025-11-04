@@ -14,7 +14,7 @@ public record RentalApprovalResponseDto(
         return new RentalApprovalResponseDto(
                 bookDetail.getBook().getBookName(),
                 bookDetail.getRegistrationNumber(),
-                bookDetail.getMember().getNickName(),
+                bookDetail.getRentalRequestMember(),
                 bookDetail.getRentalRequestDate()
         );
     }

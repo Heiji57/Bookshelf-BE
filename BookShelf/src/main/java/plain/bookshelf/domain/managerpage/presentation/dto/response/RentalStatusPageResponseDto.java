@@ -8,7 +8,7 @@ public record RentalStatusPageResponseDto(
         String nickName,
         String bookName,
         String registrationNumber,
-        LocalDateTime rentalDate,
+        LocalDateTime returnDate,
         boolean overdueStatus
 ) {
     public static RentalStatusPageResponseDto of(BookDetail bookDetail) {

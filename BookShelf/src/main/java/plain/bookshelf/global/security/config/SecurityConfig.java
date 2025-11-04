@@ -44,8 +44,12 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
+
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .addFilterBefore(jwtAuthenticationFilter.jwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService), UsernamePasswordAuthenticationFilter.class)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/email/send", "/api/email/verify", "/api/auth/find-id/**", "/api/auth/find-password/**").permitAll()
                         .requestMatchers("/api/book/search/index").hasRole("ADMIN")
@@ -54,10 +58,7 @@ public class SecurityConfig {
                         .anyRequest().hasAnyRole("USER", "MANAGER", "ADMIN")
                 )
                 .logout(AbstractHttpConfigurer::disable
-                )
-
-        // JwtFilter 직접 등록
-        .addFilterBefore(jwtAuthenticationFilter.jwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService), UsernamePasswordAuthenticationFilter.class);
+                );
 
         return http.build();
     }

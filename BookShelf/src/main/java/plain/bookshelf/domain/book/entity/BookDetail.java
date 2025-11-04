@@ -30,7 +30,7 @@ public class BookDetail {
     @Builder.Default
     private boolean rentalStatus = false;
 
-    @Column(name = "rental_request_date", nullable = true)
+    @Column(name = "rental_request_date")
     private LocalDateTime rentalRequestDate;
 
     @Column(name = "rental_request_status", nullable = false)
@@ -41,7 +41,7 @@ public class BookDetail {
     @Builder.Default
     private boolean overDueStatus = false;
 
-    @Column(name = "return_date", nullable = true)
+    @Column(name = "return_date")
     private LocalDateTime returnDate;
 
     @Column(name = "registration_number", nullable = false, unique = true)
@@ -52,12 +52,12 @@ public class BookDetail {
 
     @Column(name = "reservation_count", nullable = false)
     @Builder.Default
-    private Integer reservationCount = 0;
+    private Long reservationCount = 0L;
 
-    @Column(name = "rental_request_member", nullable = true)
+    @Column(name = "rental_request_member")
     private String rentalRequestMember;
 
-    @ManyToOne(optional = true, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member; // 대여자
 
@@ -69,7 +69,7 @@ public class BookDetail {
     @JoinColumn(name = "affiliation")
     private Affiliation affiliation;
 
-    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "bookDetail", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @Builder.Default
     private List<BookRentalRecord> bookRentalRecord = new ArrayList<>();
 
@@ -77,11 +77,6 @@ public class BookDetail {
     @Builder.Default
     private List<BookReservation> bookReservation = new ArrayList<>();
 
-    public void markAsOverDue() {
-        if (this.rentalStatus) {
-            this.overDueStatus = true;
-        }
-    }
 
     public void returnBookDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
@@ -112,7 +107,7 @@ public class BookDetail {
     }
 
     public void resetReservationCount() {
-        this.reservationCount = 0;
+        this.reservationCount = 0L;
     }
 
     public void overDueStatus(boolean overDueStatus) {

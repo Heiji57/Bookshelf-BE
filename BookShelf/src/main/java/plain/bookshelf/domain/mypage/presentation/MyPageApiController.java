@@ -23,7 +23,7 @@ public class MyPageApiController {
                 .build();
     }
 
-    @PostMapping("/retouch")
+    @PutMapping("/retouch")
     public ResponseEntity<?> retouchMemberInfo(@PathVariable Long user_id, @RequestBody RetouchMemberInfoRequestDto retouchMemberInfoRequestDto) {
         retouchMemberInfoService.retouchMemberInfo(user_id, retouchMemberInfoRequestDto);
         return ResponseEntity.ok()

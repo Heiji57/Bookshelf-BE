@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.managerpage.service.*;
-import plain.bookshelf.global.StatusResponseDto;
+import plain.bookshelf.global.dto.StatusResponseDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class ManagerPageController {
     private final RentalStatusPageService rentalStatusPageService;
 
     @GetMapping("/approval-page")
-    public ResponseEntity<?> approveApprovalPage(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<?> approveApprovalPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return ResponseEntity.ok()
@@ -26,10 +26,10 @@ public class ManagerPageController {
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get approval page", approvalPageService.getRentalApprovalResponseDto(pageable)));
     }
 
-    @GetMapping("/rental-status/{nick_name}")
-    public ResponseEntity<?> searchByNickNameResult(@PathVariable String nick_name) {
+    @GetMapping("/rental-status/nickname")
+    public ResponseEntity<?> searchByNickNameResult(@RequestParam String nickName) {
         return ResponseEntity.ok()
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully search by nickname", rentalStatusPageService.getRentalNickNameStatusPage(nick_name)));
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully search by nickname", rentalStatusPageService.getRentalNickNameStatusPage(nickName)));
     }
 
     @GetMapping("/rental-status")

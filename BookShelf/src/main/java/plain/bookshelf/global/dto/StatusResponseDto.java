@@ -1,4 +1,4 @@
-package plain.bookshelf.global;
+package plain.bookshelf.global.dto;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

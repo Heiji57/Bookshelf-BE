@@ -11,7 +11,7 @@ import plain.bookshelf.domain.email.presentation.dto.request.GetEmailRequestDto;
 import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestDto;
 import plain.bookshelf.domain.email.service.SendVerificationCodeService;
 import plain.bookshelf.domain.email.service.VerifyEmailService;
-import plain.bookshelf.global.StatusResponseDto;
+import plain.bookshelf.global.dto.StatusResponseDto;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @RestController

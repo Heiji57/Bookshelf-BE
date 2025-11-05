@@ -1,0 +1,52 @@
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  datasource:
+    hikari:
+      max-lifetime: ${DB_LIFETIME}
+
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST}:5432/postgres
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  mail:
+    host: ${EMAIL_HOST}
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    show-sql: true
+
+    properties:
+      hibernate.default_schema: public
+      jackson:
+        property-naming-strategy: SNAKE_CASE
+
+  elasticsearch:
+    uris: http://localhost:9200
+
+jwt:
+
+  access_token_expiration_time: ${JWT_ACCESS_TOKEN_EXPIRATION} # 60분 * 60초 * 1000ms = 3,600,000ms 1시간이라고 함 그니까 난 30분
+
+  refresh_token_expiration_time: ${JWT_REFRESH_TOKEN_EXPIRATION} # 14일 * 24시간 * 60분 * 60초 * 1000ms = 1,209,600,000ms
+
+  secret: ${JWT_TOKEN_SECRET}
+
+
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG

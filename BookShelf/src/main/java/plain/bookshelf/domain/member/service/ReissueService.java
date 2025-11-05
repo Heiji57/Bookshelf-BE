@@ -9,6 +9,7 @@ import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 import plain.bookshelf.global.security.exception.RefreshTokenValueNotValidException;
+import plain.bookshelf.global.security.jwt.JwtProperties;
 import plain.bookshelf.global.security.jwt.JwtTokenDto;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 
@@ -17,6 +18,7 @@ import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 public class ReissueService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtProperties jwtProperties;
 
     /*
     Redis 사용해서 Transactional 필요 없음
@@ -40,7 +42,7 @@ public class ReissueService {
         }
 
         // 5. 새로운 토큰 생성
-        JwtTokenDto jwtTokenDto = jwtTokenProvider.generateToken(authentication);
+        JwtTokenDto jwtTokenDto = jwtTokenProvider.generateToken(jwtProperties, authentication);
 
         // 6. 저장소 정보 업데이트 및 TTL 설정
         refreshToken.updateValue(jwtTokenDto.getRefreshToken());

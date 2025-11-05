@@ -14,6 +14,7 @@ import plain.bookshelf.domain.member.presentation.dto.request.MemberLoginRequest
 import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
+import plain.bookshelf.global.security.jwt.JwtProperties;
 import plain.bookshelf.global.security.jwt.JwtTokenDto;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 
@@ -30,6 +31,7 @@ public class LoginService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     @Value("${jwt.refresh_token_expiration_time}")
     private Long expirationTime;
+    private final JwtProperties jwtProperties;
 
     public JwtTokenDto login(MemberLoginRequestDto memberLoginRequestDto) {
         if (memberRepository.findByUserName(memberLoginRequestDto.credential()).isEmpty()
@@ -47,7 +49,7 @@ public class LoginService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        JwtTokenDto jwtTokenDto = jwtTokenProvider.generateToken(authentication);
+        JwtTokenDto jwtTokenDto = jwtTokenProvider.generateToken(jwtProperties, authentication);
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()

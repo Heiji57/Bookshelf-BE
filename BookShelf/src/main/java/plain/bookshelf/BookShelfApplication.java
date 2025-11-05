@@ -10,7 +10,7 @@ import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "plain.bookshelf.domain")
-@EnableElasticsearchRepositories(basePackages = "plain.bookshelf.domain")
+@EnableElasticsearchRepositories(basePackages = "plain.bookshelf.domain.book")
 @EnableRedisRepositories(basePackageClasses = RefreshTokenRepository.class)
 @EnableScheduling
 public class BookShelfApplication {

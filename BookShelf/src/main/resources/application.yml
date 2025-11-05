@@ -31,11 +31,12 @@ spring:
 
     properties:
       hibernate.default_schema: public
-      jackson:
-        property-naming-strategy: SNAKE_CASE
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
   elasticsearch:
-    uris: http://localhost:9200
+    uris: ${ELASTICSEARCH_URIS}
 
 jwt:
 

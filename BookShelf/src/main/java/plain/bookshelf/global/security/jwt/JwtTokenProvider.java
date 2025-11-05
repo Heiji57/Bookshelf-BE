@@ -5,7 +5,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import plain.bookshelf.domain.affiliation.entity.Affiliation;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
@@ -33,23 +31,19 @@ public class JwtTokenProvider {
     private final MemberRepository memberRepository;
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    @Value("${jwt.access_token_expiration_time}")
-    private long ACCESS_TOKEN_EXPIRE_TIME;
-    @Value("${jwt.refresh_token_expiration_time}")
-    private long REFRESH_TOKEN_EXPIRE_TIME;
 
     private final Key key;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, MemberRepository memberRepository) {
+    public JwtTokenProvider(JwtProperties jwtProperties, MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
 
-        log.info(">>> JWT Secret Key 로드 값: {}", secretKey);
-            byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        log.info(">>> JWT Secret Key 로드 값: {}", jwtProperties.getSecret());
+            byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     // Access Token과 Refresh Token을 함께 생성하는 메서드
-    public JwtTokenDto generateToken(Authentication authentication) {
+    public JwtTokenDto generateToken(JwtProperties jwtProperties, Authentication authentication) {
         String username = authentication.getName();
 
         Member member = memberRepository.findByUserName(username)
@@ -65,7 +59,7 @@ public class JwtTokenProvider {
         long now = (new Date()).getTime();
 
         // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date accessTokenExpiresIn = new Date(now + jwtProperties.getAccessTokenExpirationTime());
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())           // payload "sub": "name"
                 .claim(AUTHORITIES_KEY, authorities)            // payload "auth": "ROLE_USER"
@@ -77,7 +71,7 @@ public class JwtTokenProvider {
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
                 // 수정: REFRESH_TOKEN_EXPIRE_TIME 변수가 정상적으로 주입되도록 static 키워드 제거
-                .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
+                .setExpiration(new Date(now + jwtProperties.getRefreshTokenExpirationTime()))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 

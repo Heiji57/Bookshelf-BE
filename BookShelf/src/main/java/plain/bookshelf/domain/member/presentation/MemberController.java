@@ -58,7 +58,7 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully delete user.", jwtTokenDto));
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully login user.", jwtTokenDto));
     }
 
     @PostMapping("/logout")

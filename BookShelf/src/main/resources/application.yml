@@ -51,4 +51,5 @@ jwt:
 
 
 logging:
-  config: classpath:logback-spring.xml
+  pattern:
+    level: DEBUG

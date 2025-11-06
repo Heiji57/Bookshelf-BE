@@ -44,8 +44,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody @Valid MemberDeleteRequestDto memberDeleteRequestDto) {
-        deleteUserService.userDelete(memberDeleteRequestDto);
+    public ResponseEntity<?> delete() {
+        deleteUserService.userDelete();
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")

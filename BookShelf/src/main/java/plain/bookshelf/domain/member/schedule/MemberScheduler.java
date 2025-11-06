@@ -8,7 +8,7 @@ import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class MemberScheduler {
 
     private final MemberRepository memberRepository;

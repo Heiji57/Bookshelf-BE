@@ -26,7 +26,7 @@ public class ReissueService {
     public JwtTokenDto reissue(TokenRequestDto tokenRequestDto) {
         // 1. RefreshToken 검증
         if (!jwtTokenProvider.validateToken(tokenRequestDto.refreshToken())) {
-            throw new RuntimeException("Refresh token이 유효하지 않습니다.");
+            throw new RefreshTokenValueNotValidException(ErrorCode.REFRESH_TOKEN_NOT_MATCH, tokenRequestDto.refreshToken());
         }
 
         // 2. Access Token 예시 Member ID 가져오기
@@ -38,7 +38,7 @@ public class ReissueService {
 
         // 4. Refresh Token 일치하는지 검사
         if (!refreshToken.getValue().equals(tokenRequestDto.refreshToken())) {
-            throw new RefreshTokenValueNotValidException(ErrorCode.REFRESH_TOKEN_NOT_MATCH, refreshToken.getValue());
+            throw new RefreshTokenValueNotValidException(ErrorCode.REFRESH_TOKEN_NOT_MATCH, tokenRequestDto.refreshToken());
         }
 
         // 5. 새로운 토큰 생성

@@ -40,3 +40,4 @@ src/main/resources/db/migration
 src/main/resources/static
 src/main/resources/templates
 src/main/resources/env.properties
+src/main/resources/logback-spring.xml

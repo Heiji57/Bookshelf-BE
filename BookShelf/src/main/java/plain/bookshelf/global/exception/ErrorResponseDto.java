@@ -1,16 +1,12 @@
 package plain.bookshelf.global.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import org.aspectj.lang.annotation.Aspect;
 
-@Getter
 @Builder
-public class ErrorResponseDto {
-
-    private final String code;
-    private final int status;
-    private final String message;
-    private final String details;
+@Aspect
+public record ErrorResponseDto(String code, int status, String message, String details) {
 
     // ErrorCode를 인자로 받아 ErrorResponse를 생성하는 팩토리 메서드
     public static ErrorResponseDto of(ErrorCode errorCode) {

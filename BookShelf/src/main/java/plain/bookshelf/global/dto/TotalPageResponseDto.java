@@ -1,7 +1,10 @@
 package plain.bookshelf.global.dto;
 
+import org.aspectj.lang.annotation.Aspect;
+
 import java.util.List;
 
+@Aspect
 public record TotalPageResponseDto(
         Integer totalPages,
         Long totalElements,

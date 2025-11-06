@@ -2,8 +2,10 @@ package plain.bookshelf.global.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpStatus;
 
+@Aspect
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {

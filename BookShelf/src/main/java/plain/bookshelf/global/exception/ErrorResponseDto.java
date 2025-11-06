@@ -1,6 +1,5 @@
 package plain.bookshelf.global.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.aspectj.lang.annotation.Aspect;
 

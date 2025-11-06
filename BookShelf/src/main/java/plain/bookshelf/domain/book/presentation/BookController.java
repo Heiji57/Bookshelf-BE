@@ -28,7 +28,7 @@ public class BookController {
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully rental book", ""));
     }
 
     @PatchMapping("/reservation")
@@ -37,7 +37,7 @@ public class BookController {
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully reservation book", ""));
     }
 
     @PostMapping("/comment/like")
@@ -55,7 +55,7 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully written", ""));
     }
 
     @PatchMapping("/comment/retouch")
@@ -64,7 +64,7 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully Retouched", ""));
     }
 
     @DeleteMapping("/comment/delete")
@@ -73,16 +73,26 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully deleted", ""));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<BookSearchResultResponseDto> searchBooks(
+    public ResponseEntity<?> searchBooks(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         BookSearchResultResponseDto bookSearchResultResponseDto = bookSearchService.searchBooks(keyword, page, size);
 
-        return ResponseEntity.ok(bookSearchResultResponseDto);
+        return ResponseEntity.ok()
+                .header("Content-Type", "application/json")
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully search", bookSearchResultResponseDto));
+    }
+
+    @PostMapping("/search/index")
+    public ResponseEntity<?> searchIndex() {
+        bookSearchService.indexBook();
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully indexed", ""));
     }
 }

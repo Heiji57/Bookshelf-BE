@@ -8,6 +8,8 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
+import plain.bookshelf.domain.book.entity.Book;
+import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.book.presentation.dto.request.BookDocument;
 import plain.bookshelf.domain.book.entity.repository.BookSearchRepository;
 import plain.bookshelf.domain.book.presentation.dto.response.BookSearchResultResponseDto;
@@ -18,11 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookSearchService {
 
+    private final BookRepository bookRepository;
     private final BookSearchRepository bookSearchRepository;
     private final ElasticsearchOperations elasticsearchOperations;
 
-    public BookDocument indexBook(BookDocument bookDocument) {
-        return bookSearchRepository.save(bookDocument);
+    public void indexBook() {
+        List<Book> books = bookRepository.findAll();
+        List<BookDocument> bookDocuments = books.stream()
+                .map(BookDocument::of).toList();
+
+        bookSearchRepository.saveAll(bookDocuments);
     }
 
     public BookSearchResultResponseDto searchBooks(String keyword, int page, int size) {

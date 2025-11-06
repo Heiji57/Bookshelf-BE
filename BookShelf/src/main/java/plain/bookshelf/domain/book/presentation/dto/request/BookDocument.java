@@ -4,13 +4,14 @@ import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import plain.bookshelf.domain.book.entity.Book;
 
 import java.time.LocalDate;
 
 @Document(indexName = "books_index")
 public record BookDocument(
         @Id
-        String id,
+        Long id,
 
         @Field(type = FieldType.Text, analyzer = "nori")
         String bookName,
@@ -28,12 +29,17 @@ public record BookDocument(
         String bookIntroduction,
 
         @Field(type = FieldType.Text, analyzer = "nori")
-        String bookType,
-
-        @Field(type = FieldType.Keyword)
-        String bookImageUrl,
-
-        @Field(type = FieldType.Long)
-        Long rentalCount
+        String bookType
 ) {
+    public static BookDocument of(Book book) {
+        return new BookDocument(
+                book.getId(),
+                book.getBookName(),
+                book.getBookAuthor(),
+                book.getPublisher(),
+                book.getPublicationDate(),
+                book.getBookIntroduction(),
+                book.getBookType()
+        );
+    }
 }

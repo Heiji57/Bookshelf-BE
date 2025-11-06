@@ -15,7 +15,7 @@ public class MyPageApiController {
     private final RetouchMemberInfoService retouchMemberInfoService;
     private final PostProfileService postProfileService;
 
-    @PatchMapping("/profile-post")
+    @PatchMapping("/profile-upload")
     public ResponseEntity<?> postProfile(@PathVariable Long user_id, @RequestParam String profile) {
         postProfileService.postProfile(user_id, profile);
         return ResponseEntity.ok()
@@ -23,7 +23,7 @@ public class MyPageApiController {
                 .build();
     }
 
-    @PutMapping("/retouch")
+    @PatchMapping("/retouch")
     public ResponseEntity<?> retouchMemberInfo(@PathVariable Long user_id, @RequestBody RetouchMemberInfoRequestDto retouchMemberInfoRequestDto) {
         retouchMemberInfoService.retouchMemberInfo(user_id, retouchMemberInfoRequestDto);
         return ResponseEntity.ok()

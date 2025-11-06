@@ -23,6 +23,7 @@ public class    BookDetailController {
         BookDetailPageResponseDto bookDetailPageResponseDto = getBookDetailPageService.getBookDetailPage(book_id, request);
 
         return ResponseEntity.ok()
+                .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.OK, "successfully get bookDetailPage.", bookDetailPageResponseDto));
     }
 

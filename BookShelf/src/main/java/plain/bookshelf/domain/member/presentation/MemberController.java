@@ -47,9 +47,9 @@ public class MemberController {
     public ResponseEntity<?> delete(@RequestBody @Valid MemberDeleteRequestDto memberDeleteRequestDto) {
         deleteUserService.userDelete(memberDeleteRequestDto);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+        return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully delete user.", ""));
     }
 
     @PostMapping("/login")

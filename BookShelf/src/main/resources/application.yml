@@ -5,6 +5,7 @@ spring:
       port: 6379
       ssl:
         enabled: true
+      timeout: 5000ms
 
   datasource:
     hikari:

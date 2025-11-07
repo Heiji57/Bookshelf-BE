@@ -40,7 +40,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
 
-                .cors(cors -> {})
+                .cors(cors -> new WebMvcFilter())
 
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)

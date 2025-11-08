@@ -32,7 +32,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
-        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/api/auth/signup") ||
+                requestURI.startsWith("/api/auth/login") ||
+                request.getMethod().equalsIgnoreCase("OPTIONS")) {
             filterChain.doFilter(request, response);
             return;
         }

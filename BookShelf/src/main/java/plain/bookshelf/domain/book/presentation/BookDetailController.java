@@ -32,6 +32,6 @@ public class    BookDetailController {
         boolean result = bookLikeService.toggleLike(book_id);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully liked.", result));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully book liked.", result));
     }
 }

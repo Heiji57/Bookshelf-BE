@@ -1,4 +1,4 @@
-package plain.bookshelf.domain.book.presentation.dto.request;
+package plain.bookshelf.domain.mainpage.presentation.dto.request;
 
 import jakarta.persistence.Id;
 import org.springframework.data.elasticsearch.annotations.Document;

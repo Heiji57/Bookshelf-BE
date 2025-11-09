@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.book.presentation.dto.request.BookChatRequestDto;
-import plain.bookshelf.domain.book.presentation.dto.response.BookSearchResultResponseDto;
 import plain.bookshelf.domain.book.service.*;
 import plain.bookshelf.global.dto.StatusResponseDto;
 
@@ -20,7 +19,6 @@ public class BookController {
     private final BookCommentRetouchService bookCommentRetouchService;
     private final DeleteBookCommentService deleteBookCommentService;
     private final ReservationBookService reservationBookService;
-    private final BookSearchService bookSearchService;
 
     @PatchMapping("/rental")
     public ResponseEntity<?> rentalBook(@RequestParam String registrationNumber) {
@@ -46,7 +44,7 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully Liked", result));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully comment liked", result));
     }
 
     @PostMapping("/comment/write")
@@ -55,7 +53,7 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully written", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully comment written", ""));
     }
 
     @PatchMapping("/comment/retouch")
@@ -64,7 +62,7 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully Retouched", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully comment retouched", ""));
     }
 
     @DeleteMapping("/comment/delete")
@@ -74,25 +72,5 @@ public class BookController {
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.NO_CONTENT, "successfully deleted", ""));
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> searchBooks(
-            @RequestParam String keyword,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        BookSearchResultResponseDto bookSearchResultResponseDto = bookSearchService.searchBooks(keyword, page, size);
-
-        return ResponseEntity.ok()
-                .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully search", bookSearchResultResponseDto));
-    }
-
-    @PostMapping("/search/index")
-    public ResponseEntity<?> searchIndex() {
-        bookSearchService.indexBook();
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully indexed", ""));
     }
 }

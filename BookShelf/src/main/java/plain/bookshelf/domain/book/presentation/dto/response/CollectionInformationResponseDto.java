@@ -6,7 +6,7 @@ public record CollectionInformationResponseDto(
         String affiliation,
         String registrationNumber,
         String callNumber,
-        Boolean status
+        Boolean rentalStatus
 ) {
 
     public static CollectionInformationResponseDto of(BookDetail bookDetail) {

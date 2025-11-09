@@ -56,9 +56,9 @@ public class MemberController {
     public ResponseEntity<?> login(@RequestBody @Valid MemberLoginRequestDto memberLoginRequestDto) {
         JwtTokenDto jwtTokenDto = loginService.login(memberLoginRequestDto);
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully login user.", jwtTokenDto));
+                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully login user.", jwtTokenDto));
     }
 
     @PostMapping("/logout")
@@ -67,7 +67,7 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .header("Authorization", "Bearer " + request.getHeader("Authorization"))
-                .body(StatusResponseDto.of( HttpStatus.OK,"successfully logged out.", ""));
+                .body(StatusResponseDto.of( HttpStatus.NO_CONTENT,"successfully logged out.", ""));
     }
 
     @PostMapping("/reissue")
@@ -76,7 +76,7 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully check refresh token valid.", jwtTokenDto));
+                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully check refresh token valid.", jwtTokenDto));
     }
 
     @PostMapping("/find-id/send")
@@ -123,8 +123,8 @@ public class MemberController {
     public ResponseEntity<?> retouchPassword(@RequestBody @Valid MemberPasswordRequestDto memberPasswordRequestDto) {
         retouchPasswordService.retouchPassword(memberPasswordRequestDto.username(), memberPasswordRequestDto.password());
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully retouch.", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully retouch.", ""));
     }
 }

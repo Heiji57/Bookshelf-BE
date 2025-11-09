@@ -26,27 +26,27 @@ public class BookController {
     public ResponseEntity<?> rentalBook(@RequestParam String registrationNumber) {
         rentalBookService.rentalBook(registrationNumber);
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully rental book", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully rental book", ""));
     }
 
     @PatchMapping("/reservation")
     public ResponseEntity<?> reservationBook(@RequestParam String registrationNumber) {
         reservationBookService.reservationBook(registrationNumber);
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully reservation book", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully reservation book", ""));
     }
 
     @PostMapping("/comment/like")
     public ResponseEntity<?> commentLike(@RequestParam Long commentId) {
         boolean result = bookCommentLikeService.toggleLike(commentId);
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully Liked", result));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully Liked", result));
     }
 
     @PostMapping("/comment/write")
@@ -55,25 +55,25 @@ public class BookController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully written", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully written", ""));
     }
 
     @PatchMapping("/comment/retouch")
     public ResponseEntity<?> commentRetouch(@RequestBody BookChatRequestDto bookChatRequestDto, @RequestParam Long commentId) {
         bookCommentRetouchService.RetouchBookComment(bookChatRequestDto.chat(), commentId);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully Retouched", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully Retouched", ""));
     }
 
     @DeleteMapping("/comment/delete")
     public ResponseEntity<?> commentDelete(@RequestParam Long commentId) {
         deleteBookCommentService.deleteBookComment(commentId);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully deleted", ""));
+                .body(StatusResponseDto.of(HttpStatus.NO_CONTENT, "successfully deleted", ""));
     }
 
     @GetMapping("/search")
@@ -93,6 +93,6 @@ public class BookController {
         bookSearchService.indexBook();
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully indexed", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully indexed", ""));
     }
 }

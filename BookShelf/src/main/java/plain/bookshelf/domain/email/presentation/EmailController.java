@@ -42,8 +42,8 @@ public class EmailController {
             throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
         }
 
-        return ResponseEntity.ok()
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", result));
+                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully verified.", result));
     }
 }

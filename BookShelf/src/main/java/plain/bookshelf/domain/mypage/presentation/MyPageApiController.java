@@ -18,8 +18,8 @@ public class MyPageApiController {
     private final PostProfileService postProfileService;
 
     @PatchMapping("/profile-upload")
-    public ResponseEntity<?> postProfile(@PathVariable Long user_id, @RequestParam String profile) {
-        postProfileService.postProfile(user_id, profile);
+    public ResponseEntity<?> postProfile(@PathVariable Long user_id, @RequestBody RetouchMemberInfoRequestDto retouchMemberInfoRequestDto) {
+        postProfileService.postProfile(user_id, retouchMemberInfoRequestDto.memberProfile());
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.NO_CONTENT, "successfully posted profile", ""));
@@ -27,7 +27,7 @@ public class MyPageApiController {
 
     @PatchMapping("/retouch")
     public ResponseEntity<?> retouchMemberInfo(@PathVariable Long user_id, @RequestBody RetouchMemberInfoRequestDto retouchMemberInfoRequestDto) {
-        retouchMemberInfoService.retouchMemberInfo(user_id, retouchMemberInfoRequestDto);
+        retouchMemberInfoService.retouchMemberInfo(user_id, retouchMemberInfoRequestDto.nickName());
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
                 .body(StatusResponseDto.of(HttpStatus.NO_CONTENT, "successfully retouch user info", ""));

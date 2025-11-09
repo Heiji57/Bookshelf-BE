@@ -30,6 +30,6 @@ public class MyPageController {
         GetMyPageUserInfoResponseDto getMyPageUserInfoResponseDto = getMyPageUserInfoService.getMyPageUserInfo(user_id);
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page.", getMyPageUserInfoResponseDto));
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully get my-page info.", getMyPageUserInfoResponseDto));
     }
 }

@@ -31,7 +31,7 @@ public class    BookDetailController {
     public ResponseEntity<?> likeBook(@PathVariable Long book_id) {
         boolean result = bookLikeService.toggleLike(book_id);
 
-        return ResponseEntity.ok()
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully liked.", result));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully liked.", result));
     }
 }

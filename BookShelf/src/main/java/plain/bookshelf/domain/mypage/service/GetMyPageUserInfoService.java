@@ -22,7 +22,9 @@ public class GetMyPageUserInfoService {
 
         Email email = emailRepository.findEmailByMember(member).orElse(null);
 
-        assert email != null;
+        if (email == null) {
+            return GetMyPageUserInfoResponseDto.of(member.getNickName(), null);
+        }
         return GetMyPageUserInfoResponseDto.of(member.getNickName(), email.getAddress());
     }
 }

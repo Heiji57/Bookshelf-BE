@@ -29,7 +29,9 @@ public record BookDocument(
         String bookIntroduction,
 
         @Field(type = FieldType.Text, analyzer = "nori")
-        String bookType
+        String bookType,
+
+        String bookImage
 ) {
     public static BookDocument of(Book book) {
         return new BookDocument(
@@ -39,7 +41,8 @@ public record BookDocument(
                 book.getPublisher(),
                 book.getPublicationDate(),
                 book.getBookIntroduction(),
-                book.getBookType()
+                book.getBookType(),
+                book.getBookImage()
         );
     }
 }

@@ -29,8 +29,7 @@ public class Member {
     @Column(nullable = false, length = 20, unique = true)
     private String userName; // 실질적 아이디
 
-    @Column(nullable = true, length = 20)
-    @Setter
+    @Column(length = 20)
     private String nickName; // 유저 이름
 
     @Column(nullable = false, length = 60) // 부호화해서 저장해서 60
@@ -40,7 +39,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberRole authority;
 
-    @Column(name = "profile_picture", nullable = true, length = 100)
+    @Column(name = "profile_picture", length = 100)
     private String profilePicture;
 
     @Column(name = "month_statistics", nullable = false)
@@ -56,14 +55,14 @@ public class Member {
     private List<Email> emails = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<BookDetail> bookDetails = new ArrayList<>();
 
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "affiliation", nullable = false)
     private Affiliation affiliation;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @Builder.Default
     private List<BookComment> bookComments = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class Member {
     @Builder.Default
     private List<BookReservation> bookReservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @Builder.Default
     private List<BookRentalRecord> bookRentalRecords = new ArrayList<>();
 
@@ -97,5 +96,9 @@ public class Member {
 
     public void setProfile(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public void nickName(String nickName) {
+        this.nickName = nickName;
     }
 }

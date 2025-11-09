@@ -113,4 +113,8 @@ public class BookDetail {
     public void overDueStatus(boolean overDueStatus) {
         this.overDueStatus = overDueStatus;
     }
+
+    public void rentalRequestDateNull() {
+        this.rentalRequestDate = null;
+    }
 }

@@ -3,7 +3,7 @@ package plain.bookshelf.domain.mypage.presentation.dto.response;
 import java.util.List;
 
 public record GetMyPageResponseDto(
-        String userName,
+        String nickName,
         Integer rentalBookCount,
         Integer reservedBookCount,
         Integer userOverDueDate,
@@ -12,7 +12,7 @@ public record GetMyPageResponseDto(
         List<ReservationBookResponseDto> reservationBook
 ) {
     public static GetMyPageResponseDto of(
-            String userName,
+            String nickName,
             Integer rentalBookCount,
             Integer reservedBookCount,
             Integer userOverDueDate,
@@ -21,7 +21,7 @@ public record GetMyPageResponseDto(
             List<ReservationBookResponseDto> reservationList
     ) {
         return new GetMyPageResponseDto(
-                userName,
+                nickName,
                 rentalBookCount,
                 reservedBookCount,
                 userOverDueDate,

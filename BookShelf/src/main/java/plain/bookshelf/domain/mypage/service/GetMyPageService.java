@@ -45,7 +45,7 @@ public class GetMyPageService {
                 .toList();
 
         return GetMyPageResponseDto.of(
-                member.getUserName(),
+                member.getNickName(),
                 rentalBookCount,
                 reservationBookCount,
                 overdueDate,

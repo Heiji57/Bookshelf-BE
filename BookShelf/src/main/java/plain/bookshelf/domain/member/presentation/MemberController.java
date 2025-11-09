@@ -49,7 +49,7 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully delete user.", ""));
+                .body(StatusResponseDto.of(HttpStatus.NO_CONTENT,"successfully delete user.", ""));
     }
 
     @PostMapping("/login")

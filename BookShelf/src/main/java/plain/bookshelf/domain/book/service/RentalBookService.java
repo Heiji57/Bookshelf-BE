@@ -40,7 +40,7 @@ public class RentalBookService {
         }
 
         if (bookDetailRepository.findBookDetailByMember(currentMember).size() > 5 || bookDetailRepository.findByRentalRequestMember(currentMember.getNickName()).size() > 5) {
-            throw new AnyMoreRentalException(ErrorCode.ALREADY_RENTAL_BOOK);
+            throw new AnyMoreRentalException(ErrorCode.ANY_MORE_RENTAL);
         }
 
         bookDetail.returnBookDate(RETURN_DATE);

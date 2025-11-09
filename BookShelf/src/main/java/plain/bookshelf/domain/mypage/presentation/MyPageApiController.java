@@ -1,11 +1,13 @@
 package plain.bookshelf.domain.mypage.presentation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.mypage.presentation.dto.request.RetouchMemberInfoRequestDto;
 import plain.bookshelf.domain.mypage.service.PostProfileService;
 import plain.bookshelf.domain.mypage.service.RetouchMemberInfoService;
+import plain.bookshelf.global.dto.StatusResponseDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class MyPageApiController {
         postProfileService.postProfile(user_id, profile);
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.NO_CONTENT, "successfully posted profile", ""));
     }
 
     @PatchMapping("/retouch")
@@ -28,6 +30,6 @@ public class MyPageApiController {
         retouchMemberInfoService.retouchMemberInfo(user_id, retouchMemberInfoRequestDto);
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .build();
+                .body(StatusResponseDto.of(HttpStatus.NO_CONTENT, "successfully retouch user info", ""));
     }
 }

@@ -18,8 +18,8 @@ public enum ErrorCode {
     MEMBER_NICKNAME_EXIST(HttpStatus.CONFLICT, "M004", "이미 등록된 이름 입니다."),
     MEMBER_NOT_VALID_EMAIL(HttpStatus.BAD_REQUEST, "M005", "인증이 되지 않은 email 입니다."),
     MEMBER_NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, "M006", "기존 비밀번호가 일치하지 않습니다."),
-    MEMBER_OVERDUE_STATUS(HttpStatus.BAD_REQUEST, "M005" , "연체 상태라 대여 및 예약을 하지 못합니다."),
-    MEMBER_ALREADY_RESERVATION_OR_RENTAL(HttpStatus.BAD_REQUEST, "M006", "이미 대여하거나 예약한 책입니다."),
+    MEMBER_OVERDUE_STATUS(HttpStatus.BAD_REQUEST, "M007" , "연체 상태라 대여 및 예약을 하지 못합니다."),
+    MEMBER_ALREADY_RESERVATION_OR_RENTAL(HttpStatus.BAD_REQUEST, "M008", "이미 대여하거나 예약한 책입니다."),
 
     /*
     Common Error
@@ -42,8 +42,9 @@ public enum ErrorCode {
 
     // Server Error 400
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C401", "부적절한 요청 데이터입니다."),
-    INVALID_TOKEN_VALUE(HttpStatus.FORBIDDEN, "C402", "토큰에서 값을 추출할 수 없습니다."),
-    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C403", "허용되지 않은 HTTP 메서드입니다."),
+    INVALID_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "C403", "토큰에서 값을 추출할 수 없습니다."),
+    NOT_FOUND_REQUEST(HttpStatus.NOT_FOUND, "C404", "존재하지 않는 요청입니다."),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C405", "허용되지 않은 HTTP 메서드입니다."),
 
     // --- 최후의 방어선 --- 999
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C999", "서버 내부에서 알 수 없는 오류가 발생했습니다."),
@@ -53,8 +54,8 @@ public enum ErrorCode {
      */
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A001", "만료된 access token 입니다."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A002", "만료된 refresh token 입니다."),
-    ACCESS_TOKEN_NOT_MATCH(HttpStatus.FORBIDDEN, "A003","유효하지 않은 access token 입니다."),
-    REFRESH_TOKEN_NOT_MATCH(HttpStatus.FORBIDDEN, "A004", "유효하지 않은 refresh token 입니다. 다시 로그인 하세요."),
+    ACCESS_TOKEN_NOT_MATCH(HttpStatus.UNAUTHORIZED, "A003","유효하지 않은 access token 입니다."),
+    REFRESH_TOKEN_NOT_MATCH(HttpStatus.UNAUTHORIZED, "A004", "유효하지 않은 refresh token 입니다. 다시 로그인 하세요."),
     NOT_VALID_MEMBER_INFO(HttpStatus.BAD_REQUEST, "A005", "회원정보가 일치하지 않습니다.");
 
     /*

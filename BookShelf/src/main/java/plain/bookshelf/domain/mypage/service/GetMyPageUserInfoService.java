@@ -20,9 +20,9 @@ public class GetMyPageUserInfoService {
         Member member = memberRepository.findById(userId).
                 orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
 
-        Email email = emailRepository.findEmailByMember(member)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.EMAIL_NOT_FOUND));
+        Email email = emailRepository.findEmailByMember(member).orElse(null);
 
+        assert email != null;
         return GetMyPageUserInfoResponseDto.of(member.getNickName(), email.getAddress());
     }
 }

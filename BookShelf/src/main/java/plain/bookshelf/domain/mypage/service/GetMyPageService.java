@@ -29,16 +29,13 @@ public class GetMyPageService {
 
         List<BookDetail> rentals = bookDetailRepository.findBookDetailByMember(member);
 
-        Integer rentalBookCount = rentals.size();
-
         List<BookReservation> bookReservations = bookReservationRepository.findBookReservationByMember(member);
 
+        Integer rentalBookCount = rentals.size();
         Integer reservationBookCount = bookReservations.size();
-
         Integer overdueDate = member.getOverduePeriod();
-
         Integer oneMonthStatistics = member.getMonthStatistics();
-        
+
         List<RentalBookResponseDto> rentalDtos = rentals.stream()
                 .map(RentalBookResponseDto::of)
                 .toList();

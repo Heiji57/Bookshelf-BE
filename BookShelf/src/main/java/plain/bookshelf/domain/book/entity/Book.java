@@ -23,25 +23,25 @@ public class Book {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "book_name", nullable = false, length = 100)
+    @Column(name = "book_name", nullable = false, length = 150)
     private String bookName;
 
     @Column(name = "book_author", nullable = false, length = 50)
     private String bookAuthor;
 
-    @Column(name = "publication_date", nullable = true)
+    @Column(name = "publication_date")
     private LocalDate publicationDate;
 
-    @Column(name = "publisher", nullable = false, length = 20)
+    @Column(name = "publisher", nullable = false, length = 50)
     private String publisher;
 
-    @Column(name = "book_introduction", nullable = true, length = 1000)
+    @Column(name = "book_introduction", length = 1000)
     private String bookIntroduction;
 
-    @Column(name = "book_type", nullable = true, length = 100)
+    @Column(name = "book_type", length = 150)
     private String bookType;
 
-    @Column(name = "book_image", nullable = true, length = 200)
+    @Column(name = "book_image", length = 200)
     private String bookImage;
 
     @Column(name = "rental_count", nullable = false)

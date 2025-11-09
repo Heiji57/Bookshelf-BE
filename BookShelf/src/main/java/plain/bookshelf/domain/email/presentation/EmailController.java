@@ -29,7 +29,7 @@ public class EmailController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully send email.", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully send email.", ""));
     }
 
     @PutMapping("/verify")

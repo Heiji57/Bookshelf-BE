@@ -4,8 +4,6 @@ import java.util.List;
 
 public record GetMyPageResponseDto(
         String nickName,
-        Integer rentalBookCount,
-        Integer reservedBookCount,
         Integer userOverDueDate,
         Integer oneMonthStatistics,
         List<RentalBookResponseDto> rentalBook,
@@ -13,8 +11,6 @@ public record GetMyPageResponseDto(
 ) {
     public static GetMyPageResponseDto of(
             String nickName,
-            Integer rentalBookCount,
-            Integer reservedBookCount,
             Integer userOverDueDate,
             Integer oneMonthStatistics,
             List<RentalBookResponseDto> rentalList,
@@ -22,8 +18,6 @@ public record GetMyPageResponseDto(
     ) {
         return new GetMyPageResponseDto(
                 nickName,
-                rentalBookCount,
-                reservedBookCount,
                 userOverDueDate,
                 oneMonthStatistics,
                 rentalList,

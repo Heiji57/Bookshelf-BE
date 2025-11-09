@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import plain.bookshelf.domain.email.exception.NotCorrectVerificationCodeException;
 import plain.bookshelf.domain.email.presentation.dto.request.GetEmailRequestDto;
 import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestDto;
-import plain.bookshelf.domain.email.service.FindUsernameSendService;
+import plain.bookshelf.domain.email.service.FindSendService;
 import plain.bookshelf.domain.member.presentation.dto.request.*;
 import plain.bookshelf.domain.member.service.*;
 import plain.bookshelf.global.dto.StatusResponseDto;
@@ -30,7 +30,7 @@ public class MemberController {
     private final ReissueService reissueService;
     private final LogoutService logoutService;
     private final FindUsernameService findUsernameService;
-    private final FindUsernameSendService findUsernameSendService;
+    private final FindSendService findSendService;
     private final VerifyUsernameService verifyUsernameService;
     private final RetouchPasswordService retouchPasswordService;
 
@@ -81,11 +81,11 @@ public class MemberController {
 
     @PostMapping("/find-id/send")
     public ResponseEntity<?> sendFindId(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
-        findUsernameSendService.sendFindIdVerificationCode(getEmailRequestDto.address());
+        findSendService.sendFindVerificationCode(getEmailRequestDto.address());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully send.", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED,"successfully find-username send.", ""));
     }
 
     @PostMapping("/find-id/verify")
@@ -94,16 +94,16 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK,"successfully verified.", username));
+                .body(StatusResponseDto.of(HttpStatus.OK,"successfully find-username verified.", username));
     }
 
     @PostMapping("/find-password/send")
     public ResponseEntity<?> sendFindPassword(@RequestBody @Valid GetEmailRequestDto getEmailRequestDto) {
-        findUsernameSendService.sendFindIdVerificationCode(getEmailRequestDto.address());
+        findSendService.sendFindVerificationCode(getEmailRequestDto.address());
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully send.", ""));
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully find-password send.", ""));
     }
 
     @PostMapping("/find-password/verify")
@@ -116,7 +116,7 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.OK, "successfully send.", result));
+                .body(StatusResponseDto.of(HttpStatus.OK, "successfully find-password verified.", result));
     }
 
     @PatchMapping("/find-password/retouch")
@@ -125,6 +125,6 @@ public class MemberController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Content-Type", "application/json")
-                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully retouch.", ""));
+                .body(StatusResponseDto.of(HttpStatus.CREATED, "successfully password retouch.", ""));
     }
 }

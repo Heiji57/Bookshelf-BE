@@ -13,14 +13,14 @@ import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
-public class FindUsernameSendService {
+public class FindSendService {
 
     private final EmailRepository emailRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final MailService mailService;
     private static final int VERIFICATION_TTL_MINUTES = 5;
 
-    public void sendFindIdVerificationCode(String address) {
+    public void sendFindVerificationCode(String address) {
 
         // 인증 코드 생성
         String verificationCode = RandomStringUtils.randomAlphanumeric(6);

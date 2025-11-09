@@ -31,8 +31,6 @@ public class GetMyPageService {
 
         List<BookReservation> bookReservations = bookReservationRepository.findBookReservationByMember(member);
 
-        Integer rentalBookCount = rentals.size();
-        Integer reservationBookCount = bookReservations.size();
         Integer overdueDate = member.getOverduePeriod();
         Integer oneMonthStatistics = member.getMonthStatistics();
 
@@ -46,8 +44,6 @@ public class GetMyPageService {
 
         return GetMyPageResponseDto.of(
                 member.getNickName(),
-                rentalBookCount,
-                reservationBookCount,
                 overdueDate,
                 oneMonthStatistics,
                 rentalDtos,

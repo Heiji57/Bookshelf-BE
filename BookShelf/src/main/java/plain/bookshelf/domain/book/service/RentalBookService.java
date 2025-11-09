@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.book.entity.repository.BookDetailRepository;
 import plain.bookshelf.domain.book.exception.AlreadyRentalBookException;
@@ -40,7 +39,7 @@ public class RentalBookService {
             throw new AlreadyRentalBookException(ErrorCode.ALREADY_RENTAL_BOOK);
         }
 
-        if (bookDetailRepository.findBookDetailByMember(currentMember).size() >= 5) {
+        if (bookDetailRepository.findBookDetailByMember(currentMember).size() > 5 || bookDetailRepository.findByRentalRequestMember(currentMember.getNickName()).size() > 5) {
             throw new AnyMoreRentalException(ErrorCode.ALREADY_RENTAL_BOOK);
         }
 

@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import plain.bookshelf.domain.book.entity.Book;
 import plain.bookshelf.domain.book.entity.BookDetail;
 import plain.bookshelf.domain.member.entity.Member;
 
@@ -34,6 +33,9 @@ public interface BookDetailRepository extends JpaRepository<BookDetail, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE) // 비관적 락
     @Query("SELECT bd FROM BookDetail bd WHERE bd.registrationNumber = :registrationNumber")
     BookDetail findByRegistrationNumberForUpdate(String registrationNumber);
+
+    @Query("SELECT bd FROM BookDetail bd " + "WHERE bd.rentalRequestMember = :nickName")
+    List<BookDetail> findByRentalRequestMember(@Param("nickName")String nickName);
 
     @Query(value = "SELECT bd FROM BookDetail bd " + "WHERE bd.book.id =:bookId AND bd.affiliation.id =:affiliationId")
     List<BookDetail> findByBookIdAndAffiliationId(@Param("bookId") Long bookId, @Param("affiliationId") Long affiliationId);

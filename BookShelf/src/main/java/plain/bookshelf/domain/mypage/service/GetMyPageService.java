@@ -43,6 +43,7 @@ public class GetMyPageService {
                 .toList();
 
         return GetMyPageResponseDto.of(
+                member.getProfilePicture(),
                 member.getNickName(),
                 overdueDate,
                 oneMonthStatistics,

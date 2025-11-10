@@ -42,8 +42,8 @@ public interface BookDetailRepository extends JpaRepository<BookDetail, Long> {
 
     Page<BookDetail> findByOverDueStatusTrue(Pageable pageable);
 
-    @Query("SELECT m FROM Member m " +
-            "WHERE m.nickName = :nickname")
+    @Query("SELECT bd FROM BookDetail bd " +
+            "WHERE bd.member.nickName = :nickname")
     List<BookDetail> findByMemberNickName(@Param("nickname")String nickName);
 
     @Modifying

@@ -19,7 +19,7 @@ public enum ErrorCode {
     MEMBER_NOT_VALID_EMAIL(HttpStatus.BAD_REQUEST, "M005", "인증이 되지 않은 email 입니다."),
     MEMBER_NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, "M006", "기존 비밀번호가 일치하지 않습니다."),
     MEMBER_OVERDUE_STATUS(HttpStatus.BAD_REQUEST, "M007" , "연체 상태라 대여 및 예약을 하지 못합니다."),
-    MEMBER_ALREADY_RESERVATION_OR_RENTAL(HttpStatus.BAD_REQUEST, "M008", "이미 대여하거나 예약한 책입니다."),
+    MEMBER_ALREADY_RESERVATION_OR_RENTAL(HttpStatus.CONFLICT, "M008", "이미 대여하거나 예약한 책입니다."),
 
     /*
     Common Error
@@ -36,7 +36,7 @@ public enum ErrorCode {
     BOOK_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "C104", "댓글이 존재하지 않습니다."),
     ALREADY_RENTAL_BOOK(HttpStatus.CONFLICT, "C105", "이미 대여된 책입니다."),
     ANY_MORE_RENTAL(HttpStatus.BAD_REQUEST, "C106", "더 이상 책을 대여할 수 없습니다."),
-    ALREADY_RESERVATION_BOOK(HttpStatus.BAD_REQUEST, "C107", "이미 예약이 됐습니다."),
+    ALREADY_RESERVATION_BOOK(HttpStatus.CONFLICT, "C107", "이미 예약이 됐습니다."),
     NOT_FOUND_RENTAL_REQUEST_BOOK(HttpStatus.NOT_FOUND, "C108", "대여요청의 책 정보를 찾지 못 했습니다."),
     NOT_FOUND_BOOK_RENTAL_RECORD(HttpStatus.NOT_FOUND, "C109", "대여한 기록이 존재하지 않습니다."),
 

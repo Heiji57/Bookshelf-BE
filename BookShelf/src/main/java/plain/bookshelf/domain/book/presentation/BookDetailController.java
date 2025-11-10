@@ -13,7 +13,7 @@ import plain.bookshelf.global.dto.StatusResponseDto;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book/{book_id}")
-public class    BookDetailController {
+public class BookDetailController {
 
     private final GetBookDetailPageService getBookDetailPageService;
     private final BookLikeService bookLikeService;

@@ -10,11 +10,11 @@ public record TotalPageResponseDto(
         Long totalElements,
         List<?> ResponseDtoList
 ) {
-    public static TotalPageResponseDto of(int totalPages, Long totalElements, List<?> rentalApprovalResponseDtoList) {
+    public static TotalPageResponseDto of(int totalPages, Long totalElements, List<?> ResponseDtoList) {
         return new TotalPageResponseDto(
                 totalPages,
                 totalElements,
-                rentalApprovalResponseDtoList
+                ResponseDtoList
         );
     }
 }

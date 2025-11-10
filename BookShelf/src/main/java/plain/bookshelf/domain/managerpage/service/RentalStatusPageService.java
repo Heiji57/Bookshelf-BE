@@ -40,7 +40,7 @@ public class RentalStatusPageService {
         return TotalPageResponseDto.of(
                 0,
                 (long) bookDetailList.size(),
-                bookDetails
+                bookDetailList
         );
     }
 

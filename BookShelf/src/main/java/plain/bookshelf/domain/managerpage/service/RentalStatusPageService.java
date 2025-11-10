@@ -30,12 +30,18 @@ public class RentalStatusPageService {
         );
     }
 
-    public List<RentalStatusPageResponseDto> getRentalNickNameStatusPage(String nickName) {
+    public TotalPageResponseDto getRentalNickNameStatusPage(String nickName) {
         List<BookDetail> bookDetails = bookDetailRepository.findByMemberNickName(nickName);
 
-        return bookDetails.stream()
+        List<RentalStatusPageResponseDto> bookDetailList =  bookDetails.stream()
                 .map(RentalStatusPageResponseDto::of)
                 .toList();
+
+        return TotalPageResponseDto.of(
+                0,
+                (long) bookDetailList.size(),
+                bookDetails
+        );
     }
 
     public TotalPageResponseDto getRentalOverDueStatusPage(Pageable pageable) {

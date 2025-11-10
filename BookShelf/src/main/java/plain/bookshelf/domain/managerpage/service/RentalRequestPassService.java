@@ -13,7 +13,6 @@ import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;
 import plain.bookshelf.domain.managerpage.exception.NotFoundRentalRequestBookException;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 
@@ -27,7 +26,7 @@ public class RentalRequestPassService {
 
     public boolean rentalRequestPass(String registrationNumber){
         BookDetail bookDetail = bookDetailRepository.findBookDetailByRegistrationNumberAndRentalRequestStatusTrue(registrationNumber)
-                .orElseThrow(() -> new NotFoundRentalRequestBookException(ErrorCode.NOT_FOUND_RENTAL_REQUEST_BOOK));
+                .orElseThrow(NotFoundRentalRequestBookException::new);
 
         Member member = memberRepository.findByBookDetailRenter(bookDetail.getRentalRequestMember());
         Book book = bookDetail.getBook();

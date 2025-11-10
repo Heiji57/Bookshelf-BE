@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.email.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class ExistEmailException extends RuntimeException {
+public class ExistEmailException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public ExistEmailException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public ExistEmailException() {
+        super(ErrorCode.MEMBER_EMAIL_EXIST);
     }
 }

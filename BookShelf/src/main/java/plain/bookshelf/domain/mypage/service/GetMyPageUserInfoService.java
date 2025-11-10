@@ -8,7 +8,6 @@ import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
 import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageUserInfoResponseDto;
-import plain.bookshelf.global.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class GetMyPageUserInfoService {
 
     public GetMyPageUserInfoResponseDto getMyPageUserInfo(Long userId) {
         Member member = memberRepository.findById(userId).
-                orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                orElseThrow(NotExistUserException::new);
 
         Email email = emailRepository.findEmailByMember(member).orElse(null);
 

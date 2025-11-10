@@ -12,7 +12,6 @@ import plain.bookshelf.domain.book.entity.repository.BookRentalRecordRepository;
 import plain.bookshelf.domain.book.entity.repository.BookReservationRepository;
 import plain.bookshelf.domain.managerpage.exception.NotFoundBookRentalRecordException;
 import plain.bookshelf.domain.managerpage.exception.NotFoundRentalRequestBookException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,10 +28,10 @@ public class ReturnCheckService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean returnCheck(String registrationNumber) {
         BookDetail bookDetail = bookDetailRepository.findByRegistrationNumberAndRentalStatusTrue(registrationNumber)
-                .orElseThrow(() -> new NotFoundRentalRequestBookException(ErrorCode.NOT_FOUND_RENTAL_REQUEST_BOOK));
+                .orElseThrow(NotFoundRentalRequestBookException::new);
 
         BookRentalRecord bookRentalRecord = bookRentalRecordRepository.findByBookDetailAndReturnTimeIsNull(bookDetail)
-                .orElseThrow(() -> new NotFoundBookRentalRecordException(ErrorCode.NOT_FOUND_BOOK_RENTAL_RECORD));
+                .orElseThrow(NotFoundBookRentalRecordException::new);
 
         List<BookReservation> bookReservations = bookReservationRepository.findByBookDetailOrderByReservationRankAsc(bookDetail);
 

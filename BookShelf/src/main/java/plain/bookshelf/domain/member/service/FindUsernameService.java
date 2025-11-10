@@ -11,7 +11,6 @@ import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestD
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +22,10 @@ public class FindUsernameService {
 
     public String findUsername(VerifyEmailRequestDto verifyEmailRequestDto) {
         Email email = emailRepository.findEmailByAddress(verifyEmailRequestDto.address())
-                .orElseThrow(() -> new NotExistEmailException(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(NotExistEmailException::new);
 
         Member member = memberRepository.findByEmails(email)
-                        .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                        .orElseThrow(NotExistUserException::new);
 
         String address =  verifyEmailRequestDto.address();
         String code = redisTemplate.opsForValue().get("verification:member:" + address);
@@ -36,6 +35,6 @@ public class FindUsernameService {
             return member.getUserName();
         }
 
-        throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
+        throw new NotCorrectVerificationCodeException();
     }
 }

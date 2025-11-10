@@ -17,7 +17,6 @@ import plain.bookshelf.domain.member.exception.AlreadyAssignedEmailException;
 import plain.bookshelf.domain.member.exception.ExistNickNameException;
 import plain.bookshelf.domain.member.exception.ExistUserNameException;
 import plain.bookshelf.domain.member.presentation.dto.request.MemberSignupRequestDto;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.util.Optional;
 
@@ -38,21 +37,21 @@ public class SigunUpService {
             email = emailRepository.findEmailByAddress(memberSignupRequestDto.address());
             // 3. 이미 등록된 이메일 체크
             if (email.isPresent() && email.get().getMember() != null) {
-                throw new AlreadyAssignedEmailException(ErrorCode.MEMBER_EMAIL_ALREADY_USED);
+                throw new AlreadyAssignedEmailException();
             }
             // 4. 인증이 완료된 이메일인지 체크
             if (email.isPresent() && !email.get().isVerified()) {
-                throw new NotVerificationEmailException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
+                throw new NotVerificationEmailException();
             }
         }
 
         // 1. 아이디 중복 체크
         if (memberRepository.existsByUserName(memberSignupRequestDto.username())) {
-            throw new ExistUserNameException(ErrorCode.MEMBER_ID_EXIST);
+            throw new ExistUserNameException();
         }
         // 2. 닉네임 중복 체크
         if (memberRepository.existsByNickName(memberSignupRequestDto.nickname())) {
-            throw new ExistNickNameException(ErrorCode.MEMBER_NICKNAME_EXIST);
+            throw new ExistNickNameException();
         }
 
         Affiliation affiliation = affiliationRepository.findByAffiliationName(memberSignupRequestDto.affiliationName());

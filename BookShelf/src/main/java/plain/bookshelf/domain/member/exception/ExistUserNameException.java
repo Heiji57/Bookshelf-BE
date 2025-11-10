@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.member.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class ExistUserNameException extends RuntimeException {
+public class ExistUserNameException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public ExistUserNameException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public ExistUserNameException() {
+        super(ErrorCode.MEMBER_ID_EXIST);
     }
 }

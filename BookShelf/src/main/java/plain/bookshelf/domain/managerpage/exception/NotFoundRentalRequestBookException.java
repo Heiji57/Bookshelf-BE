@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.managerpage.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class NotFoundRentalRequestBookException extends RuntimeException {
+public class NotFoundRentalRequestBookException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public NotFoundRentalRequestBookException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public NotFoundRentalRequestBookException() {
+        super(ErrorCode.NOT_FOUND_RENTAL_REQUEST_BOOK);
     }
 }

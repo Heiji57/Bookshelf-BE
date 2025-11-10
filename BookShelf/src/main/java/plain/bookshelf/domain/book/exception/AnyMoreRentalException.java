@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.book.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class AnyMoreRentalException extends RuntimeException {
+public class AnyMoreRentalException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public AnyMoreRentalException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public AnyMoreRentalException() {
+        super(ErrorCode.ANY_MORE_RENTAL);
     }
 }

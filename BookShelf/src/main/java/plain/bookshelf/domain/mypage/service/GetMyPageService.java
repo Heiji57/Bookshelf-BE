@@ -12,7 +12,6 @@ import plain.bookshelf.domain.member.exception.NotExistUserException;
 import plain.bookshelf.domain.mypage.presentation.dto.response.GetMyPageResponseDto;
 import plain.bookshelf.domain.mypage.presentation.dto.response.RentalBookResponseDto;
 import plain.bookshelf.domain.mypage.presentation.dto.response.ReservationBookResponseDto;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class GetMyPageService {
 
     public GetMyPageResponseDto getMyPage(Long userId) {
         Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(NotExistUserException::new);
 
         List<BookDetail> rentals = bookDetailRepository.findBookDetailByMember(member);
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.email.exception.ExistEmailException;
 import plain.bookshelf.domain.email.presentation.dto.request.GetEmailRequestDto;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.Duration;
 
@@ -23,7 +22,7 @@ public class SendVerificationCodeService {
     public void sendVerificationEmail(GetEmailRequestDto getEmailRequestDto) {
 
         if (emailRepository.findEmailByAddress(getEmailRequestDto.address()).isPresent()) {
-            throw new ExistEmailException(ErrorCode.MEMBER_EMAIL_EXIST);
+            throw new ExistEmailException();
         }
 
         // 인증 코드 생성

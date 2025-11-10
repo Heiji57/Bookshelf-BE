@@ -47,7 +47,7 @@ public class JwtTokenProvider {
         String username = authentication.getName();
 
         Member member = memberRepository.findByUserName(username)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(NotExistUserException::new);
 
         Long affiliationId = member.getAffiliation().getId();
 
@@ -90,7 +90,7 @@ public class JwtTokenProvider {
         if (subject == null || subject.isEmpty()) {
             log.error("[+] JWT Token does not contain subject (USER ID)");
 
-            throw new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND);
+            throw new NotExistUserException();
         }
         return subject;
     }

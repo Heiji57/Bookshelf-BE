@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.email.entity.Email;
 import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.email.exception.NotExistEmailException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.Duration;
 
@@ -26,7 +25,7 @@ public class FindSendService {
         String verificationCode = RandomStringUtils.randomAlphanumeric(6);
 
         Email email = emailRepository.findEmailByAddress(address)
-                .orElseThrow(() -> new NotExistEmailException(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(NotExistEmailException::new);
 
         String key = "verification:member:" + email.getAddress();
         redisTemplate.opsForValue().set(key, verificationCode, Duration.ofMinutes(VERIFICATION_TTL_MINUTES));

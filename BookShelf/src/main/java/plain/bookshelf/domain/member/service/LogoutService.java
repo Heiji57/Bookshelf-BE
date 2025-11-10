@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.service.TokenBlackListService;
 import plain.bookshelf.global.security.exception.AccessTokenValueNotValidException;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
@@ -27,20 +26,20 @@ public class LogoutService {
         String accessToken = jwtTokenProvider.resolveToken(request);
 
         if (accessToken == null) {
-            throw new AccessTokenValueNotValidException(ErrorCode.ACCESS_TOKEN_NOT_MATCH, null);
+            throw new AccessTokenValueNotValidException(null);
         }
 
         String userId;
         try {
             userId = jwtTokenProvider.getUserIdFromToken(accessToken);
         } catch (Exception e) {
-            throw new AccessTokenValueNotValidException(ErrorCode.ACCESS_TOKEN_NOT_MATCH, accessToken);
+            throw new AccessTokenValueNotValidException(accessToken);
         }
 
         String username = String.valueOf(userId);
 
         Boolean deleted = redisTemplate.delete(REFRESH_TOKEN_PREFIX + username);
-        if (deleted != null && deleted) {
+        if (deleted) {
             log.info("Refresh token has been deleted for user: {}", username);
         }
 

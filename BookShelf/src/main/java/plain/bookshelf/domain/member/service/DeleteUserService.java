@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 @RequiredArgsConstructor
 @Service
@@ -18,7 +17,7 @@ public class DeleteUserService {
     public void userDelete () {
         String username = getCurrentMemberService.getCurrentMember().getUserName();
         Member member = memberRepository.findByUserName(username)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(NotExistUserException::new);
 
         memberRepository.delete(member);
     }

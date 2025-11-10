@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class RetouchPasswordService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void retouchPassword(String username, String password) {
         Member member = memberRepository.findByUserName(username)
-                .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(NotExistUserException::new);
 
         member.retouchPassword(passwordEncoder.encode(password));
     }

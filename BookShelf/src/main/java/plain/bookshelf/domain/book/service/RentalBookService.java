@@ -11,7 +11,6 @@ import plain.bookshelf.domain.book.exception.AnyMoreRentalException;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.exception.MemberOverdueException;
 import plain.bookshelf.domain.member.service.GetCurrentMemberService;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.time.LocalDateTime;
 
@@ -32,15 +31,15 @@ public class RentalBookService {
         LocalDateTime now = LocalDateTime.now();
 
         if (currentMember.getOverduePeriod() != 0) {
-            throw new MemberOverdueException(ErrorCode.MEMBER_OVERDUE_STATUS);
+            throw new MemberOverdueException();
         }
 
         if (bookDetail.isRentalRequestStatus() || bookDetail.getMember() != null) {
-            throw new AlreadyRentalBookException(ErrorCode.ALREADY_RENTAL_BOOK);
+            throw new AlreadyRentalBookException();
         }
 
         if (bookDetailRepository.findBookDetailByMember(currentMember).size() > 5 || bookDetailRepository.findByRentalRequestMember(currentMember.getNickName()).size() > 5) {
-            throw new AnyMoreRentalException(ErrorCode.ANY_MORE_RENTAL);
+            throw new AnyMoreRentalException();
         }
 
         bookDetail.returnBookDate(RETURN_DATE);

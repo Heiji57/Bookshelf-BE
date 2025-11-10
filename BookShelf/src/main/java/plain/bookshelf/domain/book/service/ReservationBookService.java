@@ -15,7 +15,6 @@ import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.MemberOverdueException;
 import plain.bookshelf.domain.member.service.GetCurrentMemberService;
-import plain.bookshelf.global.exception.ErrorCode;
 
 
 @Service
@@ -35,15 +34,15 @@ public class ReservationBookService {
         Member alreadyRentalOrReservationMember = memberRepository.findByReservationMemberOrRentalRequestMember(bookDetail, member.getNickName());
 
         if (alreadyRentalOrReservationMember != null) {
-            throw new AlreadyReservationOrRentalException(ErrorCode.MEMBER_ALREADY_RESERVATION_OR_RENTAL);
+            throw new AlreadyReservationOrRentalException();
         }
 
         if (bookReservation != null) {
-            throw new AlreadyReservationException(ErrorCode.ALREADY_RESERVATION_BOOK);
+            throw new AlreadyReservationException();
         }
 
         if (member.getOverduePeriod() != 0) {
-            throw new MemberOverdueException(ErrorCode.MEMBER_OVERDUE_STATUS);
+            throw new MemberOverdueException();
         }
 
         int nextRank = (maxRank == null) ? 1 : maxRank + 1;

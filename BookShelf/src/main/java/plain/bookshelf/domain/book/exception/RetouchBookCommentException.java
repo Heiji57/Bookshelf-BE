@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.book.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class RetouchBookCommentException extends RuntimeException {
+public class RetouchBookCommentException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public RetouchBookCommentException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public RetouchBookCommentException() {
+        super(ErrorCode.NOT_VALID_MEMBER_INFO);
     }
 }

@@ -12,7 +12,6 @@ import plain.bookshelf.domain.book.entity.repository.BookCommentRepository;
 import plain.bookshelf.domain.book.exception.NotExistBookCommentException;
 import plain.bookshelf.domain.member.entity.Member;
 import plain.bookshelf.domain.member.service.GetCurrentMemberService;
-import plain.bookshelf.global.exception.ErrorCode;
 
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class BookCommentLikeService {
     public boolean toggleLike(Long commentId) {
         Member currentMember = getCurrentMemberService.getCurrentMember();
         BookComment bookComment = bookCommentRepository.findBookCommentsById(commentId)
-                .orElseThrow(() -> new NotExistBookCommentException(ErrorCode.BOOK_COMMENT_NOT_FOUND));
+                .orElseThrow(NotExistBookCommentException::new);
 
         MemberBookCommentId id = new MemberBookCommentId(currentMember.getId(), commentId);
 

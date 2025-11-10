@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.email.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class NotVerificationEmailException extends RuntimeException {
+public class NotVerificationEmailException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public NotVerificationEmailException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public NotVerificationEmailException() {
+        super(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
     }
 }

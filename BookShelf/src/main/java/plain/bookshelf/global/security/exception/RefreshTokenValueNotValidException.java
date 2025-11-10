@@ -1,17 +1,13 @@
 package plain.bookshelf.global.security.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class RefreshTokenValueNotValidException extends RuntimeException {
+public class RefreshTokenValueNotValidException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-    private final String details;
-
-    public RefreshTokenValueNotValidException(ErrorCode errorCode, String details) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
-        this.details = details;
+    public RefreshTokenValueNotValidException(String details) {
+        super(ErrorCode.REFRESH_TOKEN_NOT_MATCH, details);
     }
 }

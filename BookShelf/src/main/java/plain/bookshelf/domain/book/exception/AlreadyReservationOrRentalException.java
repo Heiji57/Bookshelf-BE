@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.book.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class AlreadyReservationOrRentalException extends RuntimeException {
+public class AlreadyReservationOrRentalException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public AlreadyReservationOrRentalException(ErrorCode errorCode) {
-        super(errorCode.toString());
-        this.errorCode = errorCode;
+    public AlreadyReservationOrRentalException() {
+        super(ErrorCode.MEMBER_ALREADY_RESERVATION_OR_RENTAL);
     }
 }

@@ -12,7 +12,6 @@ import plain.bookshelf.domain.email.presentation.dto.request.VerifyEmailRequestD
 import plain.bookshelf.domain.email.service.SendVerificationCodeService;
 import plain.bookshelf.domain.email.service.VerifyEmailService;
 import plain.bookshelf.global.dto.StatusResponseDto;
-import plain.bookshelf.global.exception.ErrorCode;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class EmailController {
         log.info("Email verified: " + result);
 
         if (!result) {
-            throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
+            throw new NotCorrectVerificationCodeException();
         }
 
         return ResponseEntity.status(HttpStatus.CREATED)

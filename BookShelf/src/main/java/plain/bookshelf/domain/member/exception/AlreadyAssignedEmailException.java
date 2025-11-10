@@ -1,15 +1,13 @@
 package plain.bookshelf.domain.member.exception;
 
 import lombok.Getter;
+import plain.bookshelf.global.exception.BaseCustomException;
 import plain.bookshelf.global.exception.ErrorCode;
 
 @Getter
-public class AlreadyAssignedEmailException extends RuntimeException {
+public class AlreadyAssignedEmailException extends BaseCustomException {
 
-    private final ErrorCode errorCode;
-
-    public AlreadyAssignedEmailException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public AlreadyAssignedEmailException() {
+        super(ErrorCode.MEMBER_EMAIL_ALREADY_USED);
     }
 }

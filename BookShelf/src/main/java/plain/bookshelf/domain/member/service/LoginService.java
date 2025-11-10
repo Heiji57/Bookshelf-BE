@@ -11,7 +11,6 @@ import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
 import plain.bookshelf.domain.member.presentation.dto.request.MemberLoginRequestDto;
-import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.entity.RefreshToken;
 import plain.bookshelf.global.security.entity.repository.RefreshTokenRepository;
 import plain.bookshelf.global.security.jwt.JwtProperties;
@@ -37,7 +36,7 @@ public class LoginService {
         if (memberRepository.findByUserName(memberLoginRequestDto.credential()).isEmpty()
                 && emailRepository.findEmailByAddress(memberLoginRequestDto.credential()).isEmpty()) {
 
-            throw new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND);
+            throw new NotExistUserException();
         }
 
         // 1. Login ID,EMAIL/PW 를 기반으로 AuthenticationToken 생성

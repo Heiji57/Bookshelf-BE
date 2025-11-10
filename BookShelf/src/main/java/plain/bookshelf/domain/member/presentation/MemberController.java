@@ -15,7 +15,6 @@ import plain.bookshelf.domain.member.presentation.dto.request.*;
 import plain.bookshelf.domain.member.service.*;
 import plain.bookshelf.global.dto.StatusResponseDto;
 import plain.bookshelf.domain.member.service.LogoutService;
-import plain.bookshelf.global.exception.ErrorCode;
 import plain.bookshelf.global.security.jwt.JwtTokenDto;
 
 @RestController
@@ -111,7 +110,7 @@ public class MemberController {
         boolean result = verifyUsernameService.verifyUsername(verifyEmailRequestDto);
 
         if (!result) {
-            throw new NotCorrectVerificationCodeException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_CORRECT);
+            throw new NotCorrectVerificationCodeException();
         }
 
         return ResponseEntity.ok()

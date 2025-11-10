@@ -9,7 +9,6 @@ import plain.bookshelf.domain.email.entity.repository.EmailRepository;
 import plain.bookshelf.domain.email.exception.NotExistEmailException;
 import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
-import plain.bookshelf.global.exception.ErrorCode;
 
 @Service
 @RequiredArgsConstructor
@@ -25,13 +24,13 @@ public class CustomUsersDetailsService implements UserDetailsService {
             //이메일 형식인지 확인
             return emailRepository.findEmailByAddress(username)
                     .map(email -> new CustomUserDetails(email.getMember()))
-                    .orElseThrow(() -> new NotExistEmailException(ErrorCode.EMAIL_NOT_FOUND));
+                    .orElseThrow(NotExistEmailException::new);
         }
         else {
             // userName으로 회원을 찾음
             return memberRepository.findByUserName(username)
                     .map(CustomUserDetails::new) // Member 객체로 UserDetails 생성
-                    .orElseThrow(() -> new NotExistUserException(ErrorCode.MEMBER_NOT_FOUND));
+                    .orElseThrow(NotExistUserException::new);
         }
     }
 

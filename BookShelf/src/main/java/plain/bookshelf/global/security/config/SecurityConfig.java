@@ -57,7 +57,7 @@ public class SecurityConfig {
                         .requestMatchers("/main/search/index").hasRole("ADMIN")
                         .requestMatchers("/api/manage/**", "/manage/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/mypage/**").hasAnyRole("USER", "MANAGER",  "ADMIN")
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole("USER", "MANAGER", "ADMIN")
                 )
 
                 .addFilterBefore(jwtAuthenticationFilter.jwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService), UsernamePasswordAuthenticationFilter.class)

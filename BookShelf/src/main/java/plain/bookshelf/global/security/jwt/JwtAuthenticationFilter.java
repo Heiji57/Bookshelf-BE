@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import plain.bookshelf.global.exception.ErrorCode;
+import plain.bookshelf.global.security.exception.CustomAuthenticationException;
 import plain.bookshelf.global.security.service.TokenBlackListService;
 
 import java.io.IOException;
@@ -45,15 +47,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 2. validateToken 으로 토큰 유효성 검사
         // 정상 토큰이면 해당 토큰으로 Authentication 을 가져와서 SecurityContextHolder 에 저장
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            if (tokenBlackListService.isBlacklisted(jwt)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        if (StringUtils.hasText(jwt)) {
+            try {
+                // 블랙리스트 토큰 체크
+                if (tokenBlackListService.isBlacklisted(jwt)) {
+                    request.setAttribute("exception", ErrorCode.BLACK_LIST_TOKEN);
+                } else {
+                    // 이 메서드(getAuthentication) 내에서 토큰이 만료되었거나 유효하지 않으면 CustomAuthenticationException 발생.
+                    Authentication authentication = tokenProvider.getAuthentication(jwt);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
 
+            } catch (CustomAuthenticationException e) {
+                request.setAttribute("exception", e.getErrorCode());
+            } catch (Exception e) {
+                // 예상치 못한 예외 처리
+                request.setAttribute("exception", ErrorCode.INTERNAL_SERVER_ERROR);
+            }
+        }
         filterChain.doFilter(request, response);
     }
 
@@ -63,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(BEARER_PREFIX.length());
         }
-        return null;
+        return "";
     }
 
     public Filter jwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, TokenBlackListService tokenBlackListService) {

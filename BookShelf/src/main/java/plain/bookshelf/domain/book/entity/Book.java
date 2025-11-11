@@ -41,8 +41,7 @@ public class Book {
     @Column(name = "book_type", length = 150)
     private String bookType;
 
-    @Lob
-    @Column(name = "book_image", length = 100000)
+    @Column(name = "book_image", length = 200)
     private String bookImage;
 
     @Column(name = "rental_count", nullable = false)

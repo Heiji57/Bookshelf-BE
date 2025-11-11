@@ -41,8 +41,8 @@ public enum ErrorCode {
     NOT_FOUND_BOOK_RENTAL_RECORD(HttpStatus.NOT_FOUND, "C109", "대여한 기록이 존재하지 않습니다."),
 
     // Server Error 400
-    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C400", "부적절한 요청 데이터입니다."),
-    INVALID_TOKEN_VALUE(HttpStatus.FORBIDDEN, "C403", "토큰에서 값을 추출할 수 없습니다."),
+    INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "C401", "부적절한 요청 데이터입니다."),
+    INVALID_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "C403", "토큰에서 값을 추출할 수 없습니다."),
     NOT_FOUND_REQUEST(HttpStatus.NOT_FOUND, "C404", "존재하지 않는 요청입니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C405", "허용되지 않은 HTTP 메서드입니다."),
 
@@ -56,8 +56,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "A002", "만료된 refresh token 입니다."),
     ACCESS_TOKEN_NOT_MATCH(HttpStatus.UNAUTHORIZED, "A003","유효하지 않은 access token 입니다."),
     REFRESH_TOKEN_NOT_MATCH(HttpStatus.UNAUTHORIZED, "A004", "유효하지 않은 refresh token 입니다. 다시 로그인 하세요."),
-    NOT_VALID_MEMBER_INFO(HttpStatus.BAD_REQUEST, "A005", "회원정보가 일치하지 않습니다."),
-    BLACK_LIST_TOKEN(HttpStatus.FORBIDDEN, "A006", "로그아웃된 유저 입니다.");
+    NOT_VALID_MEMBER_INFO(HttpStatus.BAD_REQUEST, "A005", "회원정보가 일치하지 않습니다.");
 
     /*
     C: Common(공통 에러)

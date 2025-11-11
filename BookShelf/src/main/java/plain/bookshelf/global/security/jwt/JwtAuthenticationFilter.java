@@ -1,5 +1,6 @@
 package plain.bookshelf.global.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -7,12 +8,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import plain.bookshelf.global.exception.ErrorCode;
+import plain.bookshelf.global.exception.ErrorResponseDto;
 import plain.bookshelf.global.security.exception.CustomAuthenticationException;
 import plain.bookshelf.global.security.service.TokenBlackListService;
 
@@ -25,6 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final JwtTokenProvider tokenProvider;
     private final TokenBlackListService tokenBlackListService;
@@ -51,7 +56,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 // 블랙리스트 토큰 체크
                 if (tokenBlackListService.isBlacklisted(jwt)) {
-                    request.setAttribute("exception", ErrorCode.BLACK_LIST_TOKEN);
+                    setUnauthorizedResponse(response, ErrorCode.BLACK_LIST_TOKEN);
+                    return;
                 } else {
                     // 이 메서드(getAuthentication) 내에서 토큰이 만료되었거나 유효하지 않으면 CustomAuthenticationException 발생.
                     Authentication authentication = tokenProvider.getAuthentication(jwt);
@@ -59,13 +65,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
 
             } catch (CustomAuthenticationException e) {
-                request.setAttribute("exception", e.getErrorCode());
+                setUnauthorizedResponse(response, e.getErrorCode());
+                return;
             } catch (Exception e) {
                 // 예상치 못한 예외 처리
-                request.setAttribute("exception", ErrorCode.INTERNAL_SERVER_ERROR);
+                setUnauthorizedResponse(response, ErrorCode.INTERNAL_SERVER_ERROR);
+                return;
             }
         }
         filterChain.doFilter(request, response);
+    }
+    private void setUnauthorizedResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
+        response.setStatus(errorCode.getHttpStatus().value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+
+        ErrorResponseDto errorResponse = ErrorResponseDto.of(errorCode);
+        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
 
     // Request Header 에서 토큰 정보를 꺼내오기

@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                .addFilterBefore(jwtAuthenticationFilter.jwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService), UsernamePasswordAuthenticationFilter.class)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/signup", "/api/auth/login", "/api/email/send", "/api/email/verify", "/api/auth/find-id/**", "/api/auth/find-password/**").permitAll()
@@ -59,8 +61,6 @@ public class SecurityConfig {
                         .requestMatchers("/mypage/**").hasAnyRole("USER", "MANAGER",  "ADMIN")
                         .anyRequest().hasAnyRole("USER", "MANAGER", "ADMIN")
                 )
-
-                .addFilterBefore(jwtAuthenticationFilter.jwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService), UsernamePasswordAuthenticationFilter.class)
                 .logout(AbstractHttpConfigurer::disable
                 );
 

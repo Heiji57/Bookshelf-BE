@@ -1,7 +1,6 @@
 package plain.bookshelf.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import plain.bookshelf.domain.member.entity.Member;
@@ -9,7 +8,6 @@ import plain.bookshelf.domain.member.entity.repository.MemberRepository;
 import plain.bookshelf.domain.member.exception.NotExistUserException;
 
 @Service
-@Aspect
 @RequiredArgsConstructor
 public class GetCurrentMemberService {
 

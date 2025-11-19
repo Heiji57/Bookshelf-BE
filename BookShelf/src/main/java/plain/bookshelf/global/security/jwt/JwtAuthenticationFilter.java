@@ -1,7 +1,6 @@
 package plain.bookshelf.global.security.jwt;
 
 import io.micrometer.common.lang.NonNullApi;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,14 +43,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
 
         // 2. validateToken 으로 토큰 유효성 검사
-        // 정상 토큰이면 해당 토큰으로 Authentication 을 가져와서 SecurityContextHolder 에 저장
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            if (tokenBlackListService.isBlacklisted(jwt)) {
-                filterChain.doFilter(request, response);
-                return;
+        try {
+            if (StringUtils.hasText(jwt)) {
+                if (tokenProvider.validateToken(jwt)) {
+                    if (tokenBlackListService.isBlacklisted(jwt)) {
+
+                    } else {
+                        Authentication authentication = tokenProvider.getAuthentication(jwt);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                }
             }
-            Authentication authentication = tokenProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
         }
 
         filterChain.doFilter(request, response);
@@ -64,9 +68,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return bearerToken.substring(BEARER_PREFIX.length());
         }
         return "";
-    }
-
-    public Filter jwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, TokenBlackListService tokenBlackListService) {
-        return new JwtAuthenticationFilter(jwtTokenProvider, tokenBlackListService);
     }
 }

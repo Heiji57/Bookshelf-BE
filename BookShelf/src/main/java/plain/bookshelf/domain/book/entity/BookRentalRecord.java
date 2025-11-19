@@ -28,7 +28,7 @@ public class BookRentalRecord {
     private BookDetail bookDetail;
 
     @MapsId("memberId")
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
 

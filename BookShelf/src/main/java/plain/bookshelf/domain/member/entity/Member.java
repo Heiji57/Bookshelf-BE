@@ -62,7 +62,7 @@ public class Member {
     @JoinColumn(name = "affiliation", nullable = false)
     private Affiliation affiliation;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     @Builder.Default
     private List<BookComment> bookComments = new ArrayList<>();
 
@@ -70,7 +70,7 @@ public class Member {
     @Builder.Default
     private List<BookReservation> bookReservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @Builder.Default
     private List<BookRentalRecord> bookRentalRecords = new ArrayList<>();
 

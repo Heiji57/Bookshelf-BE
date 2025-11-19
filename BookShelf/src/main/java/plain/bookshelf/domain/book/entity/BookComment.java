@@ -37,7 +37,7 @@ public class BookComment {
     @Builder.Default
     private Long likeCount = 0L;
 
-    @ManyToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "member")
     private Member member;
 

@@ -32,8 +32,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Member m SET m.monthStatistics = 0")
     void resetMonthStatistics();
 
-    Member findMemberById(Long userId);
-
     @Query("SELECT m FROM Member m " +
             "LEFT JOIN m.emails e " +
             "WHERE m.userName = :username OR e.address =:username")

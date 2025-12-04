@@ -1,49 +1,98 @@
 version: '3.8'
 
 services:
-  db:
+  postgresql:
     image: postgres:17.0
-    container_name: "bookshelf_db"
+    container_name: "bookshelf_postgres"
     restart: always
     environment:
       POSTGRES_DB: BookShelf
       POSTGRES_USER: ADMIN
       POSTGRES_PASSWORD: heijiADMIN20090220!
     ports:
-      - "5432:5432"
+      - ${POSTGRES_PORT}:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
     networks:
       - bookshelf-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ADMIN -d BookShelf"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
     container_name: "bookshelf_es"
     restart: always
     environment:
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
       - discovery.type=single-node
       - xpack.security.enabled=false
 
-    command: >
-      bash -c '
-        /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch analysis-nori;
-        /usr/local/bin/docker-entrypoint.sh;
-      '
-      
+    command: ["/bin/bash", "-c", "elasticsearch-plugin install --batch analysis-nori && /usr/local/bin/docker-entrypoint.sh"]
+
     ports:
-      - "9200:9200"
+      - ${ELASTICSEARCH_PORT}:9200
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - es_data:/usr/share/elasticsearch/data
     networks:
       - bookshelf-network
     depends_on:
-      - db
+      - postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  redis:
+    image: redis:8.4.0
+    ports:
+      - ${REDIS_PORT}:6379
+    command:
+      - redis-server
+      - /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+
+  bookshelf-app:
+    container_name: "bookshelf-api"
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      # 애플리케이션이 다른 컨테이너에 접속할 수 있도록 환경 변수 설정
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${POSTGRES_HOST}:5432/BookShelf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST}
+      REDIS_HOST: ${REDIS_HOST}
+      EMAIL_HOST: ${EMAIL_HOST}
+      JWT_TOKEN_SECRET: ${JWT_TOKEN_SECRET}
+      JWT_ACCESS_TOKEN_EXPIRATION: ${JWT_ACCESS_TOKEN_EXPIRATION}
+      JWT_REFRESH_TOKEN_EXPIRATION: ${JWT_REFRESH_TOKEN_EXPIRATION}
+      DB_LIFETIME: ${DB_LIFETIME}
+      ELASTICSEARCH_URIS: ${ELASTICSEARCH_URIS}
+    networks:
+      bookshelf-network:
+    depends_on:
+      postgresql:
+          condition: service_healthy
+      elasticsearch:
+          condition: service_healthy
+      redis:
+        condition: service_started
 
 networks:
   bookshelf-network:
     driver: bridge
 
 volumes:
-  pgdata:
-  esdata:
+  pg_data:
+  es_data:
+  redis_data:

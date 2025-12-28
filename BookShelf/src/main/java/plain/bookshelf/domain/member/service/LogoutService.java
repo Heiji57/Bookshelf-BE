@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import plain.bookshelf.global.security.jwt.JwtAuthenticationFilter;
 import plain.bookshelf.global.security.service.TokenBlackListService;
 import plain.bookshelf.global.security.exception.AccessTokenValueNotValidException;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
@@ -19,15 +20,12 @@ public class LogoutService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final TokenBlackListService tokenBlackListService;
     private final static String REFRESH_TOKEN_PREFIX = "refreshToken:";
 
     public void logoutService(HttpServletRequest request) {
-        String accessToken = jwtTokenProvider.resolveToken(request);
-
-        if (accessToken == null) {
-            throw new AccessTokenValueNotValidException(null);
-        }
+        String accessToken = jwtAuthenticationFilter.resolveToken(request);
 
         String userId;
         try {

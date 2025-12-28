@@ -29,7 +29,7 @@ public class RedisConfig {
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(host, port);
 
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .commandTimeout(Duration.ofSeconds(5)) // 1초 보다 길지 않음
+                .commandTimeout(Duration.ofSeconds(5)) // 5초 보다 길지 않음
                 .shutdownTimeout(Duration.ZERO) // 서버 닫히면 즉각적으로 닫힘
                 .useSsl()
                 .build();

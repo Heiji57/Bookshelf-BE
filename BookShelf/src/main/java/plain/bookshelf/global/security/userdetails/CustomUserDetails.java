@@ -8,13 +8,7 @@ import plain.bookshelf.domain.member.entity.Member;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CustomUserDetails implements UserDetails {
-
-    private final Member member;
-
-    public CustomUserDetails(Member member) {
-        this.member = member;
-    }
+public record CustomUserDetails(Member member) implements UserDetails {
 
     @Override
     public String getUsername() {
@@ -33,11 +27,22 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() { return true; } // 계정 만료를 다룸
+    public boolean isAccountNonExpired() {
+        return true;
+    } // 계정 만료를 다룸
+
     @Override
-    public boolean isAccountNonLocked() { return true; } // 계정을 잠그는 것을 다룸
+    public boolean isAccountNonLocked() {
+        return true;
+    } // 계정을 잠그는 것을 다룸
+
     @Override
-    public boolean isCredentialsNonExpired() { return true; } // 자격 증명 만료를 다룸
+    public boolean isCredentialsNonExpired() {
+        return true;
+    } // 자격 증명 만료를 다룸
+
     @Override
-    public boolean isEnabled() { return true; } // 계정 비활성화를 다룸
+    public boolean isEnabled() {
+        return true;
+    } // 계정 비활성화를 다룸
 }

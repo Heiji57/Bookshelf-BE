@@ -12,6 +12,7 @@ import plain.bookshelf.domain.book.entity.repository.BookRepository;
 import plain.bookshelf.domain.book.presentation.dto.response.BookDetailPageResponseDto;
 import plain.bookshelf.domain.book.presentation.dto.response.CollectionInformationResponseDto;
 import plain.bookshelf.domain.book.presentation.dto.response.ReviewResponseDto;
+import plain.bookshelf.global.security.jwt.JwtAuthenticationFilter;
 import plain.bookshelf.global.security.jwt.JwtTokenProvider;
 
 import java.util.List;
@@ -24,9 +25,10 @@ public class GetBookDetailPageService {
     private final BookDetailRepository bookDetailRepository;
     private final BookCommentRepository bookCommentRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public BookDetailPageResponseDto getBookDetailPage(Long bookId, HttpServletRequest request) throws IllegalAccessException {
-        String accessToken = jwtTokenProvider.resolveToken(request);
+        String accessToken = jwtAuthenticationFilter.resolveToken(request);
         Long affiliationId = jwtTokenProvider.getAffiliationIdFromToken(accessToken);
 
         Book book = bookRepository.findBookById(bookId);
